@@ -12,19 +12,19 @@ reserved = {
     'true' : 'TRUE',
     'false' : 'FALSE',
     'bool' : 'BOOL',
-    'while' : 'WHILE',
+    'while' : 'WHILE_KEYWORD',
     'program' : 'PROGRAM',
     'print' : 'PRINT',
     'vars' : 'VARS_KEYWORD',
     'create' : 'CREATE',
     'pi' : 'PI',
     'e' : 'E',
-    'for' : 'FOR',
+    'for' : 'FOR_KEYWORD',
     'main' : 'MAIN',
     'and' : 'AND',
     'or' : 'OR',
     'not' : 'NOT',
-    'input' : 'INPUT',
+    'input' : 'INPUT_KEYWORD',
     'return' : 'RETURN',
     'void' : 'VOID',
     'module' : 'MODULE',
@@ -42,7 +42,7 @@ reserved = {
     'Network' : 'TYPE_NETWORK',
     'Venn' : 'TYPE_VENN',
     'RadarChart' : 'TYPE_RADARCHART',
-    'color' : 'COLOR',
+    'color' : 'COLOR_KEYWORD',
     'name' : 'NAME',
     'nameX' : 'NAMEX',
     'nameY' : 'NAMEY',
@@ -125,25 +125,19 @@ def t_ID(t): #PROXIMAMENTE AGREGAR INFO PARA TABLAS DE VARIABLE
 def t_error(t):
     print("Illegal characters")
     t.lexer.skip(1)
+	
 #BUILD THE LEXER
 lexer = lex.lex()
-lexer.input("var hola=1+1/!.<><if true")
- # Tokenize
-while True:
-     tok = lexer.token()
-     if not tok: 
-         break      # No more input
-     print(tok)
- 
 
 #PARSING RULES
 def p_PROGRAMA(t):
-    "PROGRAMA : PROGRAM ID OPEN_BRACKET VARS PROGRAMA_A "
-
+    '''
+	PROGRAMA : PROGRAM ID OPEN_BRACKET VARS PROGRAMA_A MAIN BLOQUE CLOSE_BRACKET
+    '''
 def p_PROGRAMA_A(t):
     '''
-    PROGRAMA_A : MODULO PROGRAMA_A MAIN BLOQUE CLOSE_BRACKET
-               |MAIN BLOQUE CLOSE_BRACKET
+    PROGRAMA_A : MODULO PROGRAMA_A 
+               | EMPTY
     '''
 
 def p_VARS(t):
@@ -163,7 +157,7 @@ def p_VARS_E(t):
               | EMPTY
     '''
 def p_VARS_F(t):
-    '''VARS_F(T) : OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_C
+    '''VARS_F : OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_C
                  | VARS_C
     '''
 def p_VARS_C(t):
@@ -177,7 +171,9 @@ def p_VARS_D(t):
            | VARS_A
     '''
 def p_BLOQUE(t):
-    "BLOQUE : OPEN_BRACKET ESTATUTO_A CLOSE_BRACKET"
+    '''
+	BLOQUE : OPEN_BRACKET ESTATUTO_A CLOSE_BRACKET
+	'''
 
 def ESTATUTO_A(t):
     '''
@@ -216,159 +212,298 @@ def p_TIPO_S(t):
     | TYPE_VENN
     | TYPE_RADARCHART
     '''
-#*****************************PATITO
-#PARSING RULES
-def p_PROGRAMA(t):
-    "PROGRAMA : PROG ID PCO A"
 
-def p_A(t):
-    '''A : VARS BLOQUE 
-        | BLOQUE
+def p_MODULO(t):
+    '''
+	MODULO : MODULE MODULO_A ID OPEN_PARENTHESIS MODULO_C 
+	'''
+
+def p_MODULO_A(t):
+    '''
+	MODULO_A : VOID
+	         | TIPO_P
+    '''
+def p_MODULO_B(t):
+    '''
+	MODULO_B : COMMA MODULO_C
+	| EMPTY
     '''
 
-def p_VARS(t):
-    "VARS : VAR I"
-
-def p_I(t):
-    "I : ID J"
-
-def p_J(t):
-    '''J : COM I  
-        | TPO TIPO PCO K
+def p_MODULO_C(t):
+    '''
+	MODULO_C : TIPO_P ID MODULO_B CLOSE_PARENTHESIS OPEN_BRACKET VARS BLOQUE CLOSE_BRACKET
     '''
 
-def p_K(t):
+def p_LLAMADAMODULO(t):
     '''
-    K : I
-      | EMPTY
-    '''
-
-def p_BLOQUE(t):
-    "BLOQUE : LBR B"
-
-def p_B(t):
-    '''B : C 
-        | ESTATUTO B
+	LLAMADAMODULO : ID OPEN_PARENTHESIS LLAMADAMODULO_C
     '''
 
-def p_C(t):
-    "C : RBR"
-
-def p_TIPO(t):
-    '''TIPO : INT
-        | FLOAT
+def p_LLAMADAMODULO_A(t):
+    '''
+	LLAMADAMODULO_A : COMMA LLAMADAMODULO_C
+	                | EMPTY
     '''
 
-def p_ESTATUO(t):
-    '''ESTATUTO : ASIGNACION
-        | CONDICION
-        | ESCRITURA
+def p_LLAMADAMODULO_C(t):
     '''
+	LLAMADAMODULO_C : EXP LLAMADAMODULO_A CLOSE_PARENTHESIS SEMICOLON
+    '''
+
+def  p_NOMBRAR(t):
+    '''
+    NOMBRAR : ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS SEMICOLON
+    '''
+
+def p_NOMBRAR_A(t):
+'''
+    NOMBRAR_A : NAME
+	          | NAMEX
+	          | NAMEY
+'''
 
 def p_ASIGNACION(t):
-    "ASIGNACION : ID EQL EXPRESION PCO"
+'''
+   ASIGNACION : ID ASIGNACION_A ASIGNACION_C SEMICOLON
+'''
+
+def p_ASIGNACION_A(t):
+'''
+   ASIGNACION_A : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ASIGNACION_B
+   | EMPTY
+'''
+
+def p_ASIGNACION_B(t):
+'''
+   ASIGNACION_B : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET 
+   | EMPTY
+'''
+
+def p_ASIGNACION_C(t):
+'''
+   ASIGNACION_C :  EXPRESIONVARIAS
+   | CTE_STRING
+'''
 
 def p_CONDICION(t):
-    "CONDICION : IF LPAR EXPRESION RPAR BLOQUE G PCO"
+'''
+CONDICION : IF OPEN_PARENTHESIS EXPRESIONVARIAS CLOSE_PARENTHESIS BLOQUE CONDICION_A
+'''
 
-def p_G(t):
-    '''
-    G : ELSE BLOQUE 
-      | EMPTY 
-    '''
+def p_CONDICION_A(t):
+'''
+CONDICION_A : ELSE BLOQUE 
+| EMPTY
+'''
 
-def p_ESCRITURA(t):
-    "ESCRITURA : PRINT LPAR O"
+def p_FOR(t):
+'''
+FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONVARIAS SEMICOLON ID EQUAL EXP CLOSE_PARENTHESIS BLOQUE
+'''
 
-def p_O(t):
-    "O : EXPRESION P"
-
-def p_P(t):
-    '''
-    P : RPAR PCO
-      | POINT O
-    '''
-
-def p_VARCTE(t):
-    '''
-    VARCTE : ID
-      | CTEF
-      | CTEI
-    '''
-
-def p_EXPRESION(t):
-    '''
-    EXPRESION : EXP D
-              | E
-    '''
-
-def p_D(t):
-    '''
-    D : GT E
-      | LT E
-      | NE E
-    '''
-
-def p_E(t):
-    "E : EXP "
+def p_WHILE(t):
+'''
+WHILE : WHILE_KEYWORD OPEN_PARENTHESIS EXPRESIONVARIAS CLOSE_PARENTHESIS BLOQUE
+'''
 
 def p_EXP(t):
-    "EXP : TERMINO F "
+'''
+EXP : TERMINO EXP_A
+'''
 
-def p_F(t):
-    '''
-    F : PLUS EXP
+def p_EXP_A(t):
+'''
+EXP_A : PLUS EXP
       | MINS EXP
-      | EMPTY
-    '''
+	  | EMPTY
+'''
 
 def p_TERMINO(t):
-    "TERMINO : FACTOR H"
+'''
+TERMINO : FACTOR TERMINO_A
+'''
 
-def p_H(t):
-    '''
-    H : AST TERMINO
-      | SLASH TERMINO
-      | EMPTY
-    '''
+def p_TERMINO_A(t):
+'''
+TERMINO_A : TIMES TERMINO
+| DIVIDE TERMINO
+| EMPTY
+'''
+
+def p_COLOR(t):
+'''
+ COLOR : ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A CLOSE_PARENTHESIS SEMICOLON 
+'''
+
+def p_COLOR_A(t):
+'''
+ COLOR_A : RED
+ | BLACK
+ | BLUE
+ | PURPLE
+ | GREEN
+ | ORANGE
+'''
 
 def p_FACTOR(t):
-    '''
-    FACTOR : L
-           | M
-    '''
+'''
+ FACTOR : FACTOR_A OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
+'''
 
-def p_L(t):
-    "L : LPAR EXPRESION RPAR"
+def p_FACTOR_A(t):
+'''
+ FACTOR_A : PLUS FACTOR_C
+ | MINS FACTOR_C
+ | FACTOR_C
+ | EMPTY
+'''
 
-def p_M(t):
-    "M : N VARCTE" 
+def p_FACTOR_B(t):
+'''
+ FACTOR_B : EXPRESIONVARIAS FACTOR_C 
+'''
 
-def p_N(t):
-    '''
-    N : MINS
-      | PLUS
-      | EMPTY
-    ''' 
+def p_FACTOR_C(t):
+'''
+ FACTOR_C : VARS_CTE
+'''
+
+def p_VARS_CTE(t):
+'''
+ VARS_CTE : CTE_INTEGER
+ | CTE_FLOAT
+ | BOOLEAN
+ | ID VARS_CTE_A 
+'''
+
+def p_VARS_CTE_A(t):
+'''
+ VARS_CTE_A : OPEN_PARENTHESIS VARS_CTE_B
+ | OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D
+'''
+
+def p_VARS_CTE_B(t):
+'''
+ VARS_CTE_B : EXP VARS_CTE_C CLOSE_PARENTHESIS
+'''
+
+def p_VARS_CTE_C(t):
+'''
+ VARS_CTE_C : COMMA VARS_CTE_B
+  | EMPTY
+'''
+
+def p_VARS_CTE_D(t):
+'''
+ VARS_CTE_D : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
+  | EMPTY
+'''
+
+def p_INPUT(t):
+'''
+ INPUT : INPUT_KEYWORD INPUTSYMBOL ID INPUT_A SEMICOLON
+'''
+
+def p_INPUT_A(t):
+'''
+ INPUT_A : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET INPUT_B
+ | EMPTY
+'''
+
+def p_INPUT_B(t):
+'''
+ INPUT_B : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
+'''
+
+def p_PLOT(t):
+'''
+ PLOT : ID POINT PLOT_B
+'''
+
+def p_PLOT_B(t):
+'''
+ PLOT_B : CREATEG OPEN_PARENTHESIS PLOT_C
+ | CREATEPC OPEN_PARENTHESIS PLOT_E
+ | CREATEGB OPEN_PARENTHESIS PLOT_E
+ | CREATEGBH OPEN_PARENTHESIS PLOT_E
+ | CREATED OPEN_PARENTHESIS PLOT_E
+ | CREATER OPEN_PARENTHESIS PLOT_E
+'''
+
+def p_PLOT_C(t):
+'''
+ PLOT_C : PLOT_I CLOSE_PARENTHESIS SEMICOLON
+'''
+
+def p_PLOT_I(t):
+'''
+ PLOT_I : EXP PLOT_D
+'''
+def p_PLOT_D(t):
+'''
+ PLOT_D :  COMMA PLOT_I
+ | EMPTY
+'''
+
+def p_PLOT_E(t):
+'''
+ PLOT_E : EXP PLOT_F SEMICOLON PLOT_G
+'''
+
+def p_PLOT_F(t):
+'''
+ PLOT_F : COMMA PLOT_E
+'''
+
+def p_PLOT_G(t):
+'''
+ PLOT_G : CTE_STRING PLOT_H CLOSE_PARENTHESIS SEMICOLON
+'''
+
+def p_PLOT_H(t):
+'''
+ PLOT_H : COMMA PLOT_G
+ | EMPTY
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+#PENDIENTE DIAGRAMA
+def p_PRINT(t):
+'''
+   PRINT : 
+'''
+
+def p_EXPRESIONESVARIAS(t):
+'''
+   EXPRESIONESVARIAS : 
+'''
+#PENDIENTE
+
 def p_EMPTY(t):
     "EMPTY :"
     pass
     
 def p_error(t):
     print("Syntax error at '%s'" % t.value)
-
+	
 parser = yacc.yacc()
+
 while True:
-    #tok = lexer.token()
-    #if not tok:
-    #    break
-    #print(tok)
-    try:
-        s = input('')
-    except EOFError: #this is when in the terminal the user quits
-        break
-    #Finally parse the input code
-    try:
-        parser.parse()
-    finally:
-        print("Parsing complete")
+	try:
+		s = input()	
+		with open(s) as fp:
+			for line in fp:
+				parser.parse(line)
+	except E0FError:
+		break
+ 
