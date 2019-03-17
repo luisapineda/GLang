@@ -1,6 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
+import logging
 
 #TOKENS
 reserved = {
@@ -14,7 +15,7 @@ reserved = {
     'bool' : 'BOOL',
     'while' : 'WHILE_KEYWORD',
     'program' : 'PROGRAM',
-    'print' : 'PRINT',
+    'print' : 'PRINT_KEYWORD',
     'vars' : 'VARS_KEYWORD',
     'create' : 'CREATE',
     'pi' : 'PI',
@@ -72,16 +73,20 @@ tokens = [
     'DIVIDE',
     'SEMICOLON',
     'EQUAL',
-    'EXP',
     'QUOTE',
     'RELOP',
     'ID',
     'CTE_STRING',
     'CTE_FLOAT',
     'CTE_INTEGER',
+	'CTE_CHAR',
     'BOOLEAN'
 ] + list(reserved.values())
 
+def t_INPUTSYMBOL(t):
+    r'\>>' 
+    return t
+	
 t_POINT = r'\.'
 t_OPEN_BRACKET = r'\{'
 t_CLOSE_BRACKET = r'\}'
@@ -90,20 +95,25 @@ t_CLOSE_PARENTHESIS = r'\)'
 t_OPEN_SQUARE_BRACKET = r'\['
 t_CLOSE_SQUARE_BRACKET = r'\]'
 t_COMMA = r'\,'
-t_INPUTSYMBOL = r'>>' 
 t_DIVIDE = r'\/'
 t_SEMICOLON = r'\;'
 t_PLUS = r'\+'
 t_MINS = r'\-'
 t_TIMES = r'\*'
-t_EQUAL = r'\='
-t_EXP = r'\^'
 t_QUOTE = r'\''
+t_EQUAL = r'\='
 
-t_ignore = r' '
-t_CTE_STRING = r'\".*\"'
+t_ignore = " \t"
+t_CTE_CHAR = r'\'.*\''
 t_RELOP = r'<|>|==|>=|<='
 
+def t_newline(t):
+    r'\n+'
+
+def t_CTE_STRING(t):
+	r'\"(\\.|[^"\\])*\"'
+	return t
+	
 def t_CTE_FLOAT(t):
     r'-?\d+\.\d+'
     t.value = float(t.value)
@@ -123,9 +133,10 @@ def t_ID(t): #PROXIMAMENTE AGREGAR INFO PARA TABLAS DE VARIABLE
     return t
 
 def t_error(t):
-    print("Illegal characters")
+    print("ERROR at '%s'" % t.value)
     t.lexer.skip(1)
-	
+
+
 #BUILD THE LEXER
 lexer = lex.lex()
 
@@ -175,10 +186,10 @@ def p_BLOQUE(t):
 	BLOQUE : OPEN_BRACKET ESTATUTO_A CLOSE_BRACKET
 	'''
 
-def ESTATUTO_A(t):
+def p_ESTATUTO_A(t):
     '''
-    ESTATUTO_A : ESTATUTO ESTATUTO_A
-             | EMPTY
+ESTATUTO_A : ESTATUTO ESTATUTO_A
+| EMPTY
     '''
 def p_ESTATUTO(t):
     '''
@@ -221,7 +232,7 @@ def p_MODULO(t):
 def p_MODULO_A(t):
     '''
 	MODULO_A : VOID
-	         | TIPO_P
+| TIPO_P
     '''
 def p_MODULO_B(t):
     '''
@@ -242,7 +253,7 @@ def p_LLAMADAMODULO(t):
 def p_LLAMADAMODULO_A(t):
     '''
 	LLAMADAMODULO_A : COMMA LLAMADAMODULO_C
-	                | EMPTY
+	| EMPTY
     '''
 
 def p_LLAMADAMODULO_C(t):
@@ -256,254 +267,342 @@ def  p_NOMBRAR(t):
     '''
 
 def p_NOMBRAR_A(t):
-'''
-    NOMBRAR_A : NAME
-	          | NAMEX
-	          | NAMEY
-'''
+    '''NOMBRAR_A : NAME
+| NAMEX
+| NAMEY
+    '''
 
 def p_ASIGNACION(t):
-'''
-   ASIGNACION : ID ASIGNACION_A ASIGNACION_C SEMICOLON
-'''
+    '''
+ ASIGNACION : ID ASIGNACION_A ASIGNACION_C SEMICOLON
+    '''
 
 def p_ASIGNACION_A(t):
-'''
+	'''
    ASIGNACION_A : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ASIGNACION_B
    | EMPTY
-'''
+	'''
 
 def p_ASIGNACION_B(t):
-'''
+	'''
    ASIGNACION_B : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET 
    | EMPTY
-'''
+	'''
 
 def p_ASIGNACION_C(t):
-'''
-   ASIGNACION_C :  EXPRESIONVARIAS
-   | CTE_STRING
-'''
+	'''
+   ASIGNACION_C :  EQUAL EXPRESIONESVARIAS
+   | EQUAL CTE_STRING
+	'''
 
 def p_CONDICION(t):
-'''
-CONDICION : IF OPEN_PARENTHESIS EXPRESIONVARIAS CLOSE_PARENTHESIS BLOQUE CONDICION_A
-'''
+	'''
+CONDICION : IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS BLOQUE CONDICION_A
+	'''
 
 def p_CONDICION_A(t):
-'''
+	'''
 CONDICION_A : ELSE BLOQUE 
 | EMPTY
-'''
+	'''
 
 def p_FOR(t):
-'''
-FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONVARIAS SEMICOLON ID EQUAL EXP CLOSE_PARENTHESIS BLOQUE
-'''
+	'''
+FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS SEMICOLON ID EQUAL EXP CLOSE_PARENTHESIS BLOQUE
+	'''
 
 def p_WHILE(t):
-'''
-WHILE : WHILE_KEYWORD OPEN_PARENTHESIS EXPRESIONVARIAS CLOSE_PARENTHESIS BLOQUE
-'''
+	'''
+WHILE : WHILE_KEYWORD OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS BLOQUE
+	'''
 
 def p_EXP(t):
-'''
+	'''
 EXP : TERMINO EXP_A
-'''
+	'''
 
 def p_EXP_A(t):
-'''
+	'''
 EXP_A : PLUS EXP
-      | MINS EXP
-	  | EMPTY
-'''
+| MINS EXP
+| EMPTY
+	'''
 
 def p_TERMINO(t):
-'''
-TERMINO : FACTOR TERMINO_A
-'''
+	'''
+    TERMINO : FACTOR TERMINO_A
+	'''
 
 def p_TERMINO_A(t):
-'''
+	'''
 TERMINO_A : TIMES TERMINO
 | DIVIDE TERMINO
 | EMPTY
-'''
+	'''
 
 def p_COLOR(t):
-'''
+	'''
  COLOR : ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A CLOSE_PARENTHESIS SEMICOLON 
-'''
+	'''
 
 def p_COLOR_A(t):
-'''
- COLOR_A : RED
- | BLACK
- | BLUE
- | PURPLE
- | GREEN
- | ORANGE
-'''
+	'''
+ COLOR_A : COLOR_RED
+ | COLOR_BLACK
+ | COLOR_BLUE
+ | COLOR_PURPLE
+ | COLOR_GREEN
+ | COLOR_ORANGE
+	'''
 
 def p_FACTOR(t):
-'''
- FACTOR : FACTOR_A OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
-'''
+	'''
+ FACTOR : FACTOR_A 
+	'''
 
 def p_FACTOR_A(t):
-'''
- FACTOR_A : PLUS FACTOR_C
+	'''
+ FACTOR_A : OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS 
+ | PLUS FACTOR_C
  | MINS FACTOR_C
  | FACTOR_C
  | EMPTY
-'''
+	'''
 
 def p_FACTOR_B(t):
-'''
- FACTOR_B : EXPRESIONVARIAS FACTOR_C 
-'''
+	'''
+ FACTOR_B : EXPRESIONESVARIAS FACTOR_C 
+	'''
 
 def p_FACTOR_C(t):
-'''
+	'''
  FACTOR_C : VARS_CTE
-'''
+	'''
 
 def p_VARS_CTE(t):
-'''
+	'''
  VARS_CTE : CTE_INTEGER
  | CTE_FLOAT
  | BOOLEAN
  | ID VARS_CTE_A 
-'''
+	'''
 
 def p_VARS_CTE_A(t):
-'''
+	'''
  VARS_CTE_A : OPEN_PARENTHESIS VARS_CTE_B
  | OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D
-'''
+ | EMPTY
+
+	'''
 
 def p_VARS_CTE_B(t):
-'''
+	'''
  VARS_CTE_B : EXP VARS_CTE_C CLOSE_PARENTHESIS
-'''
+	'''
 
 def p_VARS_CTE_C(t):
-'''
+	'''
  VARS_CTE_C : COMMA VARS_CTE_B
   | EMPTY
-'''
+	'''
 
 def p_VARS_CTE_D(t):
-'''
+	'''
  VARS_CTE_D : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
   | EMPTY
-'''
+	'''
 
 def p_INPUT(t):
-'''
+	'''
  INPUT : INPUT_KEYWORD INPUTSYMBOL ID INPUT_A SEMICOLON
-'''
+	'''
 
 def p_INPUT_A(t):
-'''
+	'''
  INPUT_A : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET INPUT_B
  | EMPTY
-'''
+	'''
 
 def p_INPUT_B(t):
-'''
+	'''
  INPUT_B : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
-'''
+	'''
 
 def p_PLOT(t):
-'''
+	'''
  PLOT : ID POINT PLOT_B
-'''
+	'''
 
 def p_PLOT_B(t):
-'''
+	'''
  PLOT_B : CREATEG OPEN_PARENTHESIS PLOT_C
  | CREATEPC OPEN_PARENTHESIS PLOT_E
  | CREATEGB OPEN_PARENTHESIS PLOT_E
  | CREATEGBH OPEN_PARENTHESIS PLOT_E
  | CREATED OPEN_PARENTHESIS PLOT_E
  | CREATER OPEN_PARENTHESIS PLOT_E
-'''
+ | CREATEN OPEN_PARENTHESIS OPEN_SQUARE_BRACKET PLOT_M
+ | CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
+	'''
 
 def p_PLOT_C(t):
-'''
+	'''
  PLOT_C : PLOT_I CLOSE_PARENTHESIS SEMICOLON
-'''
+	'''
 
 def p_PLOT_I(t):
-'''
- PLOT_I : EXP PLOT_D
-'''
+	'''
+ PLOT_I : CTE_INTEGER PLOT_D
+ | CTE_FLOAT PLOT_D
+	'''
 def p_PLOT_D(t):
-'''
+	'''
  PLOT_D :  COMMA PLOT_I
- | EMPTY
-'''
+		| EMPTY
+	'''
 
 def p_PLOT_E(t):
-'''
- PLOT_E : EXP PLOT_F SEMICOLON PLOT_G
-'''
+	'''
+ PLOT_E : PLOT_F SEMICOLON PLOT_G
+	'''
 
 def p_PLOT_F(t):
-'''
- PLOT_F : COMMA PLOT_E
-'''
+	'''
+ PLOT_F : CTE_INTEGER PLOT_J
+ | CTE_FLOAT PLOT_J
+	'''
+
+def p_PLOT_J(t):
+	'''
+ PLOT_J : COMMA PLOT_F
+ | EMPTY
+	'''
 
 def p_PLOT_G(t):
-'''
- PLOT_G : CTE_STRING PLOT_H CLOSE_PARENTHESIS SEMICOLON
-'''
+	'''
+ PLOT_G : PLOT_K CLOSE_PARENTHESIS SEMICOLON
+	'''
 
+def p_PLOT_K(t):
+	'''
+  PLOT_K : CTE_STRING PLOT_H
+	'''
 def p_PLOT_H(t):
-'''
- PLOT_H : COMMA PLOT_G
+	'''
+ PLOT_H : COMMA PLOT_K
  | EMPTY
-'''
+	'''
 
+def p_PLOT_M(t):
+	'''
+ PLOT_M : PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON
+	'''
+def p_PLOT_N(t):
+	'''
+ PLOT_N : CTE_STRING PLOT_O
+	'''
 
+def p_PLOT_O(t):
+	'''
+ PLOT_O : COMMA PLOT_N
+ | EMPTY
+	'''
 
+def p_PLOT_P(t):
+	'''
+ PLOT_P : CTE_STRING PLOT_Q
+ 
+	'''
+def p_PLOT_Q(t):
+	'''
+ PLOT_Q : COMMA PLOT_P
+ | EMPTY
+ 
+	'''
 
-
-
-
-
-
-
-
-
-#PENDIENTE DIAGRAMA
 def p_PRINT(t):
-'''
-   PRINT : 
-'''
+	'''
+   PRINT : PRINT_KEYWORD OPEN_PARENTHESIS PRINT_A
+	'''
+
+def p_PRINT_A(t):
+	'''
+   PRINT_A : PRINT_B CLOSE_PARENTHESIS SEMICOLON
+	'''
+
+def p_PRINT_B(t):
+	'''
+ PRINT_B : CTE_STRING PRINT_C
+ | EXPRESIONESVARIAS
+	'''
+
+def p_PRINT_C(t):
+	'''
+ PRINT_C : PLUS PRINT_B
+ | EMPTY
+	'''
 
 def p_EXPRESIONESVARIAS(t):
-'''
-   EXPRESIONESVARIAS : 
-'''
-#PENDIENTE
+	'''
+   EXPRESIONESVARIAS : NOT EV_C
+   | EV_C
+	'''
+	
+def p_EV_C(t):
+	'''
+   EV_C : EXP_RELOP EV_B
+	'''
 
+def p_EV_B(t):
+	'''
+   EV_B : AND
+   | OR
+   | EMPTY
+	'''
+
+def p_EXP_RELOP(t):
+	'''
+	EXP_RELOP : EXP EXP_RELOP_A
+	| EMPTY
+	'''
+
+def p_EXP_RELOP_A(t):
+	'''
+	EXP_RELOP_A : RELOP EXP
+	| EMPTY
+	'''
+	
 def p_EMPTY(t):
     "EMPTY :"
     pass
     
 def p_error(t):
-    print("Syntax error at '%s'" % t.value)
+ print("Syntax error at '%s'" % t.value)
 	
+log = logging.getLogger()
+
 parser = yacc.yacc()
 
-while True:
-	try:
-		s = input()	
-		with open(s) as fp:
-			for line in fp:
-				parser.parse(line)
-	except E0FError:
-		break
- 
+#while True:
+	#try:
+	#	s = input()	
+	#	with open(s) as fp:
+	#		for line in fp:
+	#			parser.parse(line)
+	#except E0FError:
+	#	break
+s = input("Enter a file name \n")
+file = open(s, "r")
+code = ""
+#Add all lines to one string for parsing
+for line in file:
+    try:
+        code += line
+    except EOFError:
+        break
+
+#Finally parse the input code
+try:
+    parser.parse(code,debug=log)
+finally:
+    print("Parsing complete")
