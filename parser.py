@@ -2,6 +2,9 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 import logging
+import pdir as directory
+from fun import f
+from variables import v
 
 #TOKENS
 reserved = {
@@ -129,22 +132,36 @@ def t_ID(t): #PROXIMAMENTE AGREGAR INFO PARA TABLAS DE VARIABLE
     if t.value in reserved:
         t.type = reserved[ t.value ]
     else:
-        t.type = 'ID'
+        if t.type == 'ID':
+           v.Id = t.value
     return t
 
 def t_error(t):
     print("ERROR at '%s'" % t.value)
     t.lexer.skip(1)
 
+number = 0
+
+def increment():
+	global number
+	number = v.Id
+
 
 #BUILD THE LEXER
 lexer = lex.lex()
 
+
 #PARSING RULES
 def p_PROGRAMA(t):
     '''
-	PROGRAMA : PROGRAM ID OPEN_BRACKET VARS PROGRAMA_A MAIN BLOQUE CLOSE_BRACKET
+	PROGRAMA : PROGRAM ID addfunction OPEN_BRACKET VARS PROGRAMA_A MAIN BLOQUE CLOSE_BRACKET
     '''
+
+def p_addfunction(t):
+	'addfunction :'
+	increment()
+	directory.add_function(v.Id,"PROGRAM")
+	
 def p_PROGRAMA_A(t):
     '''
     PROGRAMA_A : MODULO PROGRAMA_A 
@@ -160,9 +177,12 @@ def p_VARS_A(t):
            | TIPO_S VARS_B
     '''
 def p_VARS_B(t):
-    '''VARS_B : ID VARS_E VARS_C
+    '''VARS_B : ID add_variable VARS_E VARS_C
     '''
-
+def p_add_variable(t):
+	'add_variable :'
+	directory.add_variable(number,v.Id,f.Type)
+	
 def p_VARS_E(t):
     '''VARS_E : OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_F
               | EMPTY
@@ -206,12 +226,14 @@ def p_ESTATUTO(t):
     '''
 def p_TIPO_P(t):
     '''
-    TIPO_P : INT
+	TIPO_P : INT
            | FLOAT
            | BOOL
-           | CHAR 
-    '''
-
+           | CHAR
+	'''
+    f.Type = t[1]
+    return t[1]
+	
 def p_TIPO_S(t):
     '''
     TIPO_S : TYPE_GRAPH
@@ -223,17 +245,28 @@ def p_TIPO_S(t):
     | TYPE_VENN
     | TYPE_RADARCHART
     '''
+    f.Type = t[1]
+    return t[1]
 
 def p_MODULO(t):
     '''
-	MODULO : MODULE MODULO_A ID OPEN_PARENTHESIS MODULO_C 
+	MODULO : MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C 
 	'''
 
+def p_add_functionr(t):
+	'add_functionr :'
+	increment()
+	directory.add_function(v.Id,f.Type)
+	
 def p_MODULO_A(t):
     '''
 	MODULO_A : VOID
 | TIPO_P
     '''
+    if t[1] == "void":
+        v.Type = t[1]
+        return t[1]
+
 def p_MODULO_B(t):
     '''
 	MODULO_B : COMMA MODULO_C
@@ -583,26 +616,17 @@ log = logging.getLogger()
 
 parser = yacc.yacc()
 
-#while True:
-	#try:
-	#	s = input()	
-	#	with open(s) as fp:
-	#		for line in fp:
-	#			parser.parse(line)
-	#except E0FError:
-	#	break
-s = input("Enter a file name \n")
+s = input("Enter name \n")
 file = open(s, "r")
 code = ""
-#Add all lines to one string for parsing
+
 for line in file:
     try:
         code += line
     except EOFError:
         break
 
-#Finally parse the input code
 try:
     parser.parse(code,debug=log)
 finally:
-    print("Parsing complete")
+    print("Operation complete")
