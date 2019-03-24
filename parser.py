@@ -264,7 +264,7 @@ def p_MODULO_A(t):
 | TIPO_P
     '''
     if t[1] == "void":
-        v.Type = t[1]
+        f.Type = t[1]
         return t[1]
 
 def p_MODULO_B(t):
