@@ -5,6 +5,9 @@ import logging
 import pdir as directory
 from fun import f
 from variables import v
+from semanticCube import semanticCube
+from semanticCube import typesOfVariables
+from semanticCube import operators
 
 #TOKENS
 reserved = {
