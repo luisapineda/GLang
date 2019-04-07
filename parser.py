@@ -5,6 +5,17 @@ import logging
 import pdir as directory
 from fun import f
 from variables import v
+from semanticCube import semanticCube
+from semanticCube import typesOfVariables
+from semanticCube import operators
+from quadruples import q
+
+ListaTemps = list(range(9000,10000))
+
+SOper = [] #Pila de operadores
+SType = [] #Pila de tipos
+StackO = [] #Pila de operandos
+SJump = [] #Pila de saltos
 
 #TOKENS
 reserved = {
@@ -140,12 +151,18 @@ def t_error(t):
     print("ERROR at '%s'" % t.value)
     t.lexer.skip(1)
 
-number = 0
 
 def increment():
 	global number
 	number = v.Id
 
+def back_Program(p):
+	global funct
+	funct = p
+
+def scope_c(s):
+	global scope_c
+	scope_c = s
 
 #BUILD THE LEXER
 lexer = lex.lex()
@@ -257,6 +274,7 @@ def p_add_functionr(t):
 	'add_functionr :'
 	increment()
 	directory.add_function(v.Id,f.Type)
+
 	
 def p_MODULO_A(t):
     '''
@@ -277,7 +295,7 @@ def p_MODULO_C(t):
     '''
 	MODULO_C : TIPO_P ID MODULO_B CLOSE_PARENTHESIS OPEN_BRACKET VARS BLOQUE CLOSE_BRACKET
     '''
-
+	
 def p_LLAMADAMODULO(t):
     '''
 	LLAMADAMODULO : ID OPEN_PARENTHESIS LLAMADAMODULO_C
@@ -307,9 +325,47 @@ def p_NOMBRAR_A(t):
 
 def p_ASIGNACION(t):
     '''
- ASIGNACION : ID ASIGNACION_A ASIGNACION_C SEMICOLON
+ ASIGNACION : ID addStackO ASIGNACION_A ASIGNACION_C ASIGNACION_D
     '''
 
+def p_ASIGNACION_D(t):
+	'''
+	ASIGNACION_D : SEMICOLON quad
+				| EMPTY quad
+	'''
+def p_quad(t):
+	'quad :'
+	operator=SOper.pop()
+	if operator=='=':
+		left_operand=StackO.pop()
+		#left_type=SType.pop()
+		result=StackO.pop()
+		#result_type = SType.pop()
+		#falta checar lo de la comprobacion de tipo con cubo
+		quadrup=[operator,left_operand," ",result]
+		StackO.append(result)
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		print(" ")
+		print("Pila de cuadruplos:")
+		print(q.quadruplesGen)
+		print(" ")
+		print("Contador de cuadruplos:")
+		print(q.contQuad)
+	
+def p_addStackO(t):
+	'addStackO :'
+	StackO.append(t[-1])
+	SType.append(directory.return_type(number,t[-1]))
+	print(" ")
+	print("Pila de operandos:")
+	print(StackO)
+	print(" ")
+	print("Pila de tipos:")
+	print(SType)
+
+	
 def p_ASIGNACION_A(t):
 	'''
    ASIGNACION_A : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ASIGNACION_B
@@ -327,39 +383,182 @@ def p_ASIGNACION_C(t):
    ASIGNACION_C :  EQUAL EXPRESIONESVARIAS
    | EQUAL CTE_STRING
 	'''
-
+	SOper.append("=")
+	print(" ")
+	print("Pila de caracteres")
+	print(SOper)
+	
 def p_CONDICION(t):
 	'''
-CONDICION : IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS BLOQUE CONDICION_A
+CONDICION : IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE CONDICION_A fill_end
 	'''
+
+def p_fill_end(t):
+	'fill_end :'
+	end=SJump.pop()
+	q.quadruplesGen[end][3] = q.contQuad
+	
+def p_check_bool(t):
+	'check_bool :'
+	operator=SOper.pop()
+	if operator=='not':
+		left_operand=StackO.pop()
+		#left_type=SType.pop()
+		result=ListaTemps[q.contList]
+		q.contList = q.contList + 1
+		quadrup=[operator,left_operand," ",result]
+		
+		StackO.append(result)
+		#falta agregar el tipo del resultado
+		
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		quadrup = ["GOTOF",result," ","saltopendiente"]
+		
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		SJump.append(q.contQuad-1)
+		print(" ")
+		print("Pila de cuadruplos:")
+		print(q.quadruplesGen)
+		print(" ")
+		print("Contador de cuadruplos:")
+		print(q.contQuad)
+		print("Pila de Saltos:")
+		print(SJump)
 
 def p_CONDICION_A(t):
 	'''
-CONDICION_A : ELSE BLOQUE 
+CONDICION_A : gotoElse ELSE BLOQUE 
 | EMPTY
 	'''
 
+def p_gotoElse(t):
+	'gotoElse :'
+	quadrup = ["GOTO"," "," ","saltopendiente"]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+	false_if=SJump.pop()
+	SJump.append(q.contQuad-1)
+	q.quadruplesGen[false_if][3] = q.contQuad
+	
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	print("Pila de Saltos:")
+	print(SJump)
+
 def p_FOR(t):
 	'''
-FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS SEMICOLON ID EQUAL EXP CLOSE_PARENTHESIS BLOQUE
+FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_while SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for
 	'''
 
+def p_repeat_for(t):
+	'repeat_for :'
+	
+	
 def p_WHILE(t):
 	'''
-WHILE : WHILE_KEYWORD OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS BLOQUE
+WHILE : WHILE_KEYWORD OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS bool_while BLOQUE goto_while
 	'''
+
+def p_goto_while(t):
+	'goto_while :'
+	end=SJump.pop()
+	return_w=SJump.pop()
+	quadrup = ["GOTO"," "," ",return_w]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+	
+	q.quadruplesGen[end][3] = q.contQuad
+	
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	print("Pila de Saltos:")
+	print(SJump)
+	
+def p_bool_while(t):
+	'bool_while :'
+	SJump.append(q.contQuad)
+	operator=SOper.pop()
+	if operator=='>' or operator=='<':
+		print("checamos ahora:")
+		print(StackO)
+		right_operand=StackO.pop()
+		#right_type=SType.pop()
+		left_operand=StackO.pop()
+		#left_type=SType.pop()
+		result=ListaTemps[q.contList]
+		q.contList = q.contList + 1
+		quadrup=[operator,left_operand,right_operand,result]
+		
+		StackO.append(result)
+		#falta agregar el tipo del resultado
+		
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		quadrup = ["GOTOF",result," ","saltopendiente"]
+		
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		SJump.append(q.contQuad-1)
+		print(" ")
+		print("Pila de cuadruplos:")
+		print(q.quadruplesGen)
+		print(" ")
+		print("Contador de cuadruplos:")
+		print(q.contQuad)
+		print("Pila de Saltos:")
+		print(SJump)
+
 
 def p_EXP(t):
 	'''
-EXP : TERMINO EXP_A
+EXP : TERMINO EXP_A pop_exp
 	'''
 
+def p_pop_exp(t):
+	'pop_exp :'
+	if SOper: 
+		if SOper[-1]=="+" or SOper[-1]=="-":
+			operator=SOper.pop()
+			print("checamos en plus:")
+			print(StackO)
+			right_operand=StackO.pop()
+			#right_type=SType.pop()
+			left_operand=StackO.pop()
+			#left_type=SType.pop()
+			result=ListaTemps[q.contList]
+			q.contList = q.contList + 1
+			quadrup=[operator,left_operand,right_operand,result]
+		
+			StackO.append(result)
+			#falta agregar el tipo del resultado
+		
+			q.quadruplesGen.append(quadrup)
+			q.contQuad = q.contQuad + 1
+	
 def p_EXP_A(t):
 	'''
 EXP_A : PLUS EXP
 | MINS EXP
 | EMPTY
 	'''
+	if t[1]=="+" or t[1]=="-":
+		SOper.append(t[1])
+		print("pila de caracters")
+		print(SOper)
 
 def p_TERMINO(t):
 	'''
@@ -419,6 +618,40 @@ def p_VARS_CTE(t):
  | BOOLEAN
  | ID VARS_CTE_A 
 	'''
+	print("Adentro:")
+	print(t[1])
+	if ( isinstance(t[1],int)):
+		StackO.append(t[1])
+		SType.append("int")
+		print(" ")
+		print("Pila de operandos")
+		print(StackO)
+		print(" ")
+		print("Pila de tipos")
+		print(SType)
+	elif(isinstance(t[1],float)):
+		StackO.append(t[1])
+		SType.append("float")
+		print(" ")
+		print("Pila de operandos")
+		print(StackO)
+		print(" ")
+		print("Pila de tipos")
+		print(SType)
+	elif( t[1]=='TRUE' or t[1]=='FALSE'):
+		StackO.append(t[1])
+		SType.append("bool")
+		print(" ")
+		print("Pila de operandos")
+		print(StackO)
+		print(" ")
+		print("Pila de tipos")
+		print(SType)
+	else:
+		StackO.append(t[1])
+		print(" ")
+		print("Pila de operandos")
+		print(StackO)
 
 def p_VARS_CTE_A(t):
 	'''
@@ -580,6 +813,11 @@ def p_EXPRESIONESVARIAS(t):
    EXPRESIONESVARIAS : NOT EV_C
    | EV_C
 	'''
+	if t[1]=='not':
+		SOper.append("not")
+		print(" ")
+		print("Pila de caracteres")
+		print(SOper)
 	
 def p_EV_C(t):
 	'''
@@ -604,6 +842,18 @@ def p_EXP_RELOP_A(t):
 	EXP_RELOP_A : RELOP EXP
 	| EMPTY
 	'''
+	print("relop: ")
+	print(t[1])
+	if t[1]==">":
+		SOper.append(">")
+		print(" ")
+		print("Pila de caracteres")
+		print(SOper)
+	elif t[1]=="<":
+		SOper.append("<")
+		print(" ")
+		print("Pila de caracteres")
+		print(SOper)
 	
 def p_EMPTY(t):
     "EMPTY :"
@@ -629,4 +879,10 @@ for line in file:
 try:
     parser.parse(code,debug=log)
 finally:
-    print("Operation complete")
+	print("Pila caracteres:")
+	print(SOper)
+	print("Pila operandos")
+	print(StackO)
+	print("Pila de saltos")
+	print(SJump)
+	print("Operation complete")

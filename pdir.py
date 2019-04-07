@@ -11,5 +11,10 @@ def add_variable(namef,namev,type):
 	dir_func[namef]["vars"][namev] = dict()
 	dir_func[namef]["vars"][namev]["tipo"] = type
 	print(dir_func)
+	
+def return_type(namef,namev):
+    type=dir_func[namef]["vars"][namev]["tipo"]
+    return type
+	
 
 	
