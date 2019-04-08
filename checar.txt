@@ -13,6 +13,17 @@ int iNumero, i, a, iNumero2, b, iNumero3;
 bool c;
 }
 
+module void hola(int ola)
+{
+vars{
+int i;
+}
+
+{
+i=1;
+}
+}
+
 main{ 
 migrafica1.name("Crecimiento economico"); 
 migrafica1.nameX("Dias"); 
@@ -42,7 +53,7 @@ mivenn.createV( 10 , 5 , 20 ;"Matematicas","Quimica");
 mired.name("Problema del viajero");
 mired.createN(["A", "B", "C","A"];["D", "A", "E","C"]);
 
-print("Ingresa un numero");
+print("Ingresa un numero"+10);
 
 input>>iNumero;
 
@@ -58,12 +69,16 @@ else
 iNumero=10;
 }
 
-while(a>iNumero)
+while(a>iNumero2)
 {
-iNumero2=10;
+iNumero2=iNumero+1;
 }
 
-b =20;
+for (i=0; i<5 ; i=i+1;)
+{
+iNumero3=10;
+}
+b =20*30+40;
 
 }
 }
