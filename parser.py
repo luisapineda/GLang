@@ -16,6 +16,7 @@ SOper = [] #Pila de operadores
 SType = [] #Pila de tipos
 StackO = [] #Pila de operandos
 SJump = [] #Pila de saltos
+SScope = [] #Pila de contexto
 
 #TOKENS
 reserved = {
@@ -177,6 +178,7 @@ def p_PROGRAMA(t):
 def p_addfunction(t):
 	'addfunction :'
 	increment()
+	SScope.append(v.Id)
 	directory.add_function(v.Id,"PROGRAM")
 	
 def p_PROGRAMA_A(t):
@@ -267,12 +269,19 @@ def p_TIPO_S(t):
 
 def p_MODULO(t):
     '''
-	MODULO : MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C 
+	MODULO : MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C change_scope
 	'''
 
+def p_change_scope(t):
+	'change_scope :'
+	SScope.pop()
+	
 def p_add_functionr(t):
 	'add_functionr :'
 	increment()
+	SScope.append(v.Id)
+	print("Pila de contexto")
+	print(SScope)
 	directory.add_function(v.Id,f.Type)
 
 	
@@ -325,14 +334,9 @@ def p_NOMBRAR_A(t):
 
 def p_ASIGNACION(t):
     '''
- ASIGNACION : ID addStackO ASIGNACION_A ASIGNACION_C ASIGNACION_D
+ ASIGNACION : ID addStackO ASIGNACION_A ASIGNACION_C SEMICOLON quad
     '''
 
-def p_ASIGNACION_D(t):
-	'''
-	ASIGNACION_D : SEMICOLON quad
-				| EMPTY quad
-	'''
 def p_quad(t):
 	'quad :'
 	operator=SOper.pop()
@@ -357,7 +361,7 @@ def p_quad(t):
 def p_addStackO(t):
 	'addStackO :'
 	StackO.append(t[-1])
-	SType.append(directory.return_type(number,t[-1]))
+	SType.append(directory.return_type(SScope[-1],t[-1]))
 	print(" ")
 	print("Pila de operandos:")
 	print(StackO)
@@ -455,11 +459,68 @@ def p_gotoElse(t):
 
 def p_FOR(t):
 	'''
-FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_while SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for
+FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_for SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for
 	'''
 
 def p_repeat_for(t):
 	'repeat_for :'
+	quadrup = ["GOTO"," "," ","pendiente"]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+	
+	false_for=SJump.pop()
+	SJump.append(q.contQuad-1)
+	q.quadruplesGen[false_for][3] = q.contQuad
+	
+	bool_for=SJump.pop()
+	back_for=SJump.pop()
+	q.quadruplesGen[bool_for][3] = back_for
+		
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	print("Pila de Saltos:")
+	print(SJump)
+
+def p_bool_for(t):
+	'bool_for :'
+	SJump.append(q.contQuad)
+	operator=SOper.pop()
+	if operator=='>' or operator=='<':
+		print("checamos ahora:")
+		print(StackO)
+		right_operand=StackO.pop()
+		#right_type=SType.pop()
+		left_operand=StackO.pop()
+		#left_type=SType.pop()
+		result=ListaTemps[q.contList]
+		q.contList = q.contList + 1
+		quadrup=[operator,left_operand,right_operand,result]
+		
+		StackO.append(result)
+		#falta agregar el tipo del resultado
+		
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		quadrup = ["GOTOF",result," ","saltopendiente"]
+		
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		SJump.append(q.contQuad-1)
+		print(" ")
+		print("Pila de cuadruplos:")
+		print(q.quadruplesGen)
+		print(" ")
+		print("Contador de cuadruplos:")
+		print(q.contQuad)
+		print("Pila de Saltos:")
+		print(SJump)
+
 	
 	
 def p_WHILE(t):
@@ -562,8 +623,29 @@ EXP_A : PLUS EXP
 
 def p_TERMINO(t):
 	'''
-    TERMINO : FACTOR TERMINO_A
+    TERMINO : FACTOR TERMINO_A pop_term
 	'''
+
+def p_pop_term(t):
+	'pop_term :'
+	if SOper: 
+		if SOper[-1]=="*" or SOper[-1]=="/":
+			operator=SOper.pop()
+			print("checamos en por:")
+			print(StackO)
+			right_operand=StackO.pop()
+			#right_type=SType.pop()
+			left_operand=StackO.pop()
+			#left_type=SType.pop()
+			result=ListaTemps[q.contList]
+			q.contList = q.contList + 1
+			quadrup=[operator,left_operand,right_operand,result]
+		
+			StackO.append(result)
+			#falta agregar el tipo del resultado
+		
+			q.quadruplesGen.append(quadrup)
+			q.contQuad = q.contQuad + 1
 
 def p_TERMINO_A(t):
 	'''
@@ -571,6 +653,10 @@ TERMINO_A : TIMES TERMINO
 | DIVIDE TERMINO
 | EMPTY
 	'''
+	if t[1]=="*" or t[1]=="/":
+		SOper.append(t[1])
+		print("pila de caracters")
+		print(SOper)
 
 def p_COLOR(t):
 	'''
@@ -798,9 +884,16 @@ def p_PRINT_A(t):
 
 def p_PRINT_B(t):
 	'''
- PRINT_B : CTE_STRING PRINT_C
+ PRINT_B : CTE_STRING print_string PRINT_C
  | EXPRESIONESVARIAS
 	'''
+
+def p_print_string(t):
+	'print_string :'
+	if(isinstance(t[-1], str)):
+		quadrup=["print",t[-1]," "," "]
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
 
 def p_PRINT_C(t):
 	'''
@@ -885,4 +978,6 @@ finally:
 	print(StackO)
 	print("Pila de saltos")
 	print(SJump)
+	print("Pila de contexto")
+	print(SScope)
 	print("Operation complete")
