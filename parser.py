@@ -120,7 +120,7 @@ t_EQUAL = r'\='
 
 t_ignore = " \t"
 t_CTE_CHAR = r'\'.*\''
-t_RELOP = r'<|>|==|>=|<='
+t_RELOP = r'>=|<=|==|<|>'
 
 def t_newline(t):
     r'\n+'
@@ -384,9 +384,12 @@ def p_ASIGNACION_B(t):
 
 def p_ASIGNACION_C(t):
 	'''
-   ASIGNACION_C :  EQUAL EXPRESIONESVARIAS
+   ASIGNACION_C :  EQUAL add_equal EXPRESIONESVARIAS
    | EQUAL CTE_STRING
 	'''
+
+def p_add_equal(t):
+	'add_equal :'
 	SOper.append("=")
 	print(" ")
 	print("Pila de caracteres")
@@ -411,6 +414,35 @@ def p_check_bool(t):
 		result=ListaTemps[q.contList]
 		q.contList = q.contList + 1
 		quadrup=[operator,left_operand," ",result]
+		
+		StackO.append(result)
+		#falta agregar el tipo del resultado
+		
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		quadrup = ["GOTOF",result," ","saltopendiente"]
+		
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		SJump.append(q.contQuad-1)
+		print(" ")
+		print("Pila de cuadruplos:")
+		print(q.quadruplesGen)
+		print(" ")
+		print("Contador de cuadruplos:")
+		print(q.contQuad)
+		print("Pila de Saltos:")
+		print(SJump)
+	elif operator=='>' or operator=='<' or operator=='>=' or operator=='<=':
+		right_operand=StackO.pop()
+		#right_type=SType.pop()
+		left_operand=StackO.pop()
+		#left_type=SType.pop()
+		result=ListaTemps[q.contList]
+		q.contList = q.contList + 1
+		quadrup=[operator,left_operand,right_operand,result]
 		
 		StackO.append(result)
 		#falta agregar el tipo del resultado
@@ -586,7 +618,7 @@ def p_bool_while(t):
 
 def p_EXP(t):
 	'''
-EXP : TERMINO EXP_A pop_exp
+EXP : TERMINO pop_exp EXP_A 
 	'''
 
 def p_pop_exp(t):
@@ -612,18 +644,21 @@ def p_pop_exp(t):
 	
 def p_EXP_A(t):
 	'''
-EXP_A : PLUS EXP
-| MINS EXP
+EXP_A : PLUS append_operator EXP
+| MINS append_operator EXP
 | EMPTY
 	'''
-	if t[1]=="+" or t[1]=="-":
-		SOper.append(t[1])
+
+def p_append_operator(t):
+	'append_operator :'
+	if t[-1]=="+" or t[-1]=="-":
+		SOper.append(t[-1])
 		print("pila de caracters")
 		print(SOper)
 
 def p_TERMINO(t):
 	'''
-    TERMINO : FACTOR TERMINO_A pop_term
+    TERMINO : FACTOR pop_term TERMINO_A 
 	'''
 
 def p_pop_term(t):
@@ -649,12 +684,15 @@ def p_pop_term(t):
 
 def p_TERMINO_A(t):
 	'''
-TERMINO_A : TIMES TERMINO
-| DIVIDE TERMINO
+TERMINO_A : TIMES add_operator TERMINO
+| DIVIDE add_operator TERMINO
 | EMPTY
 	'''
-	if t[1]=="*" or t[1]=="/":
-		SOper.append(t[1])
+
+def p_add_operator(t):
+	'add_operator :'
+	if t[-1]=="*" or t[-1]=="/":
+		SOper.append(t[-1])
 		print("pila de caracters")
 		print(SOper)
 
@@ -715,6 +753,8 @@ def p_VARS_CTE(t):
 		print(" ")
 		print("Pila de tipos")
 		print(SType)
+		print("Pila de caracteres")
+		print(SOper)
 	elif(isinstance(t[1],float)):
 		StackO.append(t[1])
 		SType.append("float")
@@ -724,6 +764,8 @@ def p_VARS_CTE(t):
 		print(" ")
 		print("Pila de tipos")
 		print(SType)
+		print("Pila de caracteres")
+		print(SOper)
 	elif( t[1]=='TRUE' or t[1]=='FALSE'):
 		StackO.append(t[1])
 		SType.append("bool")
@@ -733,11 +775,15 @@ def p_VARS_CTE(t):
 		print(" ")
 		print("Pila de tipos")
 		print(SType)
+		print("Pila de caracteres")
+		print(SOper)
 	else:
 		StackO.append(t[1])
 		print(" ")
 		print("Pila de operandos")
 		print(StackO)
+		print("Pila de caracteres")
+		print(SOper)
 
 def p_VARS_CTE_A(t):
 	'''
@@ -932,22 +978,19 @@ def p_EXP_RELOP(t):
 
 def p_EXP_RELOP_A(t):
 	'''
-	EXP_RELOP_A : RELOP EXP
+	EXP_RELOP_A : RELOP add_relop EXP
 	| EMPTY
 	'''
+
+def p_add_relop(t):
+	'add_relop :'
 	print("relop: ")
-	print(t[1])
-	if t[1]==">":
-		SOper.append(">")
-		print(" ")
-		print("Pila de caracteres")
-		print(SOper)
-	elif t[1]=="<":
-		SOper.append("<")
-		print(" ")
-		print("Pila de caracteres")
-		print(SOper)
-	
+	print(t[-1])
+	SOper.append(t[-1])
+	print(" ")
+	print("Pila de caracteres")
+	print(SOper)
+		
 def p_EMPTY(t):
     "EMPTY :"
     pass
