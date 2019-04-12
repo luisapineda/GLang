@@ -17,6 +17,7 @@ SType = [] #Pila de tipos
 StackO = [] #Pila de operandos
 SJump = [] #Pila de saltos
 SScope = [] #Pila de contexto
+SParam = [] #Lista de parametros
 
 #TOKENS
 reserved = {
@@ -172,14 +173,41 @@ lexer = lex.lex()
 #PARSING RULES
 def p_PROGRAMA(t):
     '''
-	PROGRAMA : PROGRAM ID addfunction OPEN_BRACKET VARS PROGRAMA_A MAIN BLOQUE CLOSE_BRACKET
+	PROGRAMA : PROGRAM ID addfunction OPEN_BRACKET VARS add_count PROGRAMA_A MAIN quad_main BLOQUE CLOSE_BRACKET
     '''
-
+def p_add_count(t):
+	'add_count :'
+	directory.add_numlocal(SScope[-1],v.Count)
+	v.Count = 0
+	
 def p_addfunction(t):
 	'addfunction :'
 	increment()
 	SScope.append(v.Id)
 	directory.add_function(v.Id,"PROGRAM")
+	
+	quadrup=["GOTO"," "," ","saltopendiente"]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+		
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	
+def p_quad_main(t):
+	'quad_main :'
+	q.quadruplesGen[0][3] = q.contQuad
+	
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	
 	
 def p_PROGRAMA_A(t):
     '''
@@ -201,6 +229,7 @@ def p_VARS_B(t):
 def p_add_variable(t):
 	'add_variable :'
 	directory.add_variable(number,v.Id,f.Type)
+	v.Count = v.Count + 1
 	
 def p_VARS_E(t):
     '''VARS_E : OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_F
@@ -269,9 +298,28 @@ def p_TIPO_S(t):
 
 def p_MODULO(t):
     '''
-	MODULO : MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C change_scope
+	MODULO : MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto
 	'''
 
+def p_release_vars(t):
+	'release_vars :'
+	#Esto deberia elimiinar la tabla de variables de la funcion que acaba de terminar
+	#directory.del_vars(SScope)
+	#Tambien se tiene que hacer lo de ENDPROC?????
+	
+def p_returnto(t):
+	'returnto :'
+	quadrup=["RETORNO"," "," "," "]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+		
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	
 def p_change_scope(t):
 	'change_scope :'
 	SScope.pop()
@@ -283,7 +331,6 @@ def p_add_functionr(t):
 	print("Pila de contexto")
 	print(SScope)
 	directory.add_function(v.Id,f.Type)
-
 	
 def p_MODULO_A(t):
     '''
@@ -302,14 +349,60 @@ def p_MODULO_B(t):
 
 def p_MODULO_C(t):
     '''
-	MODULO_C : TIPO_P ID MODULO_B CLOSE_PARENTHESIS OPEN_BRACKET VARS BLOQUE CLOSE_BRACKET
+	MODULO_C : TIPO_P ID add_variable_m MODULO_B MODULO_D 
     '''
+	
+def p_add_variable_m(t):
+	'add_variable_m :'
+	directory.add_variable(number,v.Id,f.Type)
+	SParam.append(f.Type)
+	
+def p_MODULO_D(t):
+	'''
+	MODULO_D : CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS add_count add_start BLOQUE CLOSE_BRACKET
+	| EMPTY
+	'''
+
+def p_add_start(t):
+	'add_start :'
+	directory.add_start(SScope[-1],q.contQuad)
+
+def p_param_table(t):
+	'param_table :'
+	print("Current scopeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+	print(SScope[-1])
+	directory.add_parameters(SScope[-1],SParam.copy())
+	directory.add_numparam(SScope[-1],len(SParam))
+	print("Pila de tipos de parametros******************************************")
+	print(SParam)
+	directory.print_dir()
+	
+	print("pruebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	directory.print_dir()
+	print("pruebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa22222")
+	SParam.clear()
+	directory.print_dir()
+
 	
 def p_LLAMADAMODULO(t):
     '''
-	LLAMADAMODULO : ID OPEN_PARENTHESIS LLAMADAMODULO_C
+	LLAMADAMODULO : ID era OPEN_PARENTHESIS LLAMADAMODULO_C
     '''
 
+def p_era(t):
+	'era :'
+	if directory.exist_func(t[-1]):
+		quadrup=["ERA",t[-1]," "," "]
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	
 def p_LLAMADAMODULO_A(t):
     '''
 	LLAMADAMODULO_A : COMMA LLAMADAMODULO_C
@@ -318,8 +411,14 @@ def p_LLAMADAMODULO_A(t):
 
 def p_LLAMADAMODULO_C(t):
     '''
-	LLAMADAMODULO_C : EXP LLAMADAMODULO_A CLOSE_PARENTHESIS SEMICOLON
+	LLAMADAMODULO_C : EXP LLAMADAMODULO_A LLAMADAMODULO_D
     '''
+
+def p_LLAMADAMODULO_D(t):
+	'''
+	LLAMADAMODULO_D : CLOSE_PARENTHESIS SEMICOLON
+	| EMPTY
+	'''
 
 def  p_NOMBRAR(t):
     '''
@@ -435,7 +534,7 @@ def p_check_bool(t):
 		print(q.contQuad)
 		print("Pila de Saltos:")
 		print(SJump)
-	elif operator=='>' or operator=='<' or operator=='>=' or operator=='<=':
+	elif operator=='>' or operator=='<' or operator=='>=' or operator=='<=' or operator=='and' or operator=='or':
 		right_operand=StackO.pop()
 		#right_type=SType.pop()
 		left_operand=StackO.pop()
@@ -521,7 +620,7 @@ def p_bool_for(t):
 	'bool_for :'
 	SJump.append(q.contQuad)
 	operator=SOper.pop()
-	if operator=='>' or operator=='<':
+	if operator=='>' or operator=='<' or operator=='<=' or operator=='>=':
 		print("checamos ahora:")
 		print(StackO)
 		right_operand=StackO.pop()
@@ -583,7 +682,7 @@ def p_bool_while(t):
 	'bool_while :'
 	SJump.append(q.contQuad)
 	operator=SOper.pop()
-	if operator=='>' or operator=='<':
+	if operator=='>' or operator=='<' or operator=='and' or operator=='or' or operator=='<=' or operator=='>=':
 		print("checamos ahora:")
 		print(StackO)
 		right_operand=StackO.pop()
@@ -812,8 +911,32 @@ def p_VARS_CTE_D(t):
 
 def p_INPUT(t):
 	'''
- INPUT : INPUT_KEYWORD INPUTSYMBOL ID INPUT_A SEMICOLON
+ INPUT : INPUT_KEYWORD INPUTSYMBOL ID add_inputid INPUT_A SEMICOLON quad_input
 	'''
+
+def p_add_inputid(t):
+	'add_inputid :'
+	StackO.append(t[-1])
+	print(" ")
+	print("Pila de operandos")
+	print(StackO)
+	
+	
+def p_quad_input(t):
+	'quad_input :'
+	result=StackO.pop()
+	quadrup=[">>","input"," ",result]
+	#SE METE DE VUELTA AL STACK?
+	#StackO.append(result)
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+		
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
 
 def p_INPUT_A(t):
 	'''
@@ -931,16 +1054,26 @@ def p_PRINT_A(t):
 def p_PRINT_B(t):
 	'''
  PRINT_B : CTE_STRING print_string PRINT_C
- | EXPRESIONESVARIAS
+ | EXPRESIONESVARIAS print_id
 	'''
 
 def p_print_string(t):
 	'print_string :'
+	print("hola1")
 	if(isinstance(t[-1], str)):
 		quadrup=["print",t[-1]," "," "]
 		q.quadruplesGen.append(quadrup)
 		q.contQuad = q.contQuad + 1
 
+def p_print_id(t):
+	'print_id :'
+	print("hola2")
+	print_id=StackO.pop()
+	quadrup=["print",print_id," "," "]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+
+	
 def p_PRINT_C(t):
 	'''
  PRINT_C : PLUS PRINT_B
@@ -962,13 +1095,21 @@ def p_EV_C(t):
 	'''
    EV_C : EXP_RELOP EV_B
 	'''
-
+			
 def p_EV_B(t):
 	'''
-   EV_B : AND
-   | OR
+   EV_B : AND add_ev EV_C
+   | OR add_ev EV_C
    | EMPTY
 	'''
+
+def p_add_ev(t):
+	'add_ev :'
+	SOper.append(t[-1])
+	print(" ")
+	print("Pila de caracteres")
+	print(SOper)
+	
 
 def p_EXP_RELOP(t):
 	'''
@@ -1023,4 +1164,13 @@ finally:
 	print(SJump)
 	print("Pila de contexto")
 	print(SScope)
+	print("Pila de cuadruplos")
+	print(q.quadruplesGen)
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	directory.print_dir()
+	print("Numero de vairables:")
+	print(v.Count)
+	for x in range(0,q.contQuad):
+		print(x,".- ",q.quadruplesGen[x])
 	print("Operation complete")
