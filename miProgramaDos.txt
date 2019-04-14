@@ -1,0 +1,30 @@
+program miProgramaDos {
+
+vars{
+int A,B,C,D;
+}
+
+main{ 
+
+A=B+C*D;
+
+while(A and D)
+{
+   if(A or C)
+   {
+      C=D*B;
+      if(B and C)
+      {
+         B=C+D;
+      }
+   }
+   else
+   {
+     A=B*C;
+     print("HOLA");
+   }
+}
+
+B=A*D;
+}
+}

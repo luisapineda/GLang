@@ -1,4 +1,4 @@
-program miprograma {
+program miprograma { 
 
 vars{ 
 Graph migrafica1; 
@@ -13,15 +13,14 @@ int iNumero, i, a, iNumero2, b, iNumero3;
 bool c;
 }
 
-module void hola(int ola)
+module void hola(int ola,int kih,int jon)
 {
 vars{
 int i;
 }
 
 {
-i=2;
-
+i=2*ola;
 }
 }
 
@@ -29,12 +28,13 @@ main{
 migrafica1.name("Crecimiento economico"); 
 migrafica1.nameX("Dias"); 
 migrafica1.nameY("Dinero"); 
-migrafica1.createG(0,1,3,4); 
-migrafica2.name("Animales"); 
-migrafica2.createPC(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+migrafica1.createG(0,1,3,4);
+ 
+migrafica2.name("Animales");
+migrafica2.createPC(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos"); 
+
 migrafica3.name("Animales"); 
 migrafica3.nameY("Porcentaje de animales");
-migrafica4.color(red);
 migrafica3.createGB(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
 
 migrafica4.name("Animales");
@@ -51,6 +51,7 @@ miradar.createR(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
 
 mivenn.name("Reprobados");
 mivenn.createV( 10 , 5 , 20 ;"Matematicas","Quimica");
+
 mired.name("Problema del viajero");
 mired.createN(["A", "B", "C","A"];["D", "A", "E","C"]);
 
@@ -81,7 +82,7 @@ iNumero3=10;
 }
 b =20+30*40;
 
-hola(a);
+}
+}
 
-}
-}
+

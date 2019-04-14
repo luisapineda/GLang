@@ -1,0 +1,30 @@
+program miProgramaTres{
+
+vars{
+int A,B,C,D;
+}
+
+main{
+
+A=B+C*D;
+
+while(A>D)
+{
+   if(A<C)
+   {
+      C=D*B;
+      if(B>C)
+      {
+         B=C+D;
+      }
+   }
+   else
+   {
+     A=B*C;
+     print("HOLA");
+   }
+}
+
+B=A*D;
+}
+}

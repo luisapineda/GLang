@@ -18,7 +18,9 @@ StackO = [] #Pila de operandos
 SJump = [] #Pila de saltos
 SScope = [] #Pila de contexto
 SParam = [] #Lista de parametros
-
+SResult = []
+SRed = []
+SRedD = []
 #TOKENS
 reserved = {
     'if' : 'IF',
@@ -173,8 +175,15 @@ lexer = lex.lex()
 #PARSING RULES
 def p_PROGRAMA(t):
     '''
-	PROGRAMA : PROGRAM ID addfunction OPEN_BRACKET VARS add_count PROGRAMA_A MAIN quad_main BLOQUE CLOSE_BRACKET
+	PROGRAMA : PROGRAM ID addfunction OPEN_BRACKET VARS add_count PROGRAMA_A MAIN quad_main BLOQUE CLOSE_BRACKET end_quad
     '''
+
+def p_end_quad(t):
+	'end_quad :'
+	quadrup=["END"," "," "," "]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+	
 def p_add_count(t):
 	'add_count :'
 	directory.add_numlocal(SScope[-1],v.Count)
@@ -184,6 +193,7 @@ def p_addfunction(t):
 	'addfunction :'
 	increment()
 	SScope.append(v.Id)
+	f.GlobalName=v.Id
 	directory.add_function(v.Id,"PROGRAM")
 	
 	quadrup=["GOTO"," "," ","saltopendiente"]
@@ -309,7 +319,7 @@ def p_release_vars(t):
 	
 def p_returnto(t):
 	'returnto :'
-	quadrup=["RETORNO"," "," "," "]
+	quadrup=["ENDPROC"," "," "," "]
 	q.quadruplesGen.append(quadrup)
 	q.contQuad = q.contQuad + 1
 		
@@ -386,16 +396,32 @@ def p_param_table(t):
 	
 def p_LLAMADAMODULO(t):
     '''
-	LLAMADAMODULO : ID era OPEN_PARENTHESIS LLAMADAMODULO_C
+	LLAMADAMODULO : ID era OPEN_PARENTHESIS LLAMADAMODULO_C gosub
     '''
 
+def p_gosub(t):
+	'gosub :'
+	quadrup=["GOSUB",f.CallModule," "," "]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+	
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	
 def p_era(t):
 	'era :'
 	if directory.exist_func(t[-1]):
 		quadrup=["ERA",t[-1]," "," "]
 		q.quadruplesGen.append(quadrup)
 		q.contQuad = q.contQuad + 1
-		
+	
+	f.KNumParam = 1
+	f.CallModule = t[-1]
+	print("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+	print(f.CallModule)
 	print(" ")
 	print("Pila de cuadruplos:")
 	print(q.quadruplesGen)
@@ -405,14 +431,36 @@ def p_era(t):
 	
 def p_LLAMADAMODULO_A(t):
     '''
-	LLAMADAMODULO_A : COMMA LLAMADAMODULO_C
+	LLAMADAMODULO_A : COMMA incK LLAMADAMODULO_C
 	| EMPTY
     '''
 
+def p_incK(t):
+	'incK :'
+	f.KNumParam = f.KNumParam + 1
+	
 def p_LLAMADAMODULO_C(t):
     '''
-	LLAMADAMODULO_C : EXP LLAMADAMODULO_A LLAMADAMODULO_D
+	LLAMADAMODULO_C : EXP check_types LLAMADAMODULO_A LLAMADAMODULO_D
     '''
+
+def p_check_types(t):
+	'check_types :'
+	argumentType=SType.pop()
+	argument=StackO.pop()
+
+	if directory.verify_type(f.CallModule,f.KNumParam,argumentType):
+		quadrup=["PARAMETER",argument," ","param"+str(f.KNumParam)]
+		q.quadruplesGen.append(quadrup)
+		q.contQuad = q.contQuad + 1
+		
+		print(" ")
+		print("Pila de cuadruplos:")
+		print(q.quadruplesGen)
+		print(" ")
+		print("Contador de cuadruplos:")
+		print(q.contQuad)
+	print("##########################################################################################################################################")
 
 def p_LLAMADAMODULO_D(t):
 	'''
@@ -424,12 +472,16 @@ def  p_NOMBRAR(t):
     '''
     NOMBRAR : ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS SEMICOLON
     '''
+    quadrup=[v.NameG,t[1]," ",t[5]]
+    q.quadruplesGen.append(quadrup)
+    q.contQuad = q.contQuad + 1
 
 def p_NOMBRAR_A(t):
     '''NOMBRAR_A : NAME
 | NAMEX
 | NAMEY
     '''
+    v.NameG = t[1]
 
 def p_ASIGNACION(t):
     '''
@@ -799,6 +851,11 @@ def p_COLOR(t):
 	'''
  COLOR : ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A CLOSE_PARENTHESIS SEMICOLON 
 	'''
+	print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+	print(t[1])
+	quadrup=["COLOR",t[1]," ",v.Color]
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
 
 def p_COLOR_A(t):
 	'''
@@ -809,6 +866,7 @@ def p_COLOR_A(t):
  | COLOR_GREEN
  | COLOR_ORANGE
 	'''
+	v.Color= t[1]
 
 def p_FACTOR(t):
 	'''
@@ -878,6 +936,8 @@ def p_VARS_CTE(t):
 		print(SOper)
 	else:
 		StackO.append(t[1])
+		idtype = directory.return_type(SScope[-1],t[1])
+		SType.append(idtype)
 		print(" ")
 		print("Pila de operandos")
 		print(StackO)
@@ -951,20 +1011,159 @@ def p_INPUT_B(t):
 
 def p_PLOT(t):
 	'''
- PLOT : ID POINT PLOT_B
-	'''
+ PLOT : PGraph
+	  | PPie
+	  | PGBarras
+	  | PGBarrasHor
+	  | PDona
+	  | PRadar
+	  | PVenn
+	  | PLOT_B
+    '''
 
+def p_PGraph(t):
+    '''
+ PGraph : ID POINT CREATEG OPEN_PARENTHESIS PLOT_C 
+	'''
+    SResult.reverse()
+    quadrup=["CREATEG", t[1],"",SResult.copy()]
+    SResult.clear()
+    q.quadruplesGen.append(quadrup)
+    q.contQuad = q.contQuad + 1
+	
+    print(" ")
+    print("Pila de cuadruplos:")
+    print(q.quadruplesGen)
+    print(" ")
+    print("Contador de cuadruplos:")
+    print(q.contQuad)
+
+def p_PPie(t):
+	'''
+	PPie : ID POINT CREATEPC OPEN_PARENTHESIS PLOT_E
+	'''
+	SResult.reverse()
+	quadrup=["CREATEPC", t[1],"",SResult.copy()]
+	SResult.clear()
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+
+def p_PGBarras(t):
+	'''
+	PGBarras : ID POINT CREATEGB OPEN_PARENTHESIS PLOT_E
+	'''
+	SResult.reverse()
+	quadrup=["CREATEGB", t[1],"",SResult.copy()]
+	SResult.clear()
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+
+def p_PGBarrasHor(t):
+	'''
+	PGBarrasHor : ID POINT CREATEGBH OPEN_PARENTHESIS PLOT_E
+	'''
+	SResult.reverse()
+	quadrup=["CREATEGBH", t[1],"",SResult.copy()]
+	SResult.clear()
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+
+def p_PDona(t):
+	'''
+	PDona : ID POINT CREATED OPEN_PARENTHESIS PLOT_E
+	'''
+	SResult.reverse()
+	quadrup=["CREATED", t[1],"",SResult.copy()]
+	SResult.clear()
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	
+def p_PRed(t):
+	'''
+	PRadar : ID POINT CREATER OPEN_PARENTHESIS PLOT_E
+	'''
+	SResult.reverse()
+	quadrup=["CREATER", t[1],"",SResult.copy()]
+	SResult.clear()
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+
+def p_PVenn(t):
+	'''
+	PVenn : ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
+	'''
+	SResult.append(t[5])
+	SResult.append(t[7])
+	SResult.append(t[9])
+	SResult.append(t[11])
+	SResult.append(t[13])
+	quadrup=["CREATEV", t[1],"",SResult.copy()]
+	SResult.clear()
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	
 def p_PLOT_B(t):
 	'''
- PLOT_B : CREATEG OPEN_PARENTHESIS PLOT_C
- | CREATEPC OPEN_PARENTHESIS PLOT_E
- | CREATEGB OPEN_PARENTHESIS PLOT_E
- | CREATEGBH OPEN_PARENTHESIS PLOT_E
- | CREATED OPEN_PARENTHESIS PLOT_E
- | CREATER OPEN_PARENTHESIS PLOT_E
- | CREATEN OPEN_PARENTHESIS OPEN_SQUARE_BRACKET PLOT_M
- | CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
+ PLOT_B : ID POINT CREATEN OPEN_PARENTHESIS OPEN_SQUARE_BRACKET PLOT_M
 	'''
+	SRed.reverse()
+	SRedD.reverse()
+	SResult.append(SRed)
+	SResult.append(SRedD)
+	quadrup=["CREATEN", t[1],"",SResult.copy()]
+	SResult.clear()
+	q.quadruplesGen.append(quadrup)
+	q.contQuad = q.contQuad + 1
+
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	
 
 def p_PLOT_C(t):
 	'''
@@ -976,6 +1175,10 @@ def p_PLOT_I(t):
  PLOT_I : CTE_INTEGER PLOT_D
  | CTE_FLOAT PLOT_D
 	'''
+	SResult.append(t[1])
+	print("***************************************************************************************************")
+	print(SResult)
+	
 def p_PLOT_D(t):
 	'''
  PLOT_D :  COMMA PLOT_I
@@ -992,6 +1195,9 @@ def p_PLOT_F(t):
  PLOT_F : CTE_INTEGER PLOT_J
  | CTE_FLOAT PLOT_J
 	'''
+	SResult.append(t[1])
+	print("***************************************************************************************************")
+	print(SResult)
 
 def p_PLOT_J(t):
 	'''
@@ -1008,6 +1214,10 @@ def p_PLOT_K(t):
 	'''
   PLOT_K : CTE_STRING PLOT_H
 	'''
+	SResult.append(t[1])
+	print("***************************************************************************************************")
+	print(SResult)
+	
 def p_PLOT_H(t):
 	'''
  PLOT_H : COMMA PLOT_K
@@ -1018,10 +1228,12 @@ def p_PLOT_M(t):
 	'''
  PLOT_M : PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON
 	'''
+	
 def p_PLOT_N(t):
 	'''
  PLOT_N : CTE_STRING PLOT_O
 	'''
+	SRed.append(t[1])
 
 def p_PLOT_O(t):
 	'''
@@ -1032,8 +1244,9 @@ def p_PLOT_O(t):
 def p_PLOT_P(t):
 	'''
  PLOT_P : CTE_STRING PLOT_Q
- 
 	'''
+	SRedD.append(t[1])
+
 def p_PLOT_Q(t):
 	'''
  PLOT_Q : COMMA PLOT_P
@@ -1059,7 +1272,6 @@ def p_PRINT_B(t):
 
 def p_print_string(t):
 	'print_string :'
-	print("hola1")
 	if(isinstance(t[-1], str)):
 		quadrup=["print",t[-1]," "," "]
 		q.quadruplesGen.append(quadrup)

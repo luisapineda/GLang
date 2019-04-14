@@ -1,0 +1,52 @@
+program example{
+
+vars{
+int a,b;
+float f;
+}
+
+module void uno(int a)
+{
+vars{
+int i;
+}
+
+{
+a=a+b*a;
+print("hola");
+}
+
+}
+
+module void dos(int a, int b, float g)
+{
+
+	vars{
+		int i;
+	    }
+
+{
+i=b;	
+while(i>0)
+{
+a=a+b*i+b;
+uno(i*2);
+print(a);
+}
+}
+
+}
+
+main{
+a=3;
+b=a+1;
+print("hola");
+f=3.14;
+dos(a+b*2,b,f*3);
+print("adios");
+}
+
+
+
+
+}

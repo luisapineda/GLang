@@ -1,5 +1,6 @@
+from fun import f
 dir_func = dict()
-sym_table = dict()
+
 
 def add_function(name,type):
 	dir_func[name]=dict()
@@ -24,10 +25,17 @@ def add_numlocal(namef,numlocal):
 
 def add_start(namef,numstart):
 	dir_func[namef]["start"]=numstart
-	
+
 def return_type(namef,namev):
-    type=dir_func[namef]["vars"][namev]["tipo"]
-    return type
+	if namef not in dir_func:
+		print("ERROR Module not found")
+	
+	if namev not in dir_func[namef]["vars"]:
+		type=dir_func[f.GlobalName]["vars"][namev]["tipo"]
+	else:
+		type=dir_func[namef]["vars"][namev]["tipo"]
+	
+	return type
 
 def del_vars(namef):
 	del dir_func[namef]["vars"]
@@ -39,7 +47,19 @@ def exist_func(namef):
 
 def print_dir():
 	print(dir_func)
-
 	
+def get_param_table(namef):
+	list = dir_func[namef]["parameters"]
+	return list
 
+def verify_type(namef,k,argumentType):
+	list = dir_func[namef]["parameters"]
+	print("list:")
+	print(list)
+	print("list[k-1]:")
+	print(list[k-1])
+	if list[k-1] == argumentType:
+		return True
+	else:
+		return False
 	

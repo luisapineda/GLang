@@ -1,0 +1,30 @@
+program fibonacci {
+
+vars{
+int t1,t2,next,n;
+}
+
+
+
+main{
+print("Teclea un numero positivo:");
+input>>n;
+
+print("Serie de fibonacci: ");
+print(t1);
+print(t2);
+
+next=t1+t2;
+
+while(next<=n)
+{
+print(next);
+t1=t2;
+t2=next;
+next=t1+t2;
+}
+
+}
+
+
+}

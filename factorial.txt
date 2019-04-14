@@ -1,0 +1,25 @@
+program factorial {
+
+vars{
+int i,n,factorial;
+}
+
+main{
+
+print("Teclea un numero positivo:");
+input>>n;
+
+factorial=1;
+
+for(i=1;i<=n;i=i+1;)
+{
+factorial = factorial * i;
+}
+
+print("Factorial:");
+print(n);
+print("=");
+print(factorial);
+}
+
+}
