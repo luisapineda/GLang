@@ -59,9 +59,9 @@ Rule 42    TIPO_S -> TYPE_DONUTGRAPH
 Rule 43    TIPO_S -> TYPE_NETWORK
 Rule 44    TIPO_S -> TYPE_VENN
 Rule 45    TIPO_S -> TYPE_RADARCHART
-Rule 46    MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto
+Rule 46    MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
 Rule 47    release_vars -> <empty>
-Rule 48    returnto -> <empty>
+Rule 48    endproc -> <empty>
 Rule 49    change_scope -> <empty>
 Rule 50    add_functionr -> <empty>
 Rule 51    MODULO_A -> VOID
@@ -396,6 +396,7 @@ change_scope         : 46
 check_bool           : 85
 check_types          : 67
 end_quad             : 1
+endproc              : 46
 era                  : 61
 fill_end             : 85
 gosub                : 61
@@ -412,7 +413,6 @@ quad_input           : 136
 quad_main            : 1
 release_vars         : 46
 repeat_for           : 91
-returnto             : 46
 
 Parsing method: LALR
 
@@ -485,7 +485,7 @@ state 8
     (1) PROGRAMA -> PROGRAM ID addfunction OPEN_BRACKET VARS add_count . PROGRAMA_A MAIN quad_main BLOQUE CLOSE_BRACKET end_quad
     (6) PROGRAMA_A -> . MODULO PROGRAMA_A
     (7) PROGRAMA_A -> . EMPTY
-    (46) MODULO -> . MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto
+    (46) MODULO -> . MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
     (199) EMPTY -> .
 
     MODULE          shift and go to state 13
@@ -542,7 +542,7 @@ state 11
     (6) PROGRAMA_A -> MODULO . PROGRAMA_A
     (6) PROGRAMA_A -> . MODULO PROGRAMA_A
     (7) PROGRAMA_A -> . EMPTY
-    (46) MODULO -> . MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto
+    (46) MODULO -> . MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
     (199) EMPTY -> .
 
     MODULE          shift and go to state 13
@@ -561,7 +561,7 @@ state 12
 
 state 13
 
-    (46) MODULO -> MODULE . MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto
+    (46) MODULO -> MODULE . MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
     (51) MODULO_A -> . VOID
     (52) MODULO_A -> . TIPO_P
     (34) TIPO_P -> . INT
@@ -707,7 +707,7 @@ state 30
 
 state 31
 
-    (46) MODULO -> MODULE MODULO_A . ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto
+    (46) MODULO -> MODULE MODULO_A . ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
 
     ID              shift and go to state 38
 
@@ -770,7 +770,7 @@ state 37
 
 state 38
 
-    (46) MODULO -> MODULE MODULO_A ID . add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto
+    (46) MODULO -> MODULE MODULO_A ID . add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
     (50) add_functionr -> .
 
     OPEN_PARENTHESIS reduce using rule 50 (add_functionr -> .)
@@ -872,7 +872,7 @@ state 41
 
 state 42
 
-    (46) MODULO -> MODULE MODULO_A ID add_functionr . OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto
+    (46) MODULO -> MODULE MODULO_A ID add_functionr . OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
 
     OPEN_PARENTHESIS shift and go to state 74
 
@@ -1294,7 +1294,7 @@ state 73
 
 state 74
 
-    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS . MODULO_C release_vars change_scope returnto
+    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS . MODULO_C release_vars change_scope endproc
     (55) MODULO_C -> . TIPO_P ID add_variable_m MODULO_B MODULO_D
     (34) TIPO_P -> . INT
     (35) TIPO_P -> . FLOAT
@@ -1640,7 +1640,7 @@ state 89
 
 state 90
 
-    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C . release_vars change_scope returnto
+    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C . release_vars change_scope endproc
     (47) release_vars -> .
 
     MODULE          reduce using rule 47 (release_vars -> .)
@@ -2544,7 +2544,7 @@ state 139
 
 state 140
 
-    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars . change_scope returnto
+    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars . change_scope endproc
     (49) change_scope -> .
 
     MODULE          reduce using rule 49 (change_scope -> .)
@@ -3283,13 +3283,13 @@ state 185
 
 state 186
 
-    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope . returnto
-    (48) returnto -> .
+    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope . endproc
+    (48) endproc -> .
 
-    MODULE          reduce using rule 48 (returnto -> .)
-    MAIN            reduce using rule 48 (returnto -> .)
+    MODULE          reduce using rule 48 (endproc -> .)
+    MAIN            reduce using rule 48 (endproc -> .)
 
-    returnto                       shift and go to state 243
+    endproc                        shift and go to state 243
 
 state 187
 
@@ -4303,10 +4303,10 @@ state 242
 
 state 243
 
-    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto .
+    (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc .
 
-    MODULE          reduce using rule 46 (MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto .)
-    MAIN            reduce using rule 46 (MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope returnto .)
+    MODULE          reduce using rule 46 (MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc .)
+    MAIN            reduce using rule 46 (MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc .)
 
 
 state 244

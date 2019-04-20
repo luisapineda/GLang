@@ -1,0 +1,45 @@
+program programx{
+
+vars{
+int i,j;
+}
+
+module void uno(int a)
+{
+
+vars{
+int i;
+}
+
+{
+i=a*2;
+if(i<a+4)
+{
+uno(a+1);
+}
+
+print("Hola");
+}
+
+}
+
+module int dos(int b)
+{
+
+vars{
+int i;
+}
+
+{
+b=b*i+j;
+}
+
+}
+
+main{
+i=2;
+j=-1;
+uno(j);
+print("adios");
+}
+}
