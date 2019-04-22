@@ -1,9 +1,10 @@
+#Archivo que contiene la informacion del cubo semantico
 import numpy as numpy
 
-#value -1 is an error
+#el valor -1 representa un error en el match de los tipos de datos
 semanticCube = numpy.array(
     [
-        #sum +
+        #matriz correspondiente a la operacion suma +
         [
             [0,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -18,7 +19,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #minus -
+        #matriz correspondiente a la operacion resta -
         [
             [0,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -33,7 +34,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #times *
+        #matriz correspondiente a la operacion multiplicacion *
         [
             [0,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -48,7 +49,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #division /
+        #matriz correspondiente a la operacion division /
         [
             [0,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -63,7 +64,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #bigger >
+        #matriz correspondiente a la operacion comparacion mayor que >
         [
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -79,7 +80,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 
         ],
-        #smaller <
+         #matriz correspondiente a la operacion comparacion menor que <
         [
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -94,14 +95,14 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #equal =
+        #matriz correspondiente a la operacion comparacion mayor igual =
         [
             [1,2,3,33],
             [4,5,6,66],
             [1,2,3,33],
             [4,5,6,66]
         ],
-        #not 
+        #matriz correspondiente a la negacion not 
         [
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -116,7 +117,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #and 
+        #matriz correspondiente al and
         [
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -131,7 +132,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #or 
+        #matriz correspondiente al or
         [
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -178,12 +179,22 @@ semanticCube = numpy.array(
         ]
     ]
 )
-
-#       int   float   bool   char
+#La siguiente es la estructura de nuestro cubo semántico 
+# int float bool char graph piegraph barchart horbarchart donutgraph network venn radarchart
 #int
 #float
 #bool
 #char
+#graph
+#piegraph
+#barchart
+#horbarchart
+#donutgraph
+#network
+#venn
+#radarchart
+
+#tipos de variables usados en nuestro lenguaje
 typesOfVariables = {
     "integer" : 0,
     "float" : 1,
@@ -197,9 +208,9 @@ typesOfVariables = {
     "network" : 9,
     "venn" : 10,
     "radarchart" : 11
-    #duda si aqui se agregan las func
 }
 
+#operadores usados en nuestro lenguaje
 operators = {
     "+" : 0,
     "-" : 1,
@@ -215,6 +226,7 @@ operators = {
     "!=" : 11
 }
 
+######
 codes = {
     "+" : 0,
     "-" : 1,
