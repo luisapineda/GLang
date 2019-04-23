@@ -196,20 +196,35 @@ semanticCube = numpy.array(
 
 #tipos de variables usados en nuestro lenguaje
 typesOfVariables = {
-    "integer" : 0,
+    "int" : 0,
     "float" : 1,
-    "boolean" : 2,
+    "bool" : 2,
     "char" : 3,
-    "graph" : 4,
-    "piegraph" : 5,
-    "barchart" : 6,
-    "horbarchart" : 7,
-    "donutgraph" : 8,
-    "network" : 9,
-    "venn" : 10,
-    "radarchart" : 11
+    "Graph" : 4,
+    "PieChart" : 5,
+    "BarChart" : 6,
+    "HorBarChart" : 7,
+    "DonutGraph" : 8,
+    "Network" : 9,
+    "Venn" : 10,
+    "RadarChart" : 11
 }
 
+#tipos de variables usados en nuestro lenguaje con la llave volteada
+typesOfVariablesTwisted = {
+    0 : "int",
+    1 : "float",
+    2 : "bool",
+    3 : "char",
+    4 : "Graph",
+    5 : "PieChart", 
+    6 : "BarChar",
+    7 : "HorBarChart",
+    8 : "DonutGraph",
+    9 : "Network",
+    10 : "Venn",
+    11 : "RadarChart" 
+}
 #operadores usados en nuestro lenguaje
 operators = {
     "+" : 0,

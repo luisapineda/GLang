@@ -8,9 +8,11 @@ from fun import f
 from variables import v
 from semanticCube import semanticCube
 from semanticCube import typesOfVariables
+from semanticCube import typesOfVariablesTwisted
 from semanticCube import operators
 from semanticCube import codes
 from quadruples import q
+from memory import memory
 
 ListaTemps = list(range(9000,10000))
 
@@ -1174,25 +1176,42 @@ def p_pop_exp(t):
 			left_operand=StackO.pop()
 			#Se saca el tipo del operando izquierdo de la pila de operandos
 			left_type=SType.pop()
+						
+			print('👌👌👌👌👌👌👌')
+			print("Pila caracteres:")
+			print(SOper)
+			print("Pila operandos")
+			print(StackO)
+			print(operator + str(operators[operator]))
+			print(left_type  + str(typesOfVariables[left_type]))
+			print(right_type + str(typesOfVariables[right_type]))
+			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+			if (result_type == -1):
+				raise Exception("ERROR: TYPE DISMATCH")
+			else :
+
+				#REEMPLAZAR ESTA ES UNA SIMULACION DE LOS TEMPORALES, HAY QUE REEMPLAZARLO POR MEMORIA**************************************************************************
+				#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
+				#result=ListaTemps[q.contList]
+				#q.contList = q.contList + 1
+				result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
+				
+				#Se genera el cuadruplo de la operacion + o -
+				quadrup=[codes[operator],left_operand,right_operand,result]
+				print(quadrup)
 			
-			#REEMPLAZAR ESTA ES UNA SIMULACION DE LOS TEMPORALES, HAY QUE REEMPLAZARLO POR MEMORIA**************************************************************************
-			#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
-			result=ListaTemps[q.contList]
-			q.contList = q.contList + 1
+				#Se agrega el resultado a la pila de operandos 
+				StackO.append(result)
+				
+				#FALTA AGREGAR A LA PILA DE OPERANDOES EL TIPO DEL RESULTADO*********************************************************************************************************************************
 			
-			#Se genera el cuadruplo de la operacion + o -
-			quadrup=[codes[operator],left_operand,right_operand,result]
-		
-			#Se agrega el resultado a la pila de operandos 
-			StackO.append(result)
+				#Se agrega el cuadruplo a la lista de cuadruplos
+				q.quadruplesGen.append(quadrup)		
+				
+				#Se incrementa el numero de cuadruplos
+				q.contQuad = q.contQuad + 1
 			
-			#FALTA AGREGAR A LA PILA DE OPERANDOES EL TIPO DEL RESULTADO*********************************************************************************************************************************
-		
-			#Se agrega el cuadruplo a la lista de cuadruplos
-			q.quadruplesGen.append(quadrup)		
 			
-			#Se incrementa el numero de cuadruplos
-			q.contQuad = q.contQuad + 1
 	
 def p_EXP_A(t):
 	'''
@@ -2063,3 +2082,5 @@ finally:
 	print("Lista Traducida")
 	translate.trans_quad(q.quadruplesGen,q.contQuad)
 	print("Operation complete")
+
+	#fileQuads.close() 

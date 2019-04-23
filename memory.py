@@ -4,8 +4,8 @@ class memory:
     memorySizePerOurType = 1000 #Tamaño asignado para los tipos propios de nuestro lenguaje
 
     def __init__(self):
-
-        self.memory = [None] * self.memorySizePerPrimitiveType * 12 + self.memorySizePerOurType * 25
+        size = self.memorySizePerPrimitiveType * 12 + self.memorySizePerOurType * 25
+        self.memory = [None] * size
 
         self.GInt = 0 #Global Integer
         self.GFloat = self.memorySizePerPrimitiveType #Global Float
@@ -64,131 +64,167 @@ class memory:
             count = count + 1
     
     def addAVariable(self, typeOfVariable, scope, value, size):
-        if typeOfVariable == "integer" :
+        if typeOfVariable == "int" :
             if scope == "global" :
                 self.memory[self.GInt]=value
                 self.GInt = self.GInt + size
+                return self.GInt - size
             elif scope == "local" :
                 self.memory[self.LInt]=value
                 self.LInt = self.LInt + size
+                return self.LInt - size
             elif scope == "temporal" :
                 self.memory[self.TInt]=value
                 self.TInt = self.TInt + size
+                return self.TInt - size
         elif typeOfVariable == "float" :
             if scope == "global" :
                 self.memory[self.GFloat]=value
                 self.GFloat = self.GFloat + size
+                return self.GFloat - size
             elif scope == "local" :
                 self.memory[self.LFloat]=value
                 self.LFloat = self.LFloat + size
+                return self.LFloat - size
             elif scope == "temporal" :
                 self.memory[self.TFloat]=value
                 self.TFloat = self.TFloat + size
-        elif typeOfVariable == "boolean" :
+                return self.TFloat - size
+        elif typeOfVariable == "bool" :
             if scope == "global" :
                 self.memory[self.GBool]=value
                 self.GBool = self.GBool + size
+                return self.GBool - size
             elif scope == "local" :
                 self.memory[self.LBool]=value
                 self.LBool = self.LBool + size
+                return self.LBool - size
             elif scope == "temporal" :
                 self.memory[self.TBool]=value
                 self.TBool = self.TBool + size
+                return self.TBool - size
         elif typeOfVariable == "char" :
             if scope == "global" :
                 self.memory[self.GChar]=value
                 self.GChar = self.GChar + size
+                return self.GChar - size
             elif scope == "local" :
                 self.memory[self.LChar]=value
                 self.LChar = self.LChar + size
+                return self.LChar - size
             elif scope == "temporal" :
                 self.memory[self.TChar]=value
                 self.TChar = self.TChar + size
-        elif typeOfVariable == "graph" :
+                return self.TChar - size
+        elif typeOfVariable == "Graph" :
             if scope == "global" :
                 self.memory[self.GGraph]=value
                 self.GGraph = self.GGraph + size
+                return self.GGraph - size
             elif scope == "local" :
                 self.memory[self.LGraph]=value
                 self.LGraph = self.LGraph + size
+                return self.LGraph - size
             elif scope == "temporal" :
                 self.memory[self.TGraph]=value
                 self.TGraph = self.TGraph + size
-        elif typeOfVariable == "piegraph" :
+                return self.TGraph - size
+        elif typeOfVariable == "PieChart" :
             if scope == "global" :
                 self.memory[self.GPieGraph]=value
                 self.GPieGraph = self.GPieGraph + size
+                return self.GPieGraph - size
             elif scope == "local" :
                 self.memory[self.LPieGraph]=value
                 self.LPieGraph = self.LPieGraph + size
+                return self.LPieGraph - size
             elif scope == "temporal" :
                 self.memory[self.TPieGraph]=value
                 self.TPieGraph = self.TPieGraph + size
-        elif typeOfVariable == "barchart" :
+                return self.TPieGraph - size
+        elif typeOfVariable == "BarChart" :
             if scope == "global" :
                 self.memory[self.GBarChart]=value
                 self.GBarChart = self.GBarChart + size
+                return self.GBarChart - size
             elif scope == "local" :
                 self.memory[self.LBarChart]=value
                 self.LBarChart = self.LBarChart + size
+                return self.LBarChart - size
             elif scope == "temporal" :
                 self.memory[self.TBarChart]=value
                 self.TBarChart = self.TBarChart + size
-        elif typeOfVariable == "horbarchart" :
+                return self.TBarChart - size
+        elif typeOfVariable == "HorBarChart" :
             if scope == "global" :
                 self.memory[self.GHorBarChart]=value
                 self.GHorBarChart = self.GHorBarChart + size
+                return self.GHorBarChart - size
             elif scope == "local" :
                 self.memory[self.LHorBarChart]=value
                 self.LHorBarChart = self.LHorBarChart + size
+                return self.LHorBarChart - size
             elif scope == "temporal" :
                 self.memory[self.THorBarChart]=value
                 self.THorBarChart = self.THorBarChart + size
-        elif typeOfVariable == "donutgraph" :
+                return self.THorBarChart - size
+        elif typeOfVariable == "DonutGraph" :
             if scope == "global" :
                 self.memory[self.GDonutGraph]=value
                 self.GDonutGraph = self.GDonutGraph + size
+                return self.GDonutGraph - size
             elif scope == "local" :
                 self.memory[self.LDonutGraph]=value
                 self.LDonutGraph = self.LDonutGraph + size
+                return self.LDonutGraph - size
             elif scope == "temporal" :
                 self.memory[self.TDonutGraph]=value
                 self.TDonutGraph = self.TDonutGraph + size
-        elif typeOfVariable == "network" :
+                return self.TDonutGraph - size
+        elif typeOfVariable == "Network" :
             if scope == "global" :
                 self.memory[self.GNetwork]=value
                 self.GNetwork = self.GNetwork + size
+                return self.GNetwork - size
             elif scope == "local" :
                 self.memory[self.LNetwork]=value
                 self.LNetwork = self.LNetwork + size
+                return self.LNetwork - size
             elif scope == "temporal" :
                 self.memory[self.TNetwork]=value
                 self.TNetwork = self.TNetwork + size
-        elif typeOfVariable == "venn" :
+                return self.TNetwork - size
+        elif typeOfVariable == "Venn" :
             if scope == "global" :
                 self.memory[self.GVenn]=value
                 self.GVenn = self.GVenn + size
+                return self.GVenn - size
             elif scope == "local" :
                 self.memory[self.LVenn]=value
                 self.LVenn = self.LVenn + size
+                return self.LVenn - size
             elif scope == "temporal" :
                 self.memory[self.TVenn]=value
                 self.TVenn = self.TVenn + size
-        elif typeOfVariable == "radarchart" :
+                return self.TVenn - size
+        elif typeOfVariable == "RadarChart" :
             if scope == "global" :
                 self.memory[self.GRadarChart]=value
                 self.GRadarChart = self.GRadarChart + size
+                return self.GRadarChart - size
             elif scope == "local" :
                 self.memory[self.LRadarChart]=value
                 self.LRadarChart = self.LRadarChart + size
+                return self.LRadarChart - size
             elif scope == "temporal" :
                 self.memory[self.TRadarChart]=value
                 self.TRadarChart = self.TRadarChart + size
+                return self.TRadarChart - size
         return 0
 
     def checkAvailabilityOfAType(self,typeOfVariable, size, scope):
         startOfOurType = self.memorySizePerPrimitiveType * 12
-        if typeOfVariable == "integer" :
+        if typeOfVariable == "int" :
             if scope == "global" :
                 return ((size + self.GInt) < self.memorySizePerPrimitiveType)
             elif scope == "local" :
@@ -202,7 +238,7 @@ class memory:
                 return ((size + self.LFloat) < self.memorySizePerPrimitiveType * 10)
             elif scope == "temporal" :
                 return ((size + self.TFloat) < self.memorySizePerPrimitiveType * 6)
-        elif typeOfVariable == "boolean" :
+        elif typeOfVariable == "bool" :
             if scope == "global" :
                 return ((size + self.GBool) < self.memorySizePerPrimitiveType * 3)
             elif scope == "local" :
@@ -272,11 +308,11 @@ class memory:
                 return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 24)
             elif scope == "temporal" :
                 return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 16)
-        return 1
+        return -999999999999
     
     
     def save(self, value, address):
         self.memory[address] = value
 
 memory = memory()
-memory.printMemory()
+#memory.printMemory()

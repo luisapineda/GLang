@@ -1,0 +1,89 @@
+program miprograma { 
+
+vars{ 
+Graph migrafica1; 
+PieChart migrafica2;
+BarChart migrafica3;
+HorBarChart migrafica4;
+DonutGraph migrafica5;
+Network mired;
+Venn mivenn;
+RadarChart miradar;
+int iNumero, i, a, iNumero2, b, iNumero3;
+bool c;
+}
+
+module void hola(int ola,int kih,int jon)
+{
+vars{
+int i;
+}
+
+{
+i=2*ola;
+}
+}
+
+main{ 
+migrafica1.name("Crecimiento economico"); 
+migrafica1.nameX("Dias"); 
+migrafica1.nameY("Dinero"); 
+migrafica1.createG(0,1,3,4);
+ 
+migrafica2.name("Animales");
+migrafica2.createPC(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos"); 
+
+migrafica3.name("Animales"); 
+migrafica3.nameY("Porcentaje de animales");
+migrafica3.createGB(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+
+migrafica4.name("Animales");
+migrafica4.nameX("Porcentaje de animales");
+migrafica4.color(red);
+migrafica4.createGBH(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+
+migrafica5.name("Calificaciones");
+migrafica5.createD(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+
+miradar.name("Animales");
+miradar.color(red);
+miradar.createR(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+
+mivenn.name("Reprobados");
+mivenn.createV( 10 , 5 , 20 ;"Matematicas","Quimica");
+
+mired.name("Problema del viajero");
+mired.createN(["A", "B", "C","A"];["D", "A", "E","C"]);
+
+print("Ingresa un numero");
+
+input>>iNumero;
+
+a = 20;
+c = TRUE;
+a = a + c;
+if (not c) 
+{
+iNumero=10;
+			
+} 
+else
+{
+iNumero=10;
+}
+
+while(a>iNumero2)
+{
+iNumero2=iNumero+1;
+}
+
+for (i=0; i<5 ; i=i+1;)
+{
+iNumero3=10;
+}
+b =20+30*40;
+
+}
+}
+
+

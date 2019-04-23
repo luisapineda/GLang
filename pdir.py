@@ -1,6 +1,6 @@
 from fun import f
+from memory import memory
 dir_func = dict()
-
 
 def add_function(name,type):
 	dir_func[name]=dict()
@@ -11,6 +11,14 @@ def add_function(name,type):
 def add_variable(namef,namev,type):
 	dir_func[namef]["vars"][namev] = dict()
 	dir_func[namef]["vars"][namev]["tipo"] = type
+
+	if namef == f.GlobalName :
+		dir_func[namef]["vars"][namev]["scope"] = "global"
+	else:
+		dir_func[namef]["vars"][namev]["scope"] = "local"
+
+	scope = dir_func[namef]["vars"][namev]["scope"] 
+	dir_func[namef]["vars"][namev]["dir"] = memory.addAVariable(type,scope,0, 1) #cambiar el size para acoplarlo a vectores y a matrices
 	print(dir_func)
 
 def add_parameters(namef,listtypes):
@@ -28,7 +36,7 @@ def add_start(namef,numstart):
 
 def return_type(namef,namev):
 	if namef not in dir_func:
-		print("ERROR Module not found")
+		raise Exception("ERROR Module not found")
 	
 	if namev not in dir_func[namef]["vars"]:
 		type=dir_func[f.GlobalName]["vars"][namev]["tipo"]
