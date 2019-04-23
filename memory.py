@@ -4,7 +4,7 @@ class memory:
     memorySizePerOurType = 1000 #Tamaño asignado para los tipos propios de nuestro lenguaje
 
     def __init__(self):
-        size = self.memorySizePerPrimitiveType * 12 + self.memorySizePerOurType * 25
+        size = self.memorySizePerPrimitiveType * 16 + self.memorySizePerOurType * 33
         self.memory = [None] * size
 
         self.GInt = 0 #Global Integer
@@ -22,8 +22,12 @@ class memory:
         self.LBool = self.memorySizePerPrimitiveType * 10 #Local Boolean
         self.LChar = self.memorySizePerPrimitiveType * 11 #Local Char
 
+        self.CInt = self.memorySizePerPrimitiveType * 12 #Constant Integer
+        self.CFloat = self.memorySizePerPrimitiveType * 13 #Constant Float
+        self.CBool = self.memorySizePerPrimitiveType * 14 #Constant Boolean
+        self.CChar = self.memorySizePerPrimitiveType * 15 #Constant Char
         #Globales de nuestros tipos
-        self.GGraph = self.memorySizePerPrimitiveType * 12
+        self.GGraph = self.memorySizePerPrimitiveType * 16
         self.GPieGraph = self.GGraph + self.memorySizePerOurType
         self.GBarChart = self.GGraph + self.memorySizePerOurType * 2
         self.GHorBarChart = self.GGraph + self.memorySizePerOurType * 3
@@ -52,6 +56,16 @@ class memory:
         self.LVenn = self.GGraph + self.memorySizePerOurType * 22
         self.LRadarChart = self.GGraph + self.memorySizePerOurType * 23
 
+        #Constantes de nuestros tipos
+        self.CGraph = self.GGraph + self.memorySizePerOurType * 24
+        self.CPieGraph = self.GGraph + self.memorySizePerOurType * 25
+        self.CBarChart = self.GGraph + self.memorySizePerOurType * 26
+        self.CHorBarChart = self.GGraph + self.memorySizePerOurType * 27
+        self.CDonutGraph = self.GGraph + self.memorySizePerOurType * 28
+        self.CNetwork = self.GGraph + self.memorySizePerOurType * 29
+        self.CVenn = self.GGraph + self.memorySizePerOurType * 30
+        self.CRadarChart = self.GGraph + self.memorySizePerOurType * 31
+        
     def accessAValue(self, address):
         return self.memory[address]
 
@@ -77,6 +91,10 @@ class memory:
                 self.memory[self.TInt]=value
                 self.TInt = self.TInt + size
                 return self.TInt - size
+            elif scope == "constant" :
+                self.memory[self.CInt]=value
+                self.CInt = self.CInt + size
+                return self.CInt - size
         elif typeOfVariable == "float" :
             if scope == "global" :
                 self.memory[self.GFloat]=value
@@ -90,6 +108,10 @@ class memory:
                 self.memory[self.TFloat]=value
                 self.TFloat = self.TFloat + size
                 return self.TFloat - size
+            elif scope == "constant" :
+                self.memory[self.CFloat]=value
+                self.CFloat = self.CFloat + size
+                return self.CFloat - size
         elif typeOfVariable == "bool" :
             if scope == "global" :
                 self.memory[self.GBool]=value
@@ -103,6 +125,10 @@ class memory:
                 self.memory[self.TBool]=value
                 self.TBool = self.TBool + size
                 return self.TBool - size
+            elif scope == "constant" :
+                self.memory[self.CBool]=value
+                self.CBool = self.CBool + size
+                return self.CBool - size
         elif typeOfVariable == "char" :
             if scope == "global" :
                 self.memory[self.GChar]=value
@@ -116,6 +142,10 @@ class memory:
                 self.memory[self.TChar]=value
                 self.TChar = self.TChar + size
                 return self.TChar - size
+            elif scope == "constant" :
+                self.memory[self.CChar]=value
+                self.CChar = self.CChar + size
+                return self.CChar - size
         elif typeOfVariable == "Graph" :
             if scope == "global" :
                 self.memory[self.GGraph]=value
@@ -129,6 +159,10 @@ class memory:
                 self.memory[self.TGraph]=value
                 self.TGraph = self.TGraph + size
                 return self.TGraph - size
+            elif scope == "constant" :
+                self.memory[self.CGraph]=value
+                self.CGraph = self.CGraph + size
+                return self.CGraph - size
         elif typeOfVariable == "PieChart" :
             if scope == "global" :
                 self.memory[self.GPieGraph]=value
@@ -142,6 +176,10 @@ class memory:
                 self.memory[self.TPieGraph]=value
                 self.TPieGraph = self.TPieGraph + size
                 return self.TPieGraph - size
+            elif scope == "constant" :
+                self.memory[self.CPieGraph]=value
+                self.CPieGraph = self.CPieGraph + size
+                return self.CPieGraph - size
         elif typeOfVariable == "BarChart" :
             if scope == "global" :
                 self.memory[self.GBarChart]=value
@@ -155,6 +193,10 @@ class memory:
                 self.memory[self.TBarChart]=value
                 self.TBarChart = self.TBarChart + size
                 return self.TBarChart - size
+            elif scope == "constant" :
+                self.memory[self.CBarChart]=value
+                self.CBarChart = self.CBarChart + size
+                return self.CBarChart - size
         elif typeOfVariable == "HorBarChart" :
             if scope == "global" :
                 self.memory[self.GHorBarChart]=value
@@ -168,6 +210,10 @@ class memory:
                 self.memory[self.THorBarChart]=value
                 self.THorBarChart = self.THorBarChart + size
                 return self.THorBarChart - size
+            elif scope == "constant" :
+                self.memory[self.CHorBarChart]=value
+                self.CHorBarChart = self.CHorBarChart + size
+                return self.CHorBarChart - size
         elif typeOfVariable == "DonutGraph" :
             if scope == "global" :
                 self.memory[self.GDonutGraph]=value
@@ -181,6 +227,10 @@ class memory:
                 self.memory[self.TDonutGraph]=value
                 self.TDonutGraph = self.TDonutGraph + size
                 return self.TDonutGraph - size
+            elif scope == "constant" :
+                self.memory[self.CDonutGraph]=value
+                self.CDonutGraph = self.CDonutGraph + size
+                return self.CDonutGraph - size
         elif typeOfVariable == "Network" :
             if scope == "global" :
                 self.memory[self.GNetwork]=value
@@ -194,6 +244,10 @@ class memory:
                 self.memory[self.TNetwork]=value
                 self.TNetwork = self.TNetwork + size
                 return self.TNetwork - size
+            elif scope == "constant" :
+                self.memory[self.CNetwork]=value
+                self.CNetwork = self.CNetwork + size
+                return self.CNetwork - size
         elif typeOfVariable == "Venn" :
             if scope == "global" :
                 self.memory[self.GVenn]=value
@@ -207,6 +261,10 @@ class memory:
                 self.memory[self.TVenn]=value
                 self.TVenn = self.TVenn + size
                 return self.TVenn - size
+            elif scope == "constant" :
+                self.memory[self.CVenn]=value
+                self.CVenn = self.CVenn + size
+                return self.CVenn - size
         elif typeOfVariable == "RadarChart" :
             if scope == "global" :
                 self.memory[self.GRadarChart]=value
@@ -220,10 +278,14 @@ class memory:
                 self.memory[self.TRadarChart]=value
                 self.TRadarChart = self.TRadarChart + size
                 return self.TRadarChart - size
-        return 0
+            elif scope == "constant" :
+                self.memory[self.CRadarChart]=value
+                self.CRadarChart = self.CRadarChart + size
+                return self.CRadarChart - size
+        return -999999999999
 
     def checkAvailabilityOfAType(self,typeOfVariable, size, scope):
-        startOfOurType = self.memorySizePerPrimitiveType * 12
+        startOfOurType = self.memorySizePerPrimitiveType * 16
         if typeOfVariable == "int" :
             if scope == "global" :
                 return ((size + self.GInt) < self.memorySizePerPrimitiveType)
@@ -231,6 +293,8 @@ class memory:
                 return ((size + self.LInt) < self.memorySizePerPrimitiveType * 9)
             elif scope == "temporal" :
                 return ((size + self.TInt) < self.memorySizePerPrimitiveType * 5)
+            elif scope == "constant" :
+                return ((size + self.CInt) < self.memorySizePerPrimitiveType * 13)   
         elif typeOfVariable == "float" :
             if scope == "global" :
                 return ((size + self.GFloat) < self.memorySizePerPrimitiveType * 2)
@@ -238,6 +302,8 @@ class memory:
                 return ((size + self.LFloat) < self.memorySizePerPrimitiveType * 10)
             elif scope == "temporal" :
                 return ((size + self.TFloat) < self.memorySizePerPrimitiveType * 6)
+            elif scope == "constant" :
+                return ((size + self.CFloat) < self.memorySizePerPrimitiveType * 14)
         elif typeOfVariable == "bool" :
             if scope == "global" :
                 return ((size + self.GBool) < self.memorySizePerPrimitiveType * 3)
@@ -245,62 +311,80 @@ class memory:
                 return ((size + self.LBool) < self.memorySizePerPrimitiveType * 11)
             elif scope == "temporal" :
                 return ((size + self.TBool) < self.memorySizePerPrimitiveType * 7)
+            elif scope == "constant" :
+                return ((size + self.CBool) < self.memorySizePerPrimitiveType * 15)
         elif typeOfVariable == "char" :
             if scope == "global" :
                 return ((size + self.GChar) < self.memorySizePerPrimitiveType * 4)
             elif scope == "local" :
-                return ((size + self.LChar) < startOfOurType)
+                return ((size + self.LChar) < self.memorySizePerPrimitiveType * 12)
             elif scope == "temporal" :
-                return ((size + self.TChar) < self.memorySizePerOurType * 8)
+                return ((size + self.TChar) < self.memorySizePerPrimitiveType * 8)
+            elif scope == "constant" :
+                return ((size + self.TChar) < startOfOurType)
         elif typeOfVariable == "graph" :
             if scope == "global" :
-                return ((size + self.GChar) < startOfOurType + self.memorySizePerOurType)
+                return ((size + self.GGraph) < startOfOurType + self.memorySizePerOurType)
             elif scope == "local" :
-                return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 17)
+                return ((size + self.LGraph) < startOfOurType + self.memorySizePerOurType * 17)
             elif scope == "temporal" :
-                return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 9)
+                return ((size + self.TGraph) < startOfOurType + self.memorySizePerOurType * 9)
+            elif scope == "constant" :
+                return ((size + self.CGraph) < startOfOurType + self.memorySizePerOurType * 25)
         elif typeOfVariable == "piegraph" :
             if scope == "global" :
-                return ((size + self.GChar) < startOfOurType + self.memorySizePerOurType * 2)
+                return ((size + self.GPieGraph) < startOfOurType + self.memorySizePerOurType * 2)
             elif scope == "local" :
-                return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 18)
+                return ((size + self.LPieGraph) < startOfOurType + self.memorySizePerOurType * 18)
             elif scope == "temporal" :
-                return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 10)
+                return ((size + self.TPieGraph) < startOfOurType + self.memorySizePerOurType * 10)
+            elif scope == "constant" :
+                return ((size + self.CPieGraph) < startOfOurType + self.memorySizePerOurType * 26)
         elif typeOfVariable == "barchart" :
             if scope == "global" :
-                return ((size + self.GChar) < startOfOurType + self.memorySizePerOurType * 3)
+                return ((size + self.GBarChart) < startOfOurType + self.memorySizePerOurType * 3)
             elif scope == "local" :
-                return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 19)
+                return ((size + self.LBarChart) < startOfOurType + self.memorySizePerOurType * 19)
             elif scope == "temporal" :
-                return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 11)
+                return ((size + self.TBarChart) < startOfOurType + self.memorySizePerOurType * 11)
+            elif scope == "constant" :
+                return ((size + self.CBarChart) < startOfOurType + self.memorySizePerOurType * 27)
         elif typeOfVariable == "horbarchart" :
             if scope == "global" :
-                return ((size + self.GChar) < startOfOurType + self.memorySizePerOurType * 4)
+                return ((size + self.GHorBarChart) < startOfOurType + self.memorySizePerOurType * 4)
             elif scope == "local" :
-                return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 20)
+                return ((size + self.LHorBarChart) < startOfOurType + self.memorySizePerOurType * 20)
             elif scope == "temporal" :
-                return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 12)
+                return ((size + self.THorBarChart) < startOfOurType + self.memorySizePerOurType * 12)
+            elif scope == "constant" :
+                return ((size + self.CHorBarChart) < startOfOurType + self.memorySizePerOurType * 28)
         elif typeOfVariable == "donutgraph" :
             if scope == "global" :
-                return ((size + self.GChar) < startOfOurType + self.memorySizePerOurType * 5)
+                return ((size + self.GDonutGraph) < startOfOurType + self.memorySizePerOurType * 5)
             elif scope == "local" :
-                return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 21)
+                return ((size + self.LDonutGraph) < startOfOurType + self.memorySizePerOurType * 21)
             elif scope == "temporal" :
-                return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 13)
+                return ((size + self.TDonutGraph) < startOfOurType + self.memorySizePerOurType * 13)
+            elif scope == "constant" :
+                return ((size + self.CDonutGraph) < startOfOurType + self.memorySizePerOurType * 29)
         elif typeOfVariable == "network" :
             if scope == "global" :
-                return ((size + self.GChar) < startOfOurType + self.memorySizePerOurType * 6)
+                return ((size + self.GNetwork) < startOfOurType + self.memorySizePerOurType * 6)
             elif scope == "local" :
-                return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 22)
+                return ((size + self.LNetwork) < startOfOurType + self.memorySizePerOurType * 22)
             elif scope == "temporal" :
-                return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 14)
+                return ((size + self.TNetwork) < startOfOurType + self.memorySizePerOurType * 14)
+            elif scope == "constant" :
+                return ((size + self.CNetwork) < startOfOurType + self.memorySizePerOurType * 30)
         elif typeOfVariable == "venn" :
             if scope == "global" :
-                return ((size + self.GChar) < startOfOurType + self.memorySizePerOurType * 7)
+                return ((size + self.GVenn) < startOfOurType + self.memorySizePerOurType * 7)
             elif scope == "local" :
-                return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 23)
+                return ((size + self.LVenn) < startOfOurType + self.memorySizePerOurType * 23)
             elif scope == "temporal" :
-                return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 15)
+                return ((size + self.TVenn) < startOfOurType + self.memorySizePerOurType * 15)
+            elif scope == "constant" :
+                return ((size + self.CVenn) < startOfOurType + self.memorySizePerOurType * 31)
         elif typeOfVariable == "radarchart" :
             if scope == "global" :
                 return ((size + self.GChar) < startOfOurType + self.memorySizePerOurType * 8)
@@ -308,6 +392,8 @@ class memory:
                 return ((size + self.LChar) < startOfOurType + self.memorySizePerOurType * 24)
             elif scope == "temporal" :
                 return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 16)
+            elif scope == "constant" :
+                return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 32)
         return -999999999999
     
     
@@ -315,4 +401,5 @@ class memory:
         self.memory[address] = value
 
 memory = memory()
-#memory.printMemory()
+memory.save(2,11)
+memory.printMemory()
