@@ -1079,7 +1079,7 @@ def p_bool_while(t):
 	#Se agrega el numero de cuadruplo actual a la lista de saltos
 	#Para que cuando termine esta iteracion del while se regrese a la expresion booleana para volverla a evaluar
 	SJump.append(q.contQuad)
-	
+	##############ESTE HAY QUE MODIFICAR PARA LOS SIMBOLOS < > or etc.....##########################
 	#Se saca el operando de la pila de operadores y se mete en operator
 	operator=SOper.pop()
 	
@@ -1194,6 +1194,8 @@ def p_pop_exp(t):
 				#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
 				#result=ListaTemps[q.contList]
 				#q.contList = q.contList + 1
+				if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+					raise Exception("ERROR: Not enough space in memory")
 				result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
 				
 				#Se genera el cuadruplo de la operacion + o -
@@ -1246,7 +1248,7 @@ def p_pop_term(t):
 		if SOper[-1]=="*" or SOper[-1]=="/":
 			#Se saca el operador de la pila de operadores y se mete en operator
 			operator=SOper.pop()
-			
+			#################ESTE HAY QUE MODIFICARLO EN LA MULTIPLICACION#####################
 			#Borrar
 			print("checamos en por:")
 			print(StackO)
