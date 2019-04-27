@@ -277,5 +277,6 @@ codes = {
 	"CREATEN" : 31,
 	"PARAMETER" : 32,
 	"GOSUB" : 33,
-	"ERA" : 34
+	"ERA" : 34,
+    "input" : 35
 }

@@ -19,6 +19,7 @@ def add_variable(namef,namev,type):
 
 	scope = dir_func[namef]["vars"][namev]["scope"] 
 	dir_func[namef]["vars"][namev]["dir"] = memory.addAVariable(type,scope,0, 1) #cambiar el size para acoplarlo a vectores y a matrices
+	memory.save(namev,dir_func[namef]["vars"][namev]["dir"])
 	print(dir_func)
 
 def add_parameters(namef,listtypes):
@@ -44,6 +45,11 @@ def return_type(namef,namev):
 		type=dir_func[namef]["vars"][namev]["tipo"]
 	
 	return type
+
+def return_address(namef,namev):
+	address = dir_func[namef]["vars"][namev]["dir"]
+	
+	return address
 
 def del_vars(namef):
 	del dir_func[namef]["vars"]

@@ -614,19 +614,25 @@ def p_LLAMADAMODULO_D(t):
 
 #Regla para darle un nombre a una grafica, a su eje X o a su eje Y
 def  p_NOMBRAR(t):
-    '''
-    NOMBRAR : ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS SEMICOLON
-    '''
+	'''
+	NOMBRAR : ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS SEMICOLON
+	'''
 	#Se genera el cuadruplo para nombrar a la grafica o a sus ejes
 	#v.NameG, de la clase variables, guarda que se quiere hacer, si nombrar a la grafica:Name, nombrar al eje x:NameX o nombrar al eje y:NameY
 	#t[1] nos da el nombre de la variable que representa la grafica(ID, por ser la posicion 1)
 	#t[5] nos da el string como se desea que sea nombrado(CTE_STRING por ser la posicion 5)
-    quadrup=[codes[v.NameG],t[1],None,t[5]]
+	typegraph = directory.return_address(SScope[-1],t[1])
+
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',t[5],1)
+	quadrup=[codes[v.NameG],typegraph,None,resultaddress]
 	
 	#Se agrega el cuadruplo a la lista de cuadruplos
-    q.quadruplesGen.append(quadrup)
+	q.quadruplesGen.append(quadrup)
 	#Se incrementa el contador de cuadruplos
-    q.contQuad = q.contQuad + 1
+	q.contQuad = q.contQuad + 1
 
 def p_NOMBRAR_A(t):
     '''NOMBRAR_A : NAME
@@ -689,9 +695,9 @@ def p_quad(t):
 #Se agrega el ID a la pila de operandos	
 def p_addStackO(t):
 	'addStackO :'
-	#Se agrega el ID a la pila de operandos
+	#Se agrega la memoria del a la pila de operandos
 	#t[-1] nos da la ultima palabra que fue procesada
-	StackO.append(t[-1])
+	StackO.append(directory.return_address(SScope[-1],t[-1]))
 	
 	#Se agrega el tipo de operando a la pila de tipos
 	#return_type, de pdir.py, nos da el tipo del ID
@@ -776,7 +782,7 @@ def p_check_bool(t):
 		if not memory.checkAvailabilityOfAType(left_type,1,"temporal"):
 			raise Exception("ERROR: Not enough space in memory")
 			
-		result = memory.addAVariable(left_type,"temporal",0, 1)
+		result = memory.addAVariable(left_type,"temporal",'None', 1)
 		
 		#Se genera el cuadruplo de not, codes va a regresar el codigo de operacion de not, se pone el operando izquierdo que trabaja con not
 		#Se deja en None donde deberia de ir el operando derecho y se deja el resultado en la cuarta posicion del cuadruplo
@@ -847,7 +853,7 @@ def p_check_bool(t):
 		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 			raise Exception("ERROR: Not enough space in memory")
 			
-		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
+		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
 		
 		
 		#Se hace el cuadruplo del respectivo operador
@@ -1016,7 +1022,7 @@ def p_bool_for(t):
 		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 			raise Exception("ERROR: Not enough space in memory")
 			
-		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
+		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
 		
 		
 		#Se genera el cuadruplo de la expresion booleana del for
@@ -1135,7 +1141,7 @@ def p_bool_while(t):
 		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 			raise Exception("ERROR: Not enough space in memory")
 			
-		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
+		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
 		#Se genera el cuadruplo de la expresion booleana del while
 		quadrup=[codes[operator],left_operand,right_operand,result]
 		
@@ -1219,7 +1225,7 @@ def p_pop_exp(t):
 			else :
 				if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 					raise Exception("ERROR: Not enough space in memory")
-				result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
+				result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
 				
 				#Se genera el cuadruplo de la operacion + o -
 				quadrup=[codes[operator],left_operand,right_operand,result]
@@ -1296,7 +1302,7 @@ def p_pop_term(t):
 			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 					raise Exception("ERROR: Not enough space in memory")
 			
-			result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
+			result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
 			#Se genera el cuadruplo de la operacion * o /
 			quadrup=[codes[operator],left_operand,right_operand,result]
 		
@@ -1340,7 +1346,14 @@ def p_COLOR(t):
 	#Generacion del cuadruplo del color de la informacion de la grafica
 	#t[1] es el nombre de la grafica a la que se le va a aplicar este color
 	#v.Color, de la clase variables, guarda el color de la grafica
-	quadrup=[codes["COLOR"],t[1],None,v.Color]
+	typegraph = directory.return_address(SScope[-1],t[1])
+
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',v.Color,1)
+
+	quadrup=[codes["COLOR"],typegraph,None,resultaddress]
 	
 	#Se agrega el cuadruplo a la lista de cuadruplos
 	q.quadruplesGen.append(quadrup)
@@ -1393,19 +1406,24 @@ def p_VARS_CTE(t):
  | ID VARS_CTE_A 
 	'''
 	#Borrar
-	print("Adentro:")
+	print("Adentro:") 
 	print(t[1])
 	#Borrar
 	
 	#Si t[1] es entero
 	if ( isinstance(t[1],int)):
-	
-		#Se mete t[1] a la pila de operandos
-		StackO.append(t[1])
+		
+		if not memory.checkAvailabilityOfAType('int',1,'constant'):
+			raise Exception("ERROR: Not enough space in memory")
+			
+		result = memory.addAVariable('int','constant',t[1], 1)
+
+		#Se mete result a la pila de operandos
+		StackO.append(result)
 		
 		#Se mete su tipo a la pila de tipos
 		SType.append("int")
-		
+
 		#Borrar
 		print(" ")
 		print("Pila de operandos")
@@ -1425,6 +1443,17 @@ def p_VARS_CTE(t):
 		#Se mete su tipo a la pila de tipos
 		SType.append("float")
 		
+		if not memory.checkAvailabilityOfAType('float',1,'constant'):
+			raise Exception("ERROR: Not enough space in memory")
+			
+		result = memory.addAVariable('float','constant',t[1], 1)
+
+		#Se mete result a la pila de operandos
+		StackO.append(result)
+		
+		#Se mete su tipo a la pila de tipos
+		SType.append("float")
+		
 		#Borrar
 		print(" ")
 		print("Pila de operandos")
@@ -1438,12 +1467,18 @@ def p_VARS_CTE(t):
 		
 	#Si t[1] es TRUE o FALSE
 	elif( t[1]=='TRUE' or t[1]=='FALSE'):
-		#Se mete t[1] a la pila de operandos
-		StackO.append(t[1])
+
+		if not memory.checkAvailabilityOfAType('bool',1,'constant'):
+			raise Exception("ERROR: Not enough space in memory")
+			
+		result = memory.addAVariable('bool','constant',t[1], 1)
+
+		#Se mete result a la pila de operandos
+		StackO.append(result)
 		
 		#Se mete su tipo a la pila de tipos
 		SType.append("bool")
-		
+
 		#Borrar
 		print(" ")
 		print("Pila de operandos")
@@ -1457,8 +1492,8 @@ def p_VARS_CTE(t):
 		
 	#Si es un ID
 	else:
-		#Se mete t[1] a la pila de operandos
-		StackO.append(t[1])
+		#Se mete la direccion de memoria de t[1] a la pila de operandos
+		StackO.append(directory.return_address(SScope[-1],t[1]))
 		
 		#Se checa el tipo del id con la funcion return_type de pdir, se envia el contexto acutal y el nombre del id para buscarlo en su tabla de variables
 		idtype = directory.return_type(SScope[-1],t[1])
@@ -1509,7 +1544,7 @@ def p_INPUT(t):
 #Se mete en la pila de operandos el ID que va a recibir lo tecleado por el usuario
 def p_add_inputid(t):
 	'add_inputid :'
-	StackO.append(t[-1])
+	StackO.append(directory.return_address(SScope[-1],t[-1]))
 	
 	#Borrar
 	print(" ")
@@ -1525,7 +1560,8 @@ def p_quad_input(t):
 	result=StackO.pop()
 	
 	#Cuadruplo del input
-	quadrup=[codes[">>"],"input",None,result]
+	#35 es el codigo de operacion de input
+	quadrup=[codes[">>"],35,None,result]
 	
 	#SE METE DE VUELTA AL STACK?********************************************************************************************************************************************
 	#StackO.append(result)
@@ -1574,34 +1610,40 @@ def p_PLOT(t):
 #Grafica para funciones lineales,cuadraticas,cubicas,etc
 #Tipo Graph
 def p_PGraph(t):
-    '''
- PGraph : ID POINT CREATEG OPEN_PARENTHESIS PLOT_C 
+	'''
+ 	PGraph : ID POINT CREATEG OPEN_PARENTHESIS PLOT_C 
 	'''
 	#SResult es una lista para meter los parametros de la grafica
 	#Se tiene que dar reversa a esta lista por la manera en que fueron ingresados los datos
-    SResult.reverse()
+	SResult.reverse()
+	
+	typegraph = directory.return_address(SScope[-1],t[1])
 	
 	#Creacion del cuadruplo de tipo Graph
 	#t[1] contiene el nombre de la grafica tipo Graph
 	#Se tiene que hacer una copia de SResult para poder agregar el resultado al cuadruplo
-    quadrup=[codes["CREATEG"], t[1],None,SResult.copy()]
-	
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',SResult.copy(),1)
+	quadrup=[codes["CREATEG"], typegraph ,None,resultaddress]
+
 	#Se limpia SResult para poder agregar parametros para las otras graficas
-    SResult.clear()
-	
+	SResult.clear()
+
 	#Se agrega el cuadruplo a la lista de cuadruplos
-    q.quadruplesGen.append(quadrup)
-	
+	q.quadruplesGen.append(quadrup)
+
 	#Se incrementa el contador de cuadruplos
-    q.contQuad = q.contQuad + 1
-	
+	q.contQuad = q.contQuad + 1
+
 	#Borrar
-    print(" ")
-    print("Pila de cuadruplos:")
-    print(q.quadruplesGen)
-    print(" ")
-    print("Contador de cuadruplos:")
-    print(q.contQuad)
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
 	#Borrar
 
 #Grafica tipo Pie
@@ -1613,10 +1655,17 @@ def p_PPie(t):
 	#Se tiene que dar reversa a esta lista por la manera en que fueron ingresados los datos
 	SResult.reverse()
 	
+	typegraph = directory.return_address(SScope[-1],t[1])
+
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',SResult.copy(),1)
+
 	#Creacion del cuadruplo de tipo Pie
 	#t[1] contiene el nombre de la grafica tipo Pie
 	#Se tiene que hacer una copia de SResult para poder agregar el resultado al cuadruplo
-	quadrup=[codes["CREATEPC"], t[1],None,SResult.copy()]
+	quadrup=[codes["CREATEPC"], typegraph,None,resultaddress]
 	
 	#Se limpia SResult para poder agregar parametros para las otras graficas
 	SResult.clear()
@@ -1645,10 +1694,17 @@ def p_PGBarras(t):
 	#Se tiene que dar reversa a esta lista por la manera en que fueron ingresados los datos
 	SResult.reverse()
 	
+	typegraph = directory.return_address(SScope[-1],t[1])
+
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',SResult.copy(),1)
+
 	#Creacion del cuadruplo de tipo grafica de barras
 	#t[1] contiene el nombre de la grafica tipo grafica de barrar
 	#Se tiene que hacer una copia de SResult para poder agregar el resultado al cuadruplo
-	quadrup=[codes["CREATEGB"], t[1],None,SResult.copy()]
+	quadrup=[codes["CREATEGB"], typegraph,None,resultaddress]
 	
 	#Se limpia SResult para poder agregar parametros para las otras graficas
 	SResult.clear()
@@ -1677,10 +1733,16 @@ def p_PGBarrasHor(t):
 	#Se tiene que dar reversa a esta lista por la manera en que fueron ingresados los datos
 	SResult.reverse()
 	
+	typegraph = directory.return_address(SScope[-1],t[1])
+
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',SResult.copy(),1)
 	#Creacion del cuadruplo de tipo barras horizontales
 	#t[1] contiene el nombre de la grafica tipo barras horizontales
 	#Se tiene que hacer una copia de SResult para poder agregar el resultado al cuadruplo
-	quadrup=[codes["CREATEGBH"], t[1],None,SResult.copy()]
+	quadrup=[codes["CREATEGBH"], typegraph,None,resultaddress]
 	
 	#Se limpia SResult para poder agregar parametros para las otras graficas
 	SResult.clear()
@@ -1709,10 +1771,15 @@ def p_PDona(t):
 	#Se tiene que dar reversa a esta lista por la manera en que fueron ingresados los datos
 	SResult.reverse()
 	
+	typegraph = directory.return_address(SScope[-1],t[1])
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',SResult.copy(),1)
 	#Creacion del cuadruplo de tipo dona
 	#t[1] contiene el nombre de la grafica tipo dona
 	#Se tiene que hacer una copia de SResult para poder agregar el resultado al cuadruplo
-	quadrup=[codes["CREATED"], t[1],None,SResult.copy()]
+	quadrup=[codes["CREATED"], typegraph,None,resultaddress]
 	
 	#Se limpia SResult para poder agregar parametros para las otras graficas
 	SResult.clear()
@@ -1741,10 +1808,15 @@ def p_PRed(t):
 	#Se tiene que dar reversa a esta lista por la manera en que fueron ingresados los datos
 	SResult.reverse()
 	
+	typegraph = directory.return_address(SScope[-1],t[1])
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',SResult.copy(),1)
 	#Creacion del cuadruplo de tipo red
 	#t[1] contiene el nombre de la grafica tipo red
 	#Se tiene que hacer una copia de SResult para poder agregar el resultado al cuadruplo
-	quadrup=[codes["CREATER"], t[1],None,SResult.copy()]
+	quadrup=[codes["CREATER"], typegraph,None,resultaddress]
 	
 	#Se limpia SResult para poder agregar parametros para las otras graficas
 	SResult.clear()
@@ -1777,10 +1849,16 @@ def p_PVenn(t):
 	SResult.append(t[11])
 	SResult.append(t[13])
 	
+	typegraph = directory.return_address(SScope[-1],t[1])
+
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',SResult.copy(),1)
 	#Creacion del cuadruplo de tipo diagrama de Venn
 	#t[1] contiene el nombre de la grafica tipo diagrama de Venn
 	#Se tiene que hacer una copia de SResult para poder agregar el resultado al cuadruplo
-	quadrup=[codes["CREATEV"], t[1],None,SResult.copy()]
+	quadrup=[codes["CREATEV"], typegraph,None,resultaddress]
 	
 	#Se limpia SResult para poder agregar parametros para las otras graficas
 	SResult.clear()
@@ -1818,10 +1896,16 @@ def p_PLOT_B(t):
 	#Se mete SRedD a SResult
 	SResult.append(SRedD)
 	
+	typegraph = directory.return_address(SScope[-1],t[1])
+
+	if not memory.checkAvailabilityOfAType('Description',1,'None'):
+		raise Exception("ERROR: Not enough space in memory")
+		
+	resultaddress = memory.addAVariable('Description','None',SResult.copy(),1)
 	#Creacion del cuadruplo de tipo Network
 	#t[1] contiene el nombre de la grafica tipo Network
 	#Se tiene que hacer una copia de SResult para poder agregar el resultado al cuadruplo
-	quadrup=[codes["CREATEN"], t[1],None,SResult.copy()]
+	quadrup=[codes["CREATEN"], typegraph,None,resultaddress]
 	
 	#Se limpia SResult para poder agregar parametros para las otras graficas
 	SResult.clear()
@@ -1968,7 +2052,11 @@ def p_print_string(t):
 	#Si lo que se quiere imprimir es un string
 	if(isinstance(t[-1], str)):
 		#Se genera el cuadruplo de print 
-		quadrup=[codes["print"],t[-1],None,None]
+		if not memory.checkAvailabilityOfAType('CString',1,'None'):
+			raise Exception("ERROR: Not enough space in memory")
+		resultaddress = memory.addAVariable('CString','None',t[-1],1)
+
+		quadrup=[codes["print"],resultaddress,None,None]
 		
 		#Se agrega el cuadruplo a la lista de cuadruplos
 		q.quadruplesGen.append(quadrup)
@@ -2103,8 +2191,12 @@ finally:
 	print(v.Count)
 	print("Lista de cuadruplos")
 	
+	f= open("cuadruplos.txt","w+")
+
 	for x in range(0,q.contQuad):
 		print(x,".- ",q.quadruplesGen[x])
+		f.write(str(q.quadruplesGen[x]))
+		f.write('\n')
 	print(" ")
 	print("Lista Traducida")
 	translate.trans_quad(q.quadruplesGen,q.contQuad)
@@ -2112,4 +2204,4 @@ finally:
 	memory.printMemory()
 	print("Operation complete")
 
-	#fileQuads.close() 
+	f.close() 

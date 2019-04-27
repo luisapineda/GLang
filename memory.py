@@ -4,7 +4,7 @@ class memory:
     memorySizePerOurType = 1000 #Tamaño asignado para los tipos propios de nuestro lenguaje
 
     def __init__(self):
-        size = self.memorySizePerPrimitiveType * 16 + self.memorySizePerOurType * 33
+        size = self.memorySizePerPrimitiveType * 16 + self.memorySizePerOurType * 36
         self.memory = [None] * size
 
         self.GInt = 0 #Global Integer
@@ -65,7 +65,9 @@ class memory:
         self.CNetwork = self.GGraph + self.memorySizePerOurType * 29
         self.CVenn = self.GGraph + self.memorySizePerOurType * 30
         self.CRadarChart = self.GGraph + self.memorySizePerOurType * 31
-        
+
+        self.ourTypeDescriptions = self.GGraph + self.memorySizePerOurType * 32 #type of variable = "Description"
+        self.CString = self.GGraph + self.memorySizePerOurType * 33 #Esto es exclusivo para los strings a imprimir
     def accessAValue(self, address):
         return self.memory[address]
 
@@ -282,6 +284,14 @@ class memory:
                 self.memory[self.CRadarChart]=value
                 self.CRadarChart = self.CRadarChart + size
                 return self.CRadarChart - size
+        elif typeOfVariable == "Description" :
+            self.memory[self.ourTypeDescriptions] = value
+            self.ourTypeDescriptions = self.ourTypeDescriptions+ size
+            return self.ourTypeDescriptions - size
+        elif typeOfVariable == "CString" :
+            self.memory[self.CString] = value
+            self.CString = self.CString+ size
+            return self.CString - size
         return -999999999999
 
     def checkAvailabilityOfAType(self,typeOfVariable, size, scope):
@@ -394,8 +404,11 @@ class memory:
                 return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 16)
             elif scope == "constant" :
                 return ((size + self.TChar) < startOfOurType + self.memorySizePerOurType * 32)
+        elif typeOfVariable == "Description":
+            return ((size + self.ourTypeDescriptions) < (startOfOurType + self.memorySizePerOurType * 33))
+        elif typeOfVariable == "CString":
+            return ((size + self.ourTypeDescriptions) < (startOfOurType + self.memorySizePerOurType * 34))
         return -999999999999
-    
     
     def save(self, value, address):
         self.memory[address] = value
