@@ -61,8 +61,7 @@ input>>iNumero;
 
 a = 20;
 c = TRUE;
-a = a + c;
-if (not c) 
+if (not a) 
 {
 iNumero=10;
 			

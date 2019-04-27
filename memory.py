@@ -401,8 +401,3 @@ class memory:
         self.memory[address] = value
 
 memory = memory()
-#memory.save(2,11)
-#print(memory.checkAvailabilityOfAType("int",100,"temporal"))
-#print(memory.checkAvailabilityOfAType("int",2001,"temporal"))
-
-#memory.printMemory()

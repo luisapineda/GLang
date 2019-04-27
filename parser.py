@@ -14,7 +14,6 @@ from semanticCube import codes
 from quadruples import q
 from memory import memory
 
-ListaTemps = list(range(9000,10000))
 
 SOper = [] #Pila de operadores
 SType = [] #Pila de tipos
@@ -768,10 +767,16 @@ def p_check_bool(t):
 		left_type=SType.pop()
 		#No hay necesidad de poner el operando derecho porque al ser not solo esta la posibilidad de usar el operador izquierdo
 		
-		#REEMPLAZAR ESTA ES UNA SIMULACION DE LOS TEMPORALES, HAY QUE REEMPLAZARLO POR MEMORIA**************************************************************************
-		#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
-		result=ListaTemps[q.contList]
-		q.contList = q.contList + 1
+
+		#print(right_type + str(typesOfVariables[right_type]))
+		#result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+		if (typesOfVariables[left_type]!=typesOfVariables['bool']):
+			raise Exception("ERROR: TYPE DISMATCH")
+
+		if not memory.checkAvailabilityOfAType(left_type,1,"temporal"):
+			raise Exception("ERROR: Not enough space in memory")
+			
+		result = memory.addAVariable(left_type,"temporal",0, 1)
 		
 		#Se genera el cuadruplo de not, codes va a regresar el codigo de operacion de not, se pone el operando izquierdo que trabaja con not
 		#Se deja en None donde deberia de ir el operando derecho y se deja el resultado en la cuarta posicion del cuadruplo
@@ -824,12 +829,26 @@ def p_check_bool(t):
 		#Se saca el tipo del operando izquierdo de la pila de tipos y se mete en left_type
 		left_type=SType.pop()
 		
+		print('👌👌👌👌👌👌👌')
+		print(operator + str(operators[operator]))
+		print('operando')
+		print(left_operand)
+		print(right_operand)
+		print('tipo del operando')
+		print(left_type  + str(typesOfVariables[left_type]))
+		print(right_type  + str(typesOfVariables[right_type]))
+		
 		#FALTA HACER LA COMPROBACION DE LOS TIPOS, TAL VEZ SE DEBA DE CAMBIAR AND Y OR*******************************************************************************************
 
-		#REEMPLAZAR ESTA ES UNA SIMULACION DE LOS TEMPORALES, HAY QUE REEMPLAZARLO POR MEMORIA**************************************************************************
-		#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
-		result=ListaTemps[q.contList]
-		q.contList = q.contList + 1
+		result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+		if (result_type == -1):
+			raise Exception("ERROR: TYPE DISMATCH")
+
+		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+			raise Exception("ERROR: Not enough space in memory")
+			
+		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
+		
 		
 		#Se hace el cuadruplo del respectivo operador
 		quadrup=[codes[operator],left_operand,right_operand,result]
@@ -990,10 +1009,15 @@ def p_bool_for(t):
 		#Se saca el tipo del operador izquierdo y se mete en left_type
 		left_type=SType.pop()
 		
-		#REEMPLAZAR ESTA ES UNA SIMULACION DE LOS TEMPORALES, HAY QUE REEMPLAZARLO POR MEMORIA**************************************************************************
-		#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
-		result=ListaTemps[q.contList]
-		q.contList = q.contList + 1
+		result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+		if (result_type == -1):
+			raise Exception("ERROR: TYPE DISMATCH")
+
+		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+			raise Exception("ERROR: Not enough space in memory")
+			
+		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
+		
 		
 		#Se genera el cuadruplo de la expresion booleana del for
 		quadrup=[codes[operator],left_operand,right_operand,result]
@@ -1104,11 +1128,14 @@ def p_bool_while(t):
 		#Se saca el tipo del operador izquierdo y se mete en left_type
 		left_type=SType.pop()
 		
-		#REEMPLAZAR ESTA ES UNA SIMULACION DE LOS TEMPORALES, HAY QUE REEMPLAZARLO POR MEMORIA**************************************************************************
-		#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
-		result=ListaTemps[q.contList]
-		q.contList = q.contList + 1
-		
+		result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+		if (result_type == -1):
+			raise Exception("ERROR: TYPE DISMATCH")
+
+		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+			raise Exception("ERROR: Not enough space in memory")
+			
+		result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
 		#Se genera el cuadruplo de la expresion booleana del while
 		quadrup=[codes[operator],left_operand,right_operand,result]
 		
@@ -1177,7 +1204,7 @@ def p_pop_exp(t):
 			#Se saca el tipo del operando izquierdo de la pila de operandos
 			left_type=SType.pop()
 						
-			print('👌👌👌👌👌👌👌')
+			
 			print("Pila caracteres:")
 			print(SOper)
 			print("Pila operandos")
@@ -1188,12 +1215,8 @@ def p_pop_exp(t):
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
 				raise Exception("ERROR: TYPE DISMATCH")
-			else :
 
-				#REEMPLAZAR ESTA ES UNA SIMULACION DE LOS TEMPORALES, HAY QUE REEMPLAZARLO POR MEMORIA**************************************************************************
-				#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
-				#result=ListaTemps[q.contList]
-				#q.contList = q.contList + 1
+			else :
 				if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 					raise Exception("ERROR: Not enough space in memory")
 				result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
@@ -1266,11 +1289,14 @@ def p_pop_term(t):
 			#Se saca el tipo del operador izquierdo y se mete en left_type
 			left_type=SType.pop()
 			
-			#REEMPLAZAR ESTA ES UNA SIMULACION DE LOS TEMPORALES, HAY QUE REEMPLAZARLO POR MEMORIA**************************************************************************
-			#q.contList AYUDA A SABER CUAL TEMPORAL ES EL SIGUIENTE EN ESTA SIMULACION SE DEBE QUITAR CUANDO SEA REEMPLAZADO ********************************************************
-			result=ListaTemps[q.contList]
-			q.contList = q.contList + 1
+			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+			if (result_type == -1):
+				raise Exception("ERROR: TYPE DISMATCH")
+
+			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+					raise Exception("ERROR: Not enough space in memory")
 			
+			result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",0, 1)
 			#Se genera el cuadruplo de la operacion * o /
 			quadrup=[codes[operator],left_operand,right_operand,result]
 		
@@ -2073,16 +2099,17 @@ finally:
 	print("Contador de cuadruplos:")
 	print(q.contQuad)
 	directory.print_dir()
-	print("Numero de vairables:")
+	print("Numero de variables:")
 	print(v.Count)
 	print("Lista de cuadruplos")
 	
 	for x in range(0,q.contQuad):
 		print(x,".- ",q.quadruplesGen[x])
-		
 	print(" ")
 	print("Lista Traducida")
 	translate.trans_quad(q.quadruplesGen,q.contQuad)
+	print("Memory")
+	memory.printMemory()
 	print("Operation complete")
 
 	#fileQuads.close() 
