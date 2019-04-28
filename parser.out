@@ -198,7 +198,7 @@ Rule 181   PRINT_B -> CTE_STRING print_string PRINT_C
 Rule 182   PRINT_B -> EXPRESIONESVARIAS print_id
 Rule 183   print_string -> <empty>
 Rule 184   print_id -> <empty>
-Rule 185   PRINT_C -> PLUS PRINT_B
+Rule 185   PRINT_C -> CONCATENATE PRINT_B
 Rule 186   PRINT_C -> EMPTY
 Rule 187   EXPRESIONESVARIAS -> NOT EV_C
 Rule 188   EXPRESIONESVARIAS -> EV_C
@@ -231,6 +231,7 @@ COLOR_ORANGE         : 115
 COLOR_PURPLE         : 113
 COLOR_RED            : 110
 COMMA                : 18 53 64 132 156 156 156 161 166 170 174 177
+CONCATENATE          : 185
 CREATE               : 
 CREATED              : 154
 CREATEG              : 150
@@ -268,7 +269,7 @@ OPEN_PARENTHESIS     : 46 61 71 85 91 94 109 117 128 150 151 152 153 154 155 156
 OPEN_SQUARE_BRACKET  : 13 15 78 80 129 134 139 141 157 172
 OR                   : 191
 PI                   : 
-PLUS                 : 99 118 185
+PLUS                 : 99 118
 POINT                : 71 109 150 151 152 153 154 155 156 157
 PRINT_KEYWORD        : 179
 PROGRAM              : 1
@@ -2518,7 +2519,7 @@ state 137
     (181) PRINT_B -> CTE_STRING . print_string PRINT_C
     (183) print_string -> .
 
-    PLUS            reduce using rule 183 (print_string -> .)
+    CONCATENATE     reduce using rule 183 (print_string -> .)
     CLOSE_PARENTHESIS reduce using rule 183 (print_string -> .)
 
     print_string                   shift and go to state 183
@@ -3251,11 +3252,11 @@ state 182
 state 183
 
     (181) PRINT_B -> CTE_STRING print_string . PRINT_C
-    (185) PRINT_C -> . PLUS PRINT_B
+    (185) PRINT_C -> . CONCATENATE PRINT_B
     (186) PRINT_C -> . EMPTY
     (199) EMPTY -> .
 
-    PLUS            shift and go to state 238
+    CONCATENATE     shift and go to state 238
     CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
 
     PRINT_C                        shift and go to state 237
@@ -4182,7 +4183,7 @@ state 237
 
 state 238
 
-    (185) PRINT_C -> PLUS . PRINT_B
+    (185) PRINT_C -> CONCATENATE . PRINT_B
     (181) PRINT_B -> . CTE_STRING print_string PRINT_C
     (182) PRINT_B -> . EXPRESIONESVARIAS print_id
     (187) EXPRESIONESVARIAS -> . NOT EV_C
@@ -5071,9 +5072,9 @@ state 285
 
 state 286
 
-    (185) PRINT_C -> PLUS PRINT_B .
+    (185) PRINT_C -> CONCATENATE PRINT_B .
 
-    CLOSE_PARENTHESIS reduce using rule 185 (PRINT_C -> PLUS PRINT_B .)
+    CLOSE_PARENTHESIS reduce using rule 185 (PRINT_C -> CONCATENATE PRINT_B .)
 
 
 state 287

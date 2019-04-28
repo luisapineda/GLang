@@ -9,8 +9,8 @@ DonutGraph migrafica5;
 Network mired;
 Venn mivenn;
 RadarChart miradar;
-int iNumero, i, a, iNumero2, b, iNumero3;
-bool c;
+int iNumero, i, a, iNumero2, b, iNumero3, iNumeroTemp;
+bool c,d;
 }
 
 main{ 
@@ -44,38 +44,52 @@ mivenn.createV( 10 , 5 , 20 ;"Matematicas","Quimica");
 mired.name("Problema del viajero");
 mired.createN(["A", "B", "C","A"];["D", "A", "E","C"]);
 
+print("Ingresa un numero");
 
-input>>iNumero;
+input>>iNumeroTemp;
 
-print("Numero es:" & 10 & "fin");
-print(iNumero);
-a = 20 + 12;
-print(a);
+a = 20;
 c = TRUE;
-if (not c) 
+d = FALSE;
+if (c == d) 
 {
-iNumero=10;
-			
+iNumero=111;
 } 
 else
 {
-iNumero=10;
+iNumero=2222;
 }
+
+if (3>4) 
+{
+iNumero=3333;
+} 
+
 print(iNumero);
+iNumero2=22;
+while(a>iNumero2)
+{
+iNumero2=iNumero+1;
+}
+
+while(iNumero2>=5)
+{
+iNumero2=iNumero2-1;
+}
+
+for (i=0; i<5 ; i=i+1;)
+{
+iNumero3=10;
+}
+
+for (i=2; i<=1 ; i=i+1;)
+{
+iNumero3=10;
+}
 
 b =20+30*40;
-print(b+3);
-print(b-3);
-print(b/3);
-print(b*3);
-print(4>3);
-print(3>4);
-print(iNumero>10);
-print(iNumero>a);
+
 }
 }
-
-
-
 
 

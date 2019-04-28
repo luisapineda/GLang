@@ -34,25 +34,25 @@ class virtualMachine:
             elif (tempOperator == '>'):
                 self.BIGGERTHAN(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '<'):
-                self.LESSTHAN()
+                self.LESSTHAN(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '='):
                 self.EQUALS(tempLeftOperand,tempResult)
             elif (tempOperator == 'not'):
-                self.NOT()
+                self.NOT(tempLeftOperand,tempResult)
             elif (tempOperator == 'and'):
-                self.AND()
+                self.AND(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == 'or'):
-                self.OR()
+                self.OR(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '=='):
-                self.COMPARISON()
-            elif (tempOperator == '!='):
+                self.COMPARISON(tempLeftOperand,tempRightOperand,tempResult)
+            elif (tempOperator == '!='): #no lo usamos en nuestro lenguaje
                 self.NOTEQUAL()
             elif (tempOperator == '>='):
-                self.BIGGEROREQUAL()
+                self.BIGGEROREQUAL(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '<='):
-                self.LESSOREQUAL()
+                self.LESSOREQUAL(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '>>'):
-                self.INPUT()
+                self.INPUT(tempRightOperand, tempResult)
             elif (tempOperator == 'GOTO'):
                 self.GOTO()
             elif (tempOperator == 'print'):
@@ -96,6 +96,8 @@ class virtualMachine:
             elif (tempOperator == 'INPUT'):
                 self.INPUT()
             
+        print('*******IMPRESION DE MEMORIA ACTUAL********')
+        memory.printMemory()
         '''
         #esto era para implementarse sacandolo de un .txt
         print('.txt')
@@ -125,36 +127,44 @@ class virtualMachine:
         numTemp = int(memory.accessAValue(leftOperandAdress)) > int(memory.accessAValue(rightOperandAdress))
         memory.save(numTemp,resultAdress)
     
-    def LESSTHAN(self):
-        print('Esta en LESSTHAN (<)')
+    def LESSTHAN(self,leftOperandAdress, rightOperandAdress, resultAdress):
+        numTemp = int(memory.accessAValue(leftOperandAdress)) < int(memory.accessAValue(rightOperandAdress))
+        memory.save(numTemp,resultAdress)
 
     def EQUALS(self, value, address):
         memory.save(memory.accessAValue(value), address)
-        print('value ' + str(memory.accessAValue(value)) + ' stored in ' + str(address))
+        #print('value ' + str(memory.accessAValue(value)) + ' stored in ' + str(address))
     
-    def NOT(self):
-        print('Esta en NOT (not)')
+    def NOT(self, value, address):
+        memory.save(not memory.accessAValue(value), address)
     
-    def AND(self):
-        print('Esta en AND (and)')
+    def AND(self,leftOperandAdress, rightOperandAdress, resultAdress):
+        boolTemp = bool(memory.accessAValue(leftOperandAdress)) and bool(memory.accessAValue(rightOperandAdress))
+        memory.save(boolTemp,resultAdress)
 
-    def OR(self):
-        print('Esta en OR (or)')
+    def OR(self,leftOperandAdress, rightOperandAdress, resultAdress):
+        boolTemp = bool(memory.accessAValue(leftOperandAdress)) or bool(memory.accessAValue(rightOperandAdress))
+        memory.save(boolTemp,resultAdress)
 
-    def COMPARISON(self):
-        print('Esta en COMPARISON (==)')
+    def COMPARISON(self,leftOperandAdress, rightOperandAdress, resultAdress):
+        boolTemp = bool(memory.accessAValue(leftOperandAdress)) == bool(memory.accessAValue(rightOperandAdress))
+        memory.save(boolTemp,resultAdress)
     
     def NOTEQUAL(self):
         print('Esta en NOTEQUAL (!=)')
 
-    def BIGGEROREQUAL(self):
-        print('Esta en BIGGEROREQUAL (>=)')
+    def BIGGEROREQUAL(self,leftOperandAdress, rightOperandAdress, resultAdress):
+        numTemp = int(memory.accessAValue(leftOperandAdress)) >= int(memory.accessAValue(rightOperandAdress))
+        memory.save(numTemp,resultAdress)
 
-    def LESSOREQUAL(self):
-        print('Esta en LESSOREQUAL (<=)')
+    def LESSOREQUAL(self,leftOperandAdress, rightOperandAdress, resultAdress):
+        numTemp = int(memory.accessAValue(leftOperandAdress)) <= int(memory.accessAValue(rightOperandAdress))
+        memory.save(numTemp,resultAdress)
     
-    def INPUT(self):
-        print('Esta en INPUT (>>)')
+    def INPUT(self, type, address):
+        value = input()
+
+        memory.save(value, address)
 
     def GOTO(self):
         print('Esta en GOTO')

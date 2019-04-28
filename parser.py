@@ -101,7 +101,8 @@ tokens = [
     'CTE_FLOAT',
     'CTE_INTEGER',
 	'CTE_CHAR',
-    'BOOLEAN'
+    'BOOLEAN',
+	'CONCATENATE'
 ] + list(reserved.values())
 
 def t_INPUTSYMBOL(t):
@@ -123,6 +124,7 @@ t_MINS = r'\-'
 t_TIMES = r'\*'
 t_QUOTE = r'\''
 t_EQUAL = r'\='
+t_CONCATENATE = r'\&'
 
 t_ignore = " \t"
 t_CTE_CHAR = r'\'.*\''
@@ -777,6 +779,10 @@ def p_check_bool(t):
 		#print(right_type + str(typesOfVariables[right_type]))
 		#result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 		if (typesOfVariables[left_type]!=typesOfVariables['bool']):
+			print('                           #######################################################')
+			print(left_operand)
+			print(left_type)
+			print(typesOfVariables[left_type])
 			raise Exception("ERROR: TYPE DISMATCH")
 
 		if not memory.checkAvailabilityOfAType(left_type,1,"temporal"):
@@ -825,7 +831,7 @@ def p_check_bool(t):
 		#Borrar
 	
 	#Pero si el operador es
-	elif operator=='>' or operator=='<' or operator=='>=' or operator=='<=' or operator=='and' or operator=='or':
+	elif operator=='>' or operator=='<' or operator=='>=' or operator=='<=' or operator=='and' or operator=='or' or operator=='==':
 		#Se saca el operando derecho de la pila de operadores y se mete en right_operand
 		right_operand=StackO.pop()
 		#Se saca el tipo del operando derecho de la pila de tipos y se mete en right_type
@@ -848,6 +854,8 @@ def p_check_bool(t):
 
 		result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 		if (result_type == -1):
+			print(left_type)
+			print(right_type)
 			raise Exception("ERROR: TYPE DISMATCH")
 
 		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
@@ -1114,7 +1122,7 @@ def p_bool_while(t):
 	operator=SOper.pop()
 	
 	#Si operator es uno de los siguientes
-	if operator=='>' or operator=='<' or operator=='and' or operator=='or' or operator=='<=' or operator=='>=':
+	if operator=='>' or operator=='<' or operator=='and' or operator=='or' or operator=='<=' or operator=='>=' or operator=='==':
 		#FALTA HACER LA COMPROBACION DE QUE LA EXPRESION ES BOOLEANA********************************************************************************************************
 		
 		#Borrar
@@ -1558,10 +1566,15 @@ def p_quad_input(t):
 	
 	#Se saca el operando que va a recibir lo tecleado por el usuario de la pila de operandos
 	result=StackO.pop()
+	print('❣️❣️❣️❣️❣️❣️')
+	print(str(SScope[-1]))
+	print(str(result))
+	print(str(memory.accessAValue(result)))
+	result_type = directory.return_type(SScope[-1],memory.accessAValue(result))
 	
 	#Cuadruplo del input
 	#35 es el codigo de operacion de input
-	quadrup=[codes[">>"],35,None,result]
+	quadrup=[codes[">>"],35,result_type,result]
 	
 	#SE METE DE VUELTA AL STACK?********************************************************************************************************************************************
 	#StackO.append(result)
@@ -2066,7 +2079,57 @@ def p_print_string(t):
 
 def p_print_id(t):
 	'print_id :'
-	print("hola2")
+	print("***************************************************YO****************")
+	print("Pila caracteres:")
+	print(SOper)
+	print("Pila operandos")
+	print(StackO)
+
+	if SOper: 
+
+	#Si operator es uno de los siguientes
+		if SOper[-1]=='>' or SOper[-1]=='<' or SOper[-1]=='and' or SOper[-1]=='or' or SOper[-1]=='<=' or SOper[-1]=='>=':
+			#FALTA HACER LA COMPROBACION DE QUE LA EXPRESION ES BOOLEANA********************************************************************************************************
+
+			operator=SOper.pop()
+			#Borrar
+			print("checamos ahora:")
+			print(StackO)
+			#Borrar
+		
+			#Se saca el operador derecho y se mete en right_operand
+			right_operand=StackO.pop()
+
+			#Se saca el tipo del operador derecho y se mete en right_type
+			right_type=SType.pop()
+
+			#Se saca el operador izquierdo y se mete en left_operand
+			left_operand=StackO.pop()
+
+			#Se saca el tipo del operador izquierdo y se mete en left_type
+			left_type=SType.pop()
+			
+			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+			if (result_type == -1):
+				raise Exception("ERROR: TYPE DISMATCH")
+
+			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+				raise Exception("ERROR: Not enough space in memory")
+			
+			result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
+			#Se genera el cuadruplo de la expresion booleana 
+			quadrup=[codes[operator],left_operand,right_operand,result]
+		
+			#Se agrega el resultado a la pila de operandos
+			StackO.append(result)
+
+			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
+
+			#Se agrega el cuadruplo a la lista de cuadruplos
+			q.quadruplesGen.append(quadrup)
+
+			#Se incrementa el contador de cuadruplos
+			q.contQuad = q.contQuad + 1
 	
 	#Se saca el ID de la pila de operandos
 	print_id=StackO.pop()
@@ -2084,7 +2147,7 @@ def p_print_id(t):
 #Regla para concatenar al print	
 def p_PRINT_C(t):
 	'''
- PRINT_C : PLUS PRINT_B
+ PRINT_C : CONCATENATE PRINT_B
  | EMPTY
 	'''
 
