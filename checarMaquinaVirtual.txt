@@ -13,17 +13,6 @@ int iNumero, i, a, iNumero2, b, iNumero3;
 bool c;
 }
 
-module void hola(int ola,int kih,int jon)
-{
-vars{
-int i;
-}
-
-{
-i=2*ola;
-}
-}
-
 main{ 
 migrafica1.name("Crecimiento economico"); 
 migrafica1.nameX("Dias"); 
@@ -59,7 +48,8 @@ print("Ingresa un numero");
 
 input>>iNumero;
 
-a = 20;
+a = 20 + 12;
+print(a);
 c = TRUE;
 if (not c) 
 {
@@ -71,16 +61,9 @@ else
 iNumero=10;
 }
 print(iNumero);
-while(a>iNumero2)
-{
-iNumero2=iNumero+1;
-}
 
-for (i=0; i<5 ; i=i+1;)
-{
-iNumero3=10;
-}
 b =20+30*40;
+print(b+3);
 
 }
 }

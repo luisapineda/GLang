@@ -37,9 +37,16 @@ operatorsTrad = {
 }
 
 def trans_quad(quad,num):
+	f= open("cuadruplosParaPruebas.txt","w+")
+
 	for x in range(0,num):
 		if quad[x][0] not in operatorsTrad:
 			print(x,".- ",quad[x])
+			f.write(str(quad[x]))
+			f.write('\n')
 		else:
 			quad[x][0] = operatorsTrad[quad[x][0]]
 			print(x,".- ",quad[x])
+			f.write(str(quad[x]))
+			f.write('\n')
+	f.close()

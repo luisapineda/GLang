@@ -13,7 +13,7 @@ from semanticCube import operators
 from semanticCube import codes
 from quadruples import q
 from memory import memory
-
+from virtualmachine import virtualMachine
 
 SOper = [] #Pila de operadores
 SType = [] #Pila de tipos
@@ -2056,7 +2056,7 @@ def p_print_string(t):
 			raise Exception("ERROR: Not enough space in memory")
 		resultaddress = memory.addAVariable('CString','None',t[-1],1)
 
-		quadrup=[codes["print"],resultaddress,None,None]
+		quadrup=[codes["print"],None,None,resultaddress]
 		
 		#Se agrega el cuadruplo a la lista de cuadruplos
 		q.quadruplesGen.append(quadrup)
@@ -2072,7 +2072,7 @@ def p_print_id(t):
 	print_id=StackO.pop()
 	
 	#Se genera el cuadruplo de print con ese ID
-	quadrup=[codes["print"],print_id,None,None]
+	quadrup=[codes["print"],None,None,print_id]
 	
 	#Se agrega el cuadruplo a la lista de cuadruplos
 	q.quadruplesGen.append(quadrup)
@@ -2203,5 +2203,5 @@ finally:
 	print("Memory")
 	memory.printMemory()
 	print("Operation complete")
-
+	virtualMachine.begin(q.contQuad,q.quadruplesGen)
 	f.close() 
