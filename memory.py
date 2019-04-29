@@ -80,11 +80,14 @@ class memory:
 
     def printMemory(self):
         print("------elements in memory-----")
+        f= open("memoriaParaPruebas.txt","w+")
         count = 0
         for i in self.memory:
             if i is not None:
-                print(str(count) + " : " + str(i))
+                #print(str(count) + " : " + str(i))
+                f.write(str(count) + " : " + str(i) + '\n')
             count = count + 1
+        f.close()
     
     def addAVariable(self, typeOfVariable, scope, value, size):
         if typeOfVariable == "int" :

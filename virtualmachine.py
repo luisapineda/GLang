@@ -1,11 +1,15 @@
 import matplotlib.pyplot as plt
+import time
 from semanticCube import codes, codesTwisted
 from memory import memory
 
 class virtualMachine: 
     
     #Con esta funcion iniciaremos el trabajo de la maquina virtual
-    def begin(self, numOfQuads, quads):
+    def begin(self, numOfQuads, quads, startTime):
+        self.startTime=startTime
+        self.step = -1
+        self.cont = 0
         self.quads=quads
         self.endIndicator = False
         print(self.quads)
@@ -17,12 +21,14 @@ class virtualMachine:
         '''
         print('INICIA LA MAQUINA VIRTUAL')
         
-        for x in range(0,numOfQuads):
-            print(self.quads[x])
-            tempOperator = self.quads[x][0]
-            tempLeftOperand = self.quads[x][1]
-            tempRightOperand = self.quads[x][2]
-            tempResult = self.quads[x][3]
+        while self.endIndicator == False:
+            print(self.quads[self.cont])
+            #######
+            self.step = -1
+            tempOperator = self.quads[self.cont][0]
+            tempLeftOperand = self.quads[self.cont][1]
+            tempRightOperand = self.quads[self.cont][2]
+            tempResult = self.quads[self.cont][3]
             if (tempOperator == '+'):
                 self.PLUS(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '-'):
@@ -45,8 +51,6 @@ class virtualMachine:
                 self.OR(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '=='):
                 self.COMPARISON(tempLeftOperand,tempRightOperand,tempResult)
-            elif (tempOperator == '!='): #no lo usamos en nuestro lenguaje
-                self.NOTEQUAL()
             elif (tempOperator == '>='):
                 self.BIGGEROREQUAL(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '<='):
@@ -54,11 +58,11 @@ class virtualMachine:
             elif (tempOperator == '>>'):
                 self.INPUT(tempRightOperand, tempResult)
             elif (tempOperator == 'GOTO'):
-                self.GOTO()
+                self.GOTO(tempResult)
             elif (tempOperator == 'print'):
                 self.PRINT(tempResult)
             elif (tempOperator == 'GOTOF'):
-                self.GOTOF()
+                self.GOTOF(tempLeftOperand,tempResult)
             elif (tempOperator == 'ENDPROC'):
                 self.ENDPROC()
             elif (tempOperator == 'END'):
@@ -93,10 +97,10 @@ class virtualMachine:
                 self.GOSUB()
             elif (tempOperator == 'ERA'):
                 self.ERA()
-            elif (tempOperator == 'INPUT'):
-                self.INPUT()
             
-        print('*******IMPRESION DE MEMORIA ACTUAL********')
+            self.cont = self.cont + 1
+                ###########
+        #print('*******IMPRESION DE MEMORIA ACTUAL********')
         memory.printMemory()
         '''
         #esto era para implementarse sacandolo de un .txt
@@ -149,9 +153,6 @@ class virtualMachine:
     def COMPARISON(self,leftOperandAdress, rightOperandAdress, resultAdress):
         boolTemp = bool(memory.accessAValue(leftOperandAdress)) == bool(memory.accessAValue(rightOperandAdress))
         memory.save(boolTemp,resultAdress)
-    
-    def NOTEQUAL(self):
-        print('Esta en NOTEQUAL (!=)')
 
     def BIGGEROREQUAL(self,leftOperandAdress, rightOperandAdress, resultAdress):
         numTemp = int(memory.accessAValue(leftOperandAdress)) >= int(memory.accessAValue(rightOperandAdress))
@@ -161,16 +162,46 @@ class virtualMachine:
         numTemp = int(memory.accessAValue(leftOperandAdress)) <= int(memory.accessAValue(rightOperandAdress))
         memory.save(numTemp,resultAdress)
     
-    def INPUT(self, type, address):
+    def INPUT(self, typeR, address):
+        flag = False
         value = input()
+        #print(type(value))
+        if value == 'TRUE' or value == 'FALSE':
+            #print("Boolean")
+            if typeR=='bool':
+                flag = True
+        else:
+            try:
+                val = int(value)
+                #print("Integer")
+                if typeR=='int':
+                    flag = True
+            except ValueError:
+                try:
+                    val = float(value)
+                    #print("Float")
+                    if typeR=='float':
+                        flag = True
+                except ValueError:
+                    try:
+                        val = str(value)
+                        #print("String")
+                        if len(val) == 1 and typeR=='char':
+                            flag = True
+                    except ValueError:  
+                        raise Exception("ERROR: TYPE DOESN'T MATCH")
+        
+        if flag:
+            memory.save(value, address)
+        else: 
+            raise Exception("ERROR: TYPE DISMATCH")
 
-        memory.save(value, address)
+    def GOTO(self, nextQuad):
+        print('AQUI ESTA EL GOTO')
+        #self.cont = nextQuad
 
-    def GOTO(self):
-        print('Esta en GOTO')
-
-    def GOTOF(self):
-        print('Esta en GOTOF')
+    def GOTOF(self, address, nextQuad):
+        print('h')
     
     def PRINT(self, adress):
         print(memory.accessAValue(adress))
@@ -179,7 +210,10 @@ class virtualMachine:
         print('Esta en ENDPROC')
 
     def END(self):
-        print('Esta en END')
+        self.endIndicator = True
+        endTime = time.time()
+        print('Execution completed in ' + str(endTime-self.startTime) + ' seconds.')
+        print('')
     
     def COLOR(self):
         print('Esta en COLOR')

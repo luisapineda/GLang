@@ -14,7 +14,9 @@ from semanticCube import codes
 from quadruples import q
 from memory import memory
 from virtualmachine import virtualMachine
+import time
 
+startTime = time. time()
 SOper = [] #Pila de operadores
 SType = [] #Pila de tipos
 StackO = [] #Pila de operandos
@@ -24,6 +26,8 @@ SParam = [] #Lista de parametros
 SResult = []
 SRed = []
 SRedD = []
+ListaTemps = list(range(9600,10000))
+
 #TOKENS
 reserved = {
     'if' : 'IF',
@@ -2050,14 +2054,149 @@ def p_PRINT(t):
 
 def p_PRINT_A(t):
 	'''
-   PRINT_A : PRINT_B CLOSE_PARENTHESIS SEMICOLON
+   PRINT_A : PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON
 	'''
 
 def p_PRINT_B(t):
 	'''
- PRINT_B : CTE_STRING print_string PRINT_C
- | EXPRESIONESVARIAS print_id
+ PRINT_B : CTE_STRING add_string PRINT_C
+ | EXPRESIONESVARIAS add_temp PRINT_C
 	'''
+
+def p_add_temp(t):
+	'add_temp :'
+	if SOper:
+		if(SOper[-1]=="&"):
+			operator = SOper.pop()
+			
+			#Se saca el operador derecho y se mete en right_operand
+			right_operand=StackO.pop()
+
+			#Se saca el tipo del operador derecho y se mete en right_type
+			right_type=SType.pop()
+
+			#Se saca el operador izquierdo y se mete en left_operand
+			left_operand=StackO.pop()
+
+			#Se saca el tipo del operador izquierdo y se mete en left_type
+			left_type=SType.pop()
+	
+			result=ListaTemps[q.contList]
+			q.contList = q.contList + 1
+			quadrup=[operator,left_operand,right_operand,result]
+			q.contList = q.contList + 1
+	
+			#Se agrega el resultado a la pila de operandos
+			StackO.append(result)
+
+			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
+
+			#Se agrega el cuadruplo a la lista de cuadruplos
+			q.quadruplesGen.append(quadrup)
+
+			#Se incrementa el contador de cuadruplos
+			q.contQuad = q.contQuad + 1
+
+def p_add_string(t):
+	'add_string :'
+	StackO.append(t[-1])
+	
+	print("NUEVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+	print(StackO)
+	
+	SType.append("CString")
+	
+	if SOper:
+		if(SOper[-1]=="&"):
+			operator = SOper.pop()
+			
+			#Se saca el operador derecho y se mete en right_operand
+			right_operand=StackO.pop()
+
+			#Se saca el tipo del operador derecho y se mete en right_type
+			right_type=SType.pop()
+
+			#Se saca el operador izquierdo y se mete en left_operand
+			left_operand=StackO.pop()
+
+			#Se saca el tipo del operador izquierdo y se mete en left_type
+			left_type=SType.pop()
+	
+			result=ListaTemps[q.contList]
+			q.contList = q.contList + 1
+			
+			quadrup=[operator,left_operand,right_operand,result]
+			
+	
+			#Se agrega el resultado a la pila de operandos
+			StackO.append(result)
+
+			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
+
+			#Se agrega el cuadruplo a la lista de cuadruplos
+			q.quadruplesGen.append(quadrup)
+
+			#Se incrementa el contador de cuadruplos
+			q.contQuad = q.contQuad + 1
+
+def p_print_quad(t):
+	'print_quad :'
+	
+	if SOper: 
+		#Si operator es uno de los siguientes
+		if SOper[-1]=='>' or SOper[-1]=='<' or SOper[-1]=='and' or SOper[-1]=='or' or SOper[-1]=='<=' or SOper[-1]=='>=':
+			#FALTA HACER LA COMPROBACION DE QUE LA EXPRESION ES BOOLEANA********************************************************************************************************
+
+			operator=SOper.pop()
+			#Borrar
+			print("checamos ahora:")
+			print(StackO)
+			#Borrar
+		
+			#Se saca el operador derecho y se mete en right_operand
+			right_operand=StackO.pop()
+
+			#Se saca el tipo del operador derecho y se mete en right_type
+			right_type=SType.pop()
+
+			#Se saca el operador izquierdo y se mete en left_operand
+			left_operand=StackO.pop()
+
+			#Se saca el tipo del operador izquierdo y se mete en left_type
+			left_type=SType.pop()
+			
+			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+			if (result_type == -1):
+				raise Exception("ERROR: TYPE DISMATCH")
+
+			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+				raise Exception("ERROR: Not enough space in memory")
+			
+			result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
+			#Se genera el cuadruplo de la expresion booleana 
+			quadrup=[codes[operator],left_operand,right_operand,result]
+		
+			#Se agrega el resultado a la pila de operandos
+			StackO.append(result)
+
+			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
+
+			#Se agrega el cuadruplo a la lista de cuadruplos
+			q.quadruplesGen.append(quadrup)
+
+			#Se incrementa el contador de cuadruplos
+			q.contQuad = q.contQuad + 1
+	
+	result = StackO.pop()
+	
+	quadrup=[codes["print"],None,None,result]
+		
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+
 
 #Generacion del cuaduplo de print si es un string
 def p_print_string(t):
@@ -2147,9 +2286,85 @@ def p_print_id(t):
 #Regla para concatenar al print	
 def p_PRINT_C(t):
 	'''
- PRINT_C : CONCATENATE PRINT_B
+ PRINT_C : CONCATENATE EXPRESIONESVARIAS add_con PRINT_D
+ | CONCATENATE CTE_STRING add_exp PRINT_D
  | EMPTY
 	'''
+
+def p_add_exp(t):
+	'add_exp :'
+	StackO.append(t[-1])
+	
+	print("NUEVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+	print(StackO)
+	
+	SType.append("CString")
+	
+	#Se saca el operador derecho y se mete en right_operand
+	right_operand=StackO.pop()
+
+	#Se saca el tipo del operador derecho y se mete en right_type
+	#right_type=SType.pop()
+
+	#Se saca el operador izquierdo y se mete en left_operand
+	left_operand=StackO.pop()
+
+	#Se saca el tipo del operador izquierdo y se mete en left_type
+	#left_type=SType.pop()
+	
+	result=ListaTemps[q.contList]
+	q.contList = q.contList + 1
+	quadrup=["&",left_operand,right_operand,result]
+	
+	#Se agrega el resultado a la pila de operandos
+	StackO.append(result)
+
+	#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
+
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+	
+def p_add_con(t):
+	'add_con :'
+	#Se saca el operador derecho y se mete en right_operand
+	right_operand=StackO.pop()
+
+	#Se saca el tipo del operador derecho y se mete en right_type
+	#right_type=SType.pop()
+
+	#Se saca el operador izquierdo y se mete en left_operand
+	left_operand=StackO.pop()
+
+	#Se saca el tipo del operador izquierdo y se mete en left_type
+	#left_type=SType.pop()
+	
+	result=ListaTemps[q.contList]
+	q.contList = q.contList + 1
+	quadrup=["&",left_operand,right_operand,result]
+	
+	#Se agrega el resultado a la pila de operandos
+	StackO.append(result)
+
+	#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
+
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+
+def p_PRINT_D(t):
+	'''
+	PRINT_D : CONCATENATE add_sign PRINT_B
+			| EMPTY
+	'''
+
+def p_add_sign(t):
+	'add_sign :'
+	SOper.append("&")
 
 def p_EXPRESIONESVARIAS(t):
 	'''
@@ -2266,5 +2481,5 @@ finally:
 	print("Memory")
 	memory.printMemory()
 	print("Operation complete")
-	virtualMachine.begin(q.contQuad,q.quadruplesGen)
+	virtualMachine.begin(q.contQuad,q.quadruplesGen,startTime)
 	f.close() 

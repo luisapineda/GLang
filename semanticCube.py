@@ -280,7 +280,8 @@ codes = {
 	"PARAMETER" : 32,
 	"GOSUB" : 33,
 	"ERA" : 34,
-    "input" : 35
+    "input" : 35,
+    "&" : 36
 }
 
 codesTwisted = {
@@ -319,5 +320,6 @@ codesTwisted = {
 	32 : "PARAMETER",
 	33 : "GOSUB",
 	34 : "ERA",
-    35 : "input"
+    35 : "input",
+    36 : "&"
 }

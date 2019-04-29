@@ -193,30 +193,39 @@ Rule 176   PLOT_P -> CTE_STRING PLOT_Q
 Rule 177   PLOT_Q -> COMMA PLOT_P
 Rule 178   PLOT_Q -> EMPTY
 Rule 179   PRINT -> PRINT_KEYWORD OPEN_PARENTHESIS PRINT_A
-Rule 180   PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON
-Rule 181   PRINT_B -> CTE_STRING print_string PRINT_C
-Rule 182   PRINT_B -> EXPRESIONESVARIAS print_id
-Rule 183   print_string -> <empty>
-Rule 184   print_id -> <empty>
-Rule 185   PRINT_C -> CONCATENATE PRINT_B
-Rule 186   PRINT_C -> EMPTY
-Rule 187   EXPRESIONESVARIAS -> NOT EV_C
-Rule 188   EXPRESIONESVARIAS -> EV_C
-Rule 189   EV_C -> EXP_RELOP EV_B
-Rule 190   EV_B -> AND add_ev EV_C
-Rule 191   EV_B -> OR add_ev EV_C
-Rule 192   EV_B -> EMPTY
-Rule 193   add_ev -> <empty>
-Rule 194   EXP_RELOP -> EXP EXP_RELOP_A
-Rule 195   EXP_RELOP -> EMPTY
-Rule 196   EXP_RELOP_A -> RELOP add_relop EXP
-Rule 197   EXP_RELOP_A -> EMPTY
-Rule 198   add_relop -> <empty>
-Rule 199   EMPTY -> <empty>
+Rule 180   PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON
+Rule 181   PRINT_B -> CTE_STRING add_string PRINT_C
+Rule 182   PRINT_B -> EXPRESIONESVARIAS add_temp PRINT_C
+Rule 183   add_temp -> <empty>
+Rule 184   add_string -> <empty>
+Rule 185   print_quad -> <empty>
+Rule 186   print_string -> <empty>
+Rule 187   print_id -> <empty>
+Rule 188   PRINT_C -> CONCATENATE EXPRESIONESVARIAS add_con PRINT_D
+Rule 189   PRINT_C -> CONCATENATE CTE_STRING add_exp PRINT_D
+Rule 190   PRINT_C -> EMPTY
+Rule 191   add_exp -> <empty>
+Rule 192   add_con -> <empty>
+Rule 193   PRINT_D -> CONCATENATE add_sign PRINT_B
+Rule 194   PRINT_D -> EMPTY
+Rule 195   add_sign -> <empty>
+Rule 196   EXPRESIONESVARIAS -> NOT EV_C
+Rule 197   EXPRESIONESVARIAS -> EV_C
+Rule 198   EV_C -> EXP_RELOP EV_B
+Rule 199   EV_B -> AND add_ev EV_C
+Rule 200   EV_B -> OR add_ev EV_C
+Rule 201   EV_B -> EMPTY
+Rule 202   add_ev -> <empty>
+Rule 203   EXP_RELOP -> EXP EXP_RELOP_A
+Rule 204   EXP_RELOP -> EMPTY
+Rule 205   EXP_RELOP_A -> RELOP add_relop EXP
+Rule 206   EXP_RELOP_A -> EMPTY
+Rule 207   add_relop -> <empty>
+Rule 208   EMPTY -> <empty>
 
 Terminals, with rules where they appear
 
-AND                  : 190
+AND                  : 199
 BOOL                 : 36
 BOOLEAN              : 126
 CHAR                 : 37
@@ -231,7 +240,7 @@ COLOR_ORANGE         : 115
 COLOR_PURPLE         : 113
 COLOR_RED            : 110
 COMMA                : 18 53 64 132 156 156 156 161 166 170 174 177
-CONCATENATE          : 185
+CONCATENATE          : 188 189 193
 CREATE               : 
 CREATED              : 154
 CREATEG              : 150
@@ -244,7 +253,7 @@ CREATEV              : 156
 CTE_CHAR             : 
 CTE_FLOAT            : 125 160 165
 CTE_INTEGER          : 13 15 124 156 156 156 159 164
-CTE_STRING           : 71 83 156 156 169 173 176 181
+CTE_STRING           : 71 83 156 156 169 173 176 181 189
 DIVIDE               : 106
 E                    : 
 ELSE                 : 88
@@ -263,18 +272,18 @@ MODULE               : 46
 NAME                 : 72
 NAMEX                : 73
 NAMEY                : 74
-NOT                  : 187
+NOT                  : 196
 OPEN_BRACKET         : 1 8 21 57
 OPEN_PARENTHESIS     : 46 61 71 85 91 94 109 117 128 150 151 152 153 154 155 156 157 179
 OPEN_SQUARE_BRACKET  : 13 15 78 80 129 134 139 141 157 172
-OR                   : 191
+OR                   : 200
 PI                   : 
 PLUS                 : 99 118
 POINT                : 71 109 150 151 152 153 154 155 156 157
 PRINT_KEYWORD        : 179
 PROGRAM              : 1
 QUOTE                : 
-RELOP                : 196
+RELOP                : 205
 RETURN               : 
 SEMICOLON            : 17 69 71 75 91 109 136 156 156 158 163 168 172 172 180
 TIMES                : 105
@@ -303,16 +312,16 @@ COLOR                : 33
 COLOR_A              : 109
 CONDICION            : 25
 CONDICION_A          : 85
-EMPTY                : 7 14 23 54 58 65 70 79 81 89 101 107 121 130 133 135 140 162 167 171 175 178 186 192 195 197
+EMPTY                : 7 14 23 54 58 65 70 79 81 89 101 107 121 130 133 135 140 162 167 171 175 178 190 194 201 204 206
 ESTATUTO             : 22
 ESTATUTO_A           : 21 22
-EV_B                 : 189
-EV_C                 : 187 188 190 191
-EXP                  : 67 78 80 99 100 129 131 134 139 141 194 196
-EXPRESIONESVARIAS    : 82 85 91 94 122 182
+EV_B                 : 198
+EV_C                 : 196 197 199 200
+EXP                  : 67 78 80 99 100 129 131 134 139 141 203 205
+EXPRESIONESVARIAS    : 82 85 91 94 122 182 188
 EXP_A                : 97
-EXP_RELOP            : 189
-EXP_RELOP_A          : 194
+EXP_RELOP            : 198
+EXP_RELOP_A          : 203
 FACTOR               : 103
 FACTOR_A             : 116
 FACTOR_B             : 117
@@ -355,8 +364,9 @@ PLOT_Q               : 176
 PPie                 : 143
 PRINT                : 29
 PRINT_A              : 179
-PRINT_B              : 180 185
-PRINT_C              : 181
+PRINT_B              : 180 193
+PRINT_C              : 181 182
+PRINT_D              : 188 189
 PROGRAMA             : 0
 PROGRAMA_A           : 1 6
 PRadar               : 147
@@ -379,14 +389,19 @@ VARS_E               : 11
 VARS_F               : 13
 WHILE                : 28
 addStackO            : 75
+add_con              : 188
 add_count            : 1 57
 add_equal            : 82
-add_ev               : 190 191
+add_ev               : 199 200
+add_exp              : 189
 add_functionr        : 46
 add_inputid          : 136
 add_operator         : 105 106
-add_relop            : 196
+add_relop            : 205
+add_sign             : 193
 add_start            : 57
+add_string           : 181
+add_temp             : 182
 add_variable         : 11
 add_variable_m       : 55
 addfunction          : 1
@@ -407,8 +422,9 @@ incK                 : 64
 param_table          : 57
 pop_exp              : 97
 pop_term             : 103
-print_id             : 182
-print_string         : 181
+print_id             : 
+print_quad           : 180
+print_string         : 
 quad                 : 75
 quad_input           : 136
 quad_main            : 1
@@ -487,10 +503,10 @@ state 8
     (6) PROGRAMA_A -> . MODULO PROGRAMA_A
     (7) PROGRAMA_A -> . EMPTY
     (46) MODULO -> . MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
     MODULE          shift and go to state 13
-    MAIN            reduce using rule 199 (EMPTY -> .)
+    MAIN            reduce using rule 208 (EMPTY -> .)
 
     PROGRAMA_A                     shift and go to state 10
     MODULO                         shift and go to state 11
@@ -544,10 +560,10 @@ state 11
     (6) PROGRAMA_A -> . MODULO PROGRAMA_A
     (7) PROGRAMA_A -> . EMPTY
     (46) MODULO -> . MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
     MODULE          shift and go to state 13
-    MAIN            reduce using rule 199 (EMPTY -> .)
+    MAIN            reduce using rule 208 (EMPTY -> .)
 
     MODULO                         shift and go to state 11
     PROGRAMA_A                     shift and go to state 30
@@ -783,11 +799,11 @@ state 39
     (11) VARS_B -> ID add_variable . VARS_E VARS_C
     (13) VARS_E -> . OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_F
     (14) VARS_E -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
     OPEN_SQUARE_BRACKET shift and go to state 44
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
 
     VARS_E                         shift and go to state 43
     EMPTY                          shift and go to state 45
@@ -807,7 +823,7 @@ state 40
     (31) ESTATUTO -> . LLAMADAMODULO
     (32) ESTATUTO -> . INPUT
     (33) ESTATUTO -> . COLOR
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (75) ASIGNACION -> . ID addStackO ASIGNACION_A ASIGNACION_C SEMICOLON quad
     (85) CONDICION -> . IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE CONDICION_A fill_end
     (71) NOMBRAR -> . ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS SEMICOLON
@@ -834,7 +850,7 @@ state 40
     (156) PVenn -> . ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
     (157) PLOT_B -> . ID POINT CREATEN OPEN_PARENTHESIS OPEN_SQUARE_BRACKET PLOT_M
 
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
     ID              shift and go to state 59
     IF              shift and go to state 60
     FOR_KEYWORD     shift and go to state 61
@@ -926,7 +942,7 @@ state 47
     (31) ESTATUTO -> . LLAMADAMODULO
     (32) ESTATUTO -> . INPUT
     (33) ESTATUTO -> . COLOR
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (75) ASIGNACION -> . ID addStackO ASIGNACION_A ASIGNACION_C SEMICOLON quad
     (85) CONDICION -> . IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE CONDICION_A fill_end
     (71) NOMBRAR -> . ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS SEMICOLON
@@ -953,7 +969,7 @@ state 47
     (156) PVenn -> . ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
     (157) PLOT_B -> . ID POINT CREATEN OPEN_PARENTHESIS OPEN_SQUARE_BRACKET PLOT_M
 
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
     ID              shift and go to state 59
     IF              shift and go to state 60
     FOR_KEYWORD     shift and go to state 61
@@ -1402,10 +1418,10 @@ state 81
     (75) ASIGNACION -> ID addStackO . ASIGNACION_A ASIGNACION_C SEMICOLON quad
     (78) ASIGNACION_A -> . OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ASIGNACION_B
     (79) ASIGNACION_A -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
     OPEN_SQUARE_BRACKET shift and go to state 98
-    EQUAL           reduce using rule 199 (EMPTY -> .)
+    EQUAL           reduce using rule 208 (EMPTY -> .)
 
     ASIGNACION_A                   shift and go to state 97
     EMPTY                          shift and go to state 99
@@ -1451,13 +1467,13 @@ state 83
 state 84
 
     (85) CONDICION -> IF OPEN_PARENTHESIS . EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE CONDICION_A fill_end
-    (187) EXPRESIONESVARIAS -> . NOT EV_C
-    (188) EXPRESIONESVARIAS -> . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (196) EXPRESIONESVARIAS -> . NOT EV_C
+    (197) EXPRESIONESVARIAS -> . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -1474,12 +1490,12 @@ state 84
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINS resolved as shift
     NOT             shift and go to state 116
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -1488,8 +1504,8 @@ state 84
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     EXPRESIONESVARIAS              shift and go to state 115
     EV_C                           shift and go to state 117
@@ -1514,13 +1530,13 @@ state 85
 state 86
 
     (94) WHILE -> WHILE_KEYWORD OPEN_PARENTHESIS . EXPRESIONESVARIAS CLOSE_PARENTHESIS bool_while BLOQUE goto_while
-    (187) EXPRESIONESVARIAS -> . NOT EV_C
-    (188) EXPRESIONESVARIAS -> . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (196) EXPRESIONESVARIAS -> . NOT EV_C
+    (197) EXPRESIONESVARIAS -> . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -1537,12 +1553,12 @@ state 86
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINS resolved as shift
     NOT             shift and go to state 116
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -1551,8 +1567,8 @@ state 86
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     EXPRESIONESVARIAS              shift and go to state 134
     EV_C                           shift and go to state 117
@@ -1568,16 +1584,16 @@ state 86
 state 87
 
     (179) PRINT -> PRINT_KEYWORD OPEN_PARENTHESIS . PRINT_A
-    (180) PRINT_A -> . PRINT_B CLOSE_PARENTHESIS SEMICOLON
-    (181) PRINT_B -> . CTE_STRING print_string PRINT_C
-    (182) PRINT_B -> . EXPRESIONESVARIAS print_id
-    (187) EXPRESIONESVARIAS -> . NOT EV_C
-    (188) EXPRESIONESVARIAS -> . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (180) PRINT_A -> . PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON
+    (181) PRINT_B -> . CTE_STRING add_string PRINT_C
+    (182) PRINT_B -> . EXPRESIONESVARIAS add_temp PRINT_C
+    (196) EXPRESIONESVARIAS -> . NOT EV_C
+    (197) EXPRESIONESVARIAS -> . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -1595,12 +1611,13 @@ state 87
   ! shift/reduce conflict for MINS resolved as shift
     CTE_STRING      shift and go to state 137
     NOT             shift and go to state 116
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -1609,8 +1626,8 @@ state 87
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     PRINT_A                        shift and go to state 135
     PRINT_B                        shift and go to state 136
@@ -1737,7 +1754,7 @@ state 98
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -1748,16 +1765,16 @@ state 98
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     EXP                            shift and go to state 147
     TERMINO                        shift and go to state 121
@@ -1878,7 +1895,7 @@ state 113
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -1890,24 +1907,24 @@ state 113
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
 
     LLAMADAMODULO_C                shift and go to state 159
     EXP                            shift and go to state 160
@@ -1922,13 +1939,13 @@ state 114
 
     (117) FACTOR_A -> OPEN_PARENTHESIS . FACTOR_B CLOSE_PARENTHESIS
     (122) FACTOR_B -> . EXPRESIONESVARIAS FACTOR_C
-    (187) EXPRESIONESVARIAS -> . NOT EV_C
-    (188) EXPRESIONESVARIAS -> . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (196) EXPRESIONESVARIAS -> . NOT EV_C
+    (197) EXPRESIONESVARIAS -> . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -1949,11 +1966,11 @@ state 114
   ! shift/reduce conflict for BOOLEAN resolved as shift
   ! shift/reduce conflict for ID resolved as shift
     NOT             shift and go to state 116
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -1962,12 +1979,12 @@ state 114
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     FACTOR_B                       shift and go to state 161
     EXPRESIONESVARIAS              shift and go to state 162
@@ -1990,12 +2007,12 @@ state 115
 
 state 116
 
-    (187) EXPRESIONESVARIAS -> NOT . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (196) EXPRESIONESVARIAS -> NOT . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -2015,13 +2032,14 @@ state 116
   ! shift/reduce conflict for CTE_FLOAT resolved as shift
   ! shift/reduce conflict for BOOLEAN resolved as shift
   ! shift/reduce conflict for ID resolved as shift
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -2030,12 +2048,12 @@ state 116
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     EV_C                           shift and go to state 164
     EXP_RELOP                      shift and go to state 118
@@ -2049,64 +2067,68 @@ state 116
 
 state 117
 
-    (188) EXPRESIONESVARIAS -> EV_C .
+    (197) EXPRESIONESVARIAS -> EV_C .
 
-    CLOSE_PARENTHESIS reduce using rule 188 (EXPRESIONESVARIAS -> EV_C .)
-    CTE_INTEGER     reduce using rule 188 (EXPRESIONESVARIAS -> EV_C .)
-    CTE_FLOAT       reduce using rule 188 (EXPRESIONESVARIAS -> EV_C .)
-    BOOLEAN         reduce using rule 188 (EXPRESIONESVARIAS -> EV_C .)
-    ID              reduce using rule 188 (EXPRESIONESVARIAS -> EV_C .)
-    SEMICOLON       reduce using rule 188 (EXPRESIONESVARIAS -> EV_C .)
+    CLOSE_PARENTHESIS reduce using rule 197 (EXPRESIONESVARIAS -> EV_C .)
+    CONCATENATE     reduce using rule 197 (EXPRESIONESVARIAS -> EV_C .)
+    CTE_INTEGER     reduce using rule 197 (EXPRESIONESVARIAS -> EV_C .)
+    CTE_FLOAT       reduce using rule 197 (EXPRESIONESVARIAS -> EV_C .)
+    BOOLEAN         reduce using rule 197 (EXPRESIONESVARIAS -> EV_C .)
+    ID              reduce using rule 197 (EXPRESIONESVARIAS -> EV_C .)
+    SEMICOLON       reduce using rule 197 (EXPRESIONESVARIAS -> EV_C .)
 
 
 state 118
 
-    (189) EV_C -> EXP_RELOP . EV_B
-    (190) EV_B -> . AND add_ev EV_C
-    (191) EV_B -> . OR add_ev EV_C
-    (192) EV_B -> . EMPTY
-    (199) EMPTY -> .
+    (198) EV_C -> EXP_RELOP . EV_B
+    (199) EV_B -> . AND add_ev EV_C
+    (200) EV_B -> . OR add_ev EV_C
+    (201) EV_B -> . EMPTY
+    (208) EMPTY -> .
 
     AND             shift and go to state 166
     OR              shift and go to state 167
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CTE_INTEGER     reduce using rule 199 (EMPTY -> .)
-    CTE_FLOAT       reduce using rule 199 (EMPTY -> .)
-    BOOLEAN         reduce using rule 199 (EMPTY -> .)
-    ID              reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CTE_INTEGER     reduce using rule 208 (EMPTY -> .)
+    CTE_FLOAT       reduce using rule 208 (EMPTY -> .)
+    BOOLEAN         reduce using rule 208 (EMPTY -> .)
+    ID              reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
     EV_B                           shift and go to state 165
     EMPTY                          shift and go to state 168
 
 state 119
 
-    (194) EXP_RELOP -> EXP . EXP_RELOP_A
-    (196) EXP_RELOP_A -> . RELOP add_relop EXP
-    (197) EXP_RELOP_A -> . EMPTY
-    (199) EMPTY -> .
+    (203) EXP_RELOP -> EXP . EXP_RELOP_A
+    (205) EXP_RELOP_A -> . RELOP add_relop EXP
+    (206) EXP_RELOP_A -> . EMPTY
+    (208) EMPTY -> .
 
     RELOP           shift and go to state 170
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CTE_INTEGER     reduce using rule 199 (EMPTY -> .)
-    CTE_FLOAT       reduce using rule 199 (EMPTY -> .)
-    BOOLEAN         reduce using rule 199 (EMPTY -> .)
-    ID              reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CTE_INTEGER     reduce using rule 208 (EMPTY -> .)
+    CTE_FLOAT       reduce using rule 208 (EMPTY -> .)
+    BOOLEAN         reduce using rule 208 (EMPTY -> .)
+    ID              reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
     EXP_RELOP_A                    shift and go to state 169
     EMPTY                          shift and go to state 171
 
 state 120
 
-    (195) EXP_RELOP -> EMPTY .
+    (204) EXP_RELOP -> EMPTY .
     (121) FACTOR_A -> EMPTY .
 
   ! reduce/reduce conflict for AND resolved using rule 121 (FACTOR_A -> EMPTY .)
   ! reduce/reduce conflict for OR resolved using rule 121 (FACTOR_A -> EMPTY .)
   ! reduce/reduce conflict for CLOSE_PARENTHESIS resolved using rule 121 (FACTOR_A -> EMPTY .)
+  ! reduce/reduce conflict for CONCATENATE resolved using rule 121 (FACTOR_A -> EMPTY .)
   ! reduce/reduce conflict for CTE_INTEGER resolved using rule 121 (FACTOR_A -> EMPTY .)
   ! reduce/reduce conflict for CTE_FLOAT resolved using rule 121 (FACTOR_A -> EMPTY .)
   ! reduce/reduce conflict for BOOLEAN resolved using rule 121 (FACTOR_A -> EMPTY .)
@@ -2120,20 +2142,22 @@ state 120
     AND             reduce using rule 121 (FACTOR_A -> EMPTY .)
     OR              reduce using rule 121 (FACTOR_A -> EMPTY .)
     CLOSE_PARENTHESIS reduce using rule 121 (FACTOR_A -> EMPTY .)
+    CONCATENATE     reduce using rule 121 (FACTOR_A -> EMPTY .)
     CTE_INTEGER     reduce using rule 121 (FACTOR_A -> EMPTY .)
     CTE_FLOAT       reduce using rule 121 (FACTOR_A -> EMPTY .)
     BOOLEAN         reduce using rule 121 (FACTOR_A -> EMPTY .)
     ID              reduce using rule 121 (FACTOR_A -> EMPTY .)
     SEMICOLON       reduce using rule 121 (FACTOR_A -> EMPTY .)
 
-  ! AND             [ reduce using rule 195 (EXP_RELOP -> EMPTY .) ]
-  ! OR              [ reduce using rule 195 (EXP_RELOP -> EMPTY .) ]
-  ! CLOSE_PARENTHESIS [ reduce using rule 195 (EXP_RELOP -> EMPTY .) ]
-  ! CTE_INTEGER     [ reduce using rule 195 (EXP_RELOP -> EMPTY .) ]
-  ! CTE_FLOAT       [ reduce using rule 195 (EXP_RELOP -> EMPTY .) ]
-  ! BOOLEAN         [ reduce using rule 195 (EXP_RELOP -> EMPTY .) ]
-  ! ID              [ reduce using rule 195 (EXP_RELOP -> EMPTY .) ]
-  ! SEMICOLON       [ reduce using rule 195 (EXP_RELOP -> EMPTY .) ]
+  ! AND             [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
+  ! OR              [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
+  ! CLOSE_PARENTHESIS [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
+  ! CONCATENATE     [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
+  ! CTE_INTEGER     [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
+  ! CTE_FLOAT       [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
+  ! BOOLEAN         [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
+  ! ID              [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
+  ! SEMICOLON       [ reduce using rule 204 (EXP_RELOP -> EMPTY .) ]
 
 
 state 121
@@ -2147,6 +2171,7 @@ state 121
     AND             reduce using rule 98 (pop_exp -> .)
     OR              reduce using rule 98 (pop_exp -> .)
     CLOSE_PARENTHESIS reduce using rule 98 (pop_exp -> .)
+    CONCATENATE     reduce using rule 98 (pop_exp -> .)
     CLOSE_SQUARE_BRACKET reduce using rule 98 (pop_exp -> .)
     COMMA           reduce using rule 98 (pop_exp -> .)
     ID              reduce using rule 98 (pop_exp -> .)
@@ -2176,6 +2201,7 @@ state 122
     AND             reduce using rule 104 (pop_term -> .)
     OR              reduce using rule 104 (pop_term -> .)
     CLOSE_PARENTHESIS reduce using rule 104 (pop_term -> .)
+    CONCATENATE     reduce using rule 104 (pop_term -> .)
     CLOSE_SQUARE_BRACKET reduce using rule 104 (pop_term -> .)
     COMMA           reduce using rule 104 (pop_term -> .)
     ID              reduce using rule 104 (pop_term -> .)
@@ -2204,6 +2230,7 @@ state 123
     AND             reduce using rule 116 (FACTOR -> FACTOR_A .)
     OR              reduce using rule 116 (FACTOR -> FACTOR_A .)
     CLOSE_PARENTHESIS reduce using rule 116 (FACTOR -> FACTOR_A .)
+    CONCATENATE     reduce using rule 116 (FACTOR -> FACTOR_A .)
     CLOSE_SQUARE_BRACKET reduce using rule 116 (FACTOR -> FACTOR_A .)
     COMMA           reduce using rule 116 (FACTOR -> FACTOR_A .)
     ID              reduce using rule 116 (FACTOR -> FACTOR_A .)
@@ -2248,6 +2275,7 @@ state 125
     AND             reduce using rule 120 (FACTOR_A -> FACTOR_C .)
     OR              reduce using rule 120 (FACTOR_A -> FACTOR_C .)
     CLOSE_PARENTHESIS reduce using rule 120 (FACTOR_A -> FACTOR_C .)
+    CONCATENATE     reduce using rule 120 (FACTOR_A -> FACTOR_C .)
     CLOSE_SQUARE_BRACKET reduce using rule 120 (FACTOR_A -> FACTOR_C .)
     COMMA           reduce using rule 120 (FACTOR_A -> FACTOR_C .)
     ID              reduce using rule 120 (FACTOR_A -> FACTOR_C .)
@@ -2292,6 +2320,7 @@ state 127
     AND             reduce using rule 123 (FACTOR_C -> VARS_CTE .)
     OR              reduce using rule 123 (FACTOR_C -> VARS_CTE .)
     CLOSE_PARENTHESIS reduce using rule 123 (FACTOR_C -> VARS_CTE .)
+    CONCATENATE     reduce using rule 123 (FACTOR_C -> VARS_CTE .)
     CLOSE_SQUARE_BRACKET reduce using rule 123 (FACTOR_C -> VARS_CTE .)
     COMMA           reduce using rule 123 (FACTOR_C -> VARS_CTE .)
     ID              reduce using rule 123 (FACTOR_C -> VARS_CTE .)
@@ -2319,6 +2348,7 @@ state 128
     AND             reduce using rule 124 (VARS_CTE -> CTE_INTEGER .)
     OR              reduce using rule 124 (VARS_CTE -> CTE_INTEGER .)
     CLOSE_PARENTHESIS reduce using rule 124 (VARS_CTE -> CTE_INTEGER .)
+    CONCATENATE     reduce using rule 124 (VARS_CTE -> CTE_INTEGER .)
     CLOSE_SQUARE_BRACKET reduce using rule 124 (VARS_CTE -> CTE_INTEGER .)
     COMMA           reduce using rule 124 (VARS_CTE -> CTE_INTEGER .)
     ID              reduce using rule 124 (VARS_CTE -> CTE_INTEGER .)
@@ -2346,6 +2376,7 @@ state 129
     AND             reduce using rule 125 (VARS_CTE -> CTE_FLOAT .)
     OR              reduce using rule 125 (VARS_CTE -> CTE_FLOAT .)
     CLOSE_PARENTHESIS reduce using rule 125 (VARS_CTE -> CTE_FLOAT .)
+    CONCATENATE     reduce using rule 125 (VARS_CTE -> CTE_FLOAT .)
     CLOSE_SQUARE_BRACKET reduce using rule 125 (VARS_CTE -> CTE_FLOAT .)
     COMMA           reduce using rule 125 (VARS_CTE -> CTE_FLOAT .)
     ID              reduce using rule 125 (VARS_CTE -> CTE_FLOAT .)
@@ -2373,6 +2404,7 @@ state 130
     AND             reduce using rule 126 (VARS_CTE -> BOOLEAN .)
     OR              reduce using rule 126 (VARS_CTE -> BOOLEAN .)
     CLOSE_PARENTHESIS reduce using rule 126 (VARS_CTE -> BOOLEAN .)
+    CONCATENATE     reduce using rule 126 (VARS_CTE -> BOOLEAN .)
     CLOSE_SQUARE_BRACKET reduce using rule 126 (VARS_CTE -> BOOLEAN .)
     COMMA           reduce using rule 126 (VARS_CTE -> BOOLEAN .)
     ID              reduce using rule 126 (VARS_CTE -> BOOLEAN .)
@@ -2394,31 +2426,32 @@ state 131
     (128) VARS_CTE_A -> . OPEN_PARENTHESIS VARS_CTE_B
     (129) VARS_CTE_A -> . OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D
     (130) VARS_CTE_A -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
     OPEN_PARENTHESIS shift and go to state 177
     OPEN_SQUARE_BRACKET shift and go to state 178
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    PLUS            reduce using rule 199 (EMPTY -> .)
-    MINS            reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    ID              reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
-    CTE_INTEGER     reduce using rule 199 (EMPTY -> .)
-    CTE_FLOAT       reduce using rule 199 (EMPTY -> .)
-    BOOLEAN         reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    PLUS            reduce using rule 208 (EMPTY -> .)
+    MINS            reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    ID              reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
+    CTE_INTEGER     reduce using rule 208 (EMPTY -> .)
+    CTE_FLOAT       reduce using rule 208 (EMPTY -> .)
+    BOOLEAN         reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
     VARS_CTE_A                     shift and go to state 176
     EMPTY                          shift and go to state 179
@@ -2426,13 +2459,13 @@ state 131
 state 132
 
     (91) FOR -> FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION . EXPRESIONESVARIAS bool_for SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for
-    (187) EXPRESIONESVARIAS -> . NOT EV_C
-    (188) EXPRESIONESVARIAS -> . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (196) EXPRESIONESVARIAS -> . NOT EV_C
+    (197) EXPRESIONESVARIAS -> . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -2449,12 +2482,12 @@ state 132
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINS resolved as shift
     NOT             shift and go to state 116
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -2463,8 +2496,8 @@ state 132
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     EXPRESIONESVARIAS              shift and go to state 180
     EV_C                           shift and go to state 117
@@ -2509,29 +2542,30 @@ state 135
 
 state 136
 
-    (180) PRINT_A -> PRINT_B . CLOSE_PARENTHESIS SEMICOLON
+    (180) PRINT_A -> PRINT_B . CLOSE_PARENTHESIS print_quad SEMICOLON
 
     CLOSE_PARENTHESIS shift and go to state 182
 
 
 state 137
 
-    (181) PRINT_B -> CTE_STRING . print_string PRINT_C
-    (183) print_string -> .
+    (181) PRINT_B -> CTE_STRING . add_string PRINT_C
+    (184) add_string -> .
 
-    CONCATENATE     reduce using rule 183 (print_string -> .)
-    CLOSE_PARENTHESIS reduce using rule 183 (print_string -> .)
+    CONCATENATE     reduce using rule 184 (add_string -> .)
+    CLOSE_PARENTHESIS reduce using rule 184 (add_string -> .)
 
-    print_string                   shift and go to state 183
+    add_string                     shift and go to state 183
 
 state 138
 
-    (182) PRINT_B -> EXPRESIONESVARIAS . print_id
-    (184) print_id -> .
+    (182) PRINT_B -> EXPRESIONESVARIAS . add_temp PRINT_C
+    (183) add_temp -> .
 
-    CLOSE_PARENTHESIS reduce using rule 184 (print_id -> .)
+    CONCATENATE     reduce using rule 183 (add_temp -> .)
+    CLOSE_PARENTHESIS reduce using rule 183 (add_temp -> .)
 
-    print_id                       shift and go to state 184
+    add_temp                       shift and go to state 184
 
 state 139
 
@@ -2646,6 +2680,7 @@ state 148
     CLOSE_BRACKET   reduce using rule 121 (FACTOR_A -> EMPTY .)
     AND             reduce using rule 121 (FACTOR_A -> EMPTY .)
     OR              reduce using rule 121 (FACTOR_A -> EMPTY .)
+    CONCATENATE     reduce using rule 121 (FACTOR_A -> EMPTY .)
     CTE_INTEGER     reduce using rule 121 (FACTOR_A -> EMPTY .)
     CTE_FLOAT       reduce using rule 121 (FACTOR_A -> EMPTY .)
     BOOLEAN         reduce using rule 121 (FACTOR_A -> EMPTY .)
@@ -2838,131 +2873,139 @@ state 163
 
 state 164
 
-    (187) EXPRESIONESVARIAS -> NOT EV_C .
+    (196) EXPRESIONESVARIAS -> NOT EV_C .
 
-    CLOSE_PARENTHESIS reduce using rule 187 (EXPRESIONESVARIAS -> NOT EV_C .)
-    CTE_INTEGER     reduce using rule 187 (EXPRESIONESVARIAS -> NOT EV_C .)
-    CTE_FLOAT       reduce using rule 187 (EXPRESIONESVARIAS -> NOT EV_C .)
-    BOOLEAN         reduce using rule 187 (EXPRESIONESVARIAS -> NOT EV_C .)
-    ID              reduce using rule 187 (EXPRESIONESVARIAS -> NOT EV_C .)
-    SEMICOLON       reduce using rule 187 (EXPRESIONESVARIAS -> NOT EV_C .)
+    CLOSE_PARENTHESIS reduce using rule 196 (EXPRESIONESVARIAS -> NOT EV_C .)
+    CONCATENATE     reduce using rule 196 (EXPRESIONESVARIAS -> NOT EV_C .)
+    CTE_INTEGER     reduce using rule 196 (EXPRESIONESVARIAS -> NOT EV_C .)
+    CTE_FLOAT       reduce using rule 196 (EXPRESIONESVARIAS -> NOT EV_C .)
+    BOOLEAN         reduce using rule 196 (EXPRESIONESVARIAS -> NOT EV_C .)
+    ID              reduce using rule 196 (EXPRESIONESVARIAS -> NOT EV_C .)
+    SEMICOLON       reduce using rule 196 (EXPRESIONESVARIAS -> NOT EV_C .)
 
 
 state 165
 
-    (189) EV_C -> EXP_RELOP EV_B .
+    (198) EV_C -> EXP_RELOP EV_B .
 
-    CLOSE_PARENTHESIS reduce using rule 189 (EV_C -> EXP_RELOP EV_B .)
-    CTE_INTEGER     reduce using rule 189 (EV_C -> EXP_RELOP EV_B .)
-    CTE_FLOAT       reduce using rule 189 (EV_C -> EXP_RELOP EV_B .)
-    BOOLEAN         reduce using rule 189 (EV_C -> EXP_RELOP EV_B .)
-    ID              reduce using rule 189 (EV_C -> EXP_RELOP EV_B .)
-    SEMICOLON       reduce using rule 189 (EV_C -> EXP_RELOP EV_B .)
+    CLOSE_PARENTHESIS reduce using rule 198 (EV_C -> EXP_RELOP EV_B .)
+    CONCATENATE     reduce using rule 198 (EV_C -> EXP_RELOP EV_B .)
+    CTE_INTEGER     reduce using rule 198 (EV_C -> EXP_RELOP EV_B .)
+    CTE_FLOAT       reduce using rule 198 (EV_C -> EXP_RELOP EV_B .)
+    BOOLEAN         reduce using rule 198 (EV_C -> EXP_RELOP EV_B .)
+    ID              reduce using rule 198 (EV_C -> EXP_RELOP EV_B .)
+    SEMICOLON       reduce using rule 198 (EV_C -> EXP_RELOP EV_B .)
 
 
 state 166
 
-    (190) EV_B -> AND . add_ev EV_C
-    (193) add_ev -> .
+    (199) EV_B -> AND . add_ev EV_C
+    (202) add_ev -> .
 
-    OPEN_PARENTHESIS reduce using rule 193 (add_ev -> .)
-    PLUS            reduce using rule 193 (add_ev -> .)
-    MINS            reduce using rule 193 (add_ev -> .)
-    CTE_INTEGER     reduce using rule 193 (add_ev -> .)
-    CTE_FLOAT       reduce using rule 193 (add_ev -> .)
-    BOOLEAN         reduce using rule 193 (add_ev -> .)
-    ID              reduce using rule 193 (add_ev -> .)
-    AND             reduce using rule 193 (add_ev -> .)
-    OR              reduce using rule 193 (add_ev -> .)
-    RELOP           reduce using rule 193 (add_ev -> .)
-    TIMES           reduce using rule 193 (add_ev -> .)
-    DIVIDE          reduce using rule 193 (add_ev -> .)
-    CLOSE_PARENTHESIS reduce using rule 193 (add_ev -> .)
-    SEMICOLON       reduce using rule 193 (add_ev -> .)
+    OPEN_PARENTHESIS reduce using rule 202 (add_ev -> .)
+    PLUS            reduce using rule 202 (add_ev -> .)
+    MINS            reduce using rule 202 (add_ev -> .)
+    CTE_INTEGER     reduce using rule 202 (add_ev -> .)
+    CTE_FLOAT       reduce using rule 202 (add_ev -> .)
+    BOOLEAN         reduce using rule 202 (add_ev -> .)
+    ID              reduce using rule 202 (add_ev -> .)
+    AND             reduce using rule 202 (add_ev -> .)
+    OR              reduce using rule 202 (add_ev -> .)
+    RELOP           reduce using rule 202 (add_ev -> .)
+    TIMES           reduce using rule 202 (add_ev -> .)
+    DIVIDE          reduce using rule 202 (add_ev -> .)
+    CLOSE_PARENTHESIS reduce using rule 202 (add_ev -> .)
+    CONCATENATE     reduce using rule 202 (add_ev -> .)
+    SEMICOLON       reduce using rule 202 (add_ev -> .)
 
     add_ev                         shift and go to state 220
 
 state 167
 
-    (191) EV_B -> OR . add_ev EV_C
-    (193) add_ev -> .
+    (200) EV_B -> OR . add_ev EV_C
+    (202) add_ev -> .
 
-    OPEN_PARENTHESIS reduce using rule 193 (add_ev -> .)
-    PLUS            reduce using rule 193 (add_ev -> .)
-    MINS            reduce using rule 193 (add_ev -> .)
-    CTE_INTEGER     reduce using rule 193 (add_ev -> .)
-    CTE_FLOAT       reduce using rule 193 (add_ev -> .)
-    BOOLEAN         reduce using rule 193 (add_ev -> .)
-    ID              reduce using rule 193 (add_ev -> .)
-    AND             reduce using rule 193 (add_ev -> .)
-    OR              reduce using rule 193 (add_ev -> .)
-    RELOP           reduce using rule 193 (add_ev -> .)
-    TIMES           reduce using rule 193 (add_ev -> .)
-    DIVIDE          reduce using rule 193 (add_ev -> .)
-    CLOSE_PARENTHESIS reduce using rule 193 (add_ev -> .)
-    SEMICOLON       reduce using rule 193 (add_ev -> .)
+    OPEN_PARENTHESIS reduce using rule 202 (add_ev -> .)
+    PLUS            reduce using rule 202 (add_ev -> .)
+    MINS            reduce using rule 202 (add_ev -> .)
+    CTE_INTEGER     reduce using rule 202 (add_ev -> .)
+    CTE_FLOAT       reduce using rule 202 (add_ev -> .)
+    BOOLEAN         reduce using rule 202 (add_ev -> .)
+    ID              reduce using rule 202 (add_ev -> .)
+    AND             reduce using rule 202 (add_ev -> .)
+    OR              reduce using rule 202 (add_ev -> .)
+    RELOP           reduce using rule 202 (add_ev -> .)
+    TIMES           reduce using rule 202 (add_ev -> .)
+    DIVIDE          reduce using rule 202 (add_ev -> .)
+    CLOSE_PARENTHESIS reduce using rule 202 (add_ev -> .)
+    CONCATENATE     reduce using rule 202 (add_ev -> .)
+    SEMICOLON       reduce using rule 202 (add_ev -> .)
 
     add_ev                         shift and go to state 221
 
 state 168
 
-    (192) EV_B -> EMPTY .
+    (201) EV_B -> EMPTY .
 
-    CLOSE_PARENTHESIS reduce using rule 192 (EV_B -> EMPTY .)
-    CTE_INTEGER     reduce using rule 192 (EV_B -> EMPTY .)
-    CTE_FLOAT       reduce using rule 192 (EV_B -> EMPTY .)
-    BOOLEAN         reduce using rule 192 (EV_B -> EMPTY .)
-    ID              reduce using rule 192 (EV_B -> EMPTY .)
-    SEMICOLON       reduce using rule 192 (EV_B -> EMPTY .)
+    CLOSE_PARENTHESIS reduce using rule 201 (EV_B -> EMPTY .)
+    CONCATENATE     reduce using rule 201 (EV_B -> EMPTY .)
+    CTE_INTEGER     reduce using rule 201 (EV_B -> EMPTY .)
+    CTE_FLOAT       reduce using rule 201 (EV_B -> EMPTY .)
+    BOOLEAN         reduce using rule 201 (EV_B -> EMPTY .)
+    ID              reduce using rule 201 (EV_B -> EMPTY .)
+    SEMICOLON       reduce using rule 201 (EV_B -> EMPTY .)
 
 
 state 169
 
-    (194) EXP_RELOP -> EXP EXP_RELOP_A .
+    (203) EXP_RELOP -> EXP EXP_RELOP_A .
 
-    AND             reduce using rule 194 (EXP_RELOP -> EXP EXP_RELOP_A .)
-    OR              reduce using rule 194 (EXP_RELOP -> EXP EXP_RELOP_A .)
-    CLOSE_PARENTHESIS reduce using rule 194 (EXP_RELOP -> EXP EXP_RELOP_A .)
-    CTE_INTEGER     reduce using rule 194 (EXP_RELOP -> EXP EXP_RELOP_A .)
-    CTE_FLOAT       reduce using rule 194 (EXP_RELOP -> EXP EXP_RELOP_A .)
-    BOOLEAN         reduce using rule 194 (EXP_RELOP -> EXP EXP_RELOP_A .)
-    ID              reduce using rule 194 (EXP_RELOP -> EXP EXP_RELOP_A .)
-    SEMICOLON       reduce using rule 194 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    AND             reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    OR              reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    CLOSE_PARENTHESIS reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    CONCATENATE     reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    CTE_INTEGER     reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    CTE_FLOAT       reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    BOOLEAN         reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    ID              reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
+    SEMICOLON       reduce using rule 203 (EXP_RELOP -> EXP EXP_RELOP_A .)
 
 
 state 170
 
-    (196) EXP_RELOP_A -> RELOP . add_relop EXP
-    (198) add_relop -> .
+    (205) EXP_RELOP_A -> RELOP . add_relop EXP
+    (207) add_relop -> .
 
-    OPEN_PARENTHESIS reduce using rule 198 (add_relop -> .)
-    PLUS            reduce using rule 198 (add_relop -> .)
-    MINS            reduce using rule 198 (add_relop -> .)
-    CTE_INTEGER     reduce using rule 198 (add_relop -> .)
-    CTE_FLOAT       reduce using rule 198 (add_relop -> .)
-    BOOLEAN         reduce using rule 198 (add_relop -> .)
-    ID              reduce using rule 198 (add_relop -> .)
-    TIMES           reduce using rule 198 (add_relop -> .)
-    DIVIDE          reduce using rule 198 (add_relop -> .)
-    AND             reduce using rule 198 (add_relop -> .)
-    OR              reduce using rule 198 (add_relop -> .)
-    CLOSE_PARENTHESIS reduce using rule 198 (add_relop -> .)
-    SEMICOLON       reduce using rule 198 (add_relop -> .)
+    OPEN_PARENTHESIS reduce using rule 207 (add_relop -> .)
+    PLUS            reduce using rule 207 (add_relop -> .)
+    MINS            reduce using rule 207 (add_relop -> .)
+    CTE_INTEGER     reduce using rule 207 (add_relop -> .)
+    CTE_FLOAT       reduce using rule 207 (add_relop -> .)
+    BOOLEAN         reduce using rule 207 (add_relop -> .)
+    ID              reduce using rule 207 (add_relop -> .)
+    TIMES           reduce using rule 207 (add_relop -> .)
+    DIVIDE          reduce using rule 207 (add_relop -> .)
+    AND             reduce using rule 207 (add_relop -> .)
+    OR              reduce using rule 207 (add_relop -> .)
+    CLOSE_PARENTHESIS reduce using rule 207 (add_relop -> .)
+    CONCATENATE     reduce using rule 207 (add_relop -> .)
+    SEMICOLON       reduce using rule 207 (add_relop -> .)
 
     add_relop                      shift and go to state 222
 
 state 171
 
-    (197) EXP_RELOP_A -> EMPTY .
+    (206) EXP_RELOP_A -> EMPTY .
 
-    AND             reduce using rule 197 (EXP_RELOP_A -> EMPTY .)
-    OR              reduce using rule 197 (EXP_RELOP_A -> EMPTY .)
-    CLOSE_PARENTHESIS reduce using rule 197 (EXP_RELOP_A -> EMPTY .)
-    CTE_INTEGER     reduce using rule 197 (EXP_RELOP_A -> EMPTY .)
-    CTE_FLOAT       reduce using rule 197 (EXP_RELOP_A -> EMPTY .)
-    BOOLEAN         reduce using rule 197 (EXP_RELOP_A -> EMPTY .)
-    ID              reduce using rule 197 (EXP_RELOP_A -> EMPTY .)
-    SEMICOLON       reduce using rule 197 (EXP_RELOP_A -> EMPTY .)
+    AND             reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
+    OR              reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
+    CLOSE_PARENTHESIS reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
+    CONCATENATE     reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
+    CTE_INTEGER     reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
+    CTE_FLOAT       reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
+    BOOLEAN         reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
+    ID              reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
+    SEMICOLON       reduce using rule 206 (EXP_RELOP_A -> EMPTY .)
 
 
 state 172
@@ -2971,27 +3014,28 @@ state 172
     (99) EXP_A -> . PLUS append_operator EXP
     (100) EXP_A -> . MINS append_operator EXP
     (101) EXP_A -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
     PLUS            shift and go to state 224
     MINS            shift and go to state 225
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    ID              reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
-    CTE_INTEGER     reduce using rule 199 (EMPTY -> .)
-    CTE_FLOAT       reduce using rule 199 (EMPTY -> .)
-    BOOLEAN         reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    ID              reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
+    CTE_INTEGER     reduce using rule 208 (EMPTY -> .)
+    CTE_FLOAT       reduce using rule 208 (EMPTY -> .)
+    BOOLEAN         reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
     EXP_A                          shift and go to state 223
     EMPTY                          shift and go to state 226
@@ -3002,29 +3046,30 @@ state 173
     (105) TERMINO_A -> . TIMES add_operator TERMINO
     (106) TERMINO_A -> . DIVIDE add_operator TERMINO
     (107) TERMINO_A -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
     TIMES           shift and go to state 228
     DIVIDE          shift and go to state 229
-    PLUS            reduce using rule 199 (EMPTY -> .)
-    MINS            reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    ID              reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
-    CTE_INTEGER     reduce using rule 199 (EMPTY -> .)
-    CTE_FLOAT       reduce using rule 199 (EMPTY -> .)
-    BOOLEAN         reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    PLUS            reduce using rule 208 (EMPTY -> .)
+    MINS            reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    ID              reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
+    CTE_INTEGER     reduce using rule 208 (EMPTY -> .)
+    CTE_FLOAT       reduce using rule 208 (EMPTY -> .)
+    BOOLEAN         reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
     TERMINO_A                      shift and go to state 227
     EMPTY                          shift and go to state 230
@@ -3041,6 +3086,7 @@ state 174
     AND             reduce using rule 118 (FACTOR_A -> PLUS FACTOR_C .)
     OR              reduce using rule 118 (FACTOR_A -> PLUS FACTOR_C .)
     CLOSE_PARENTHESIS reduce using rule 118 (FACTOR_A -> PLUS FACTOR_C .)
+    CONCATENATE     reduce using rule 118 (FACTOR_A -> PLUS FACTOR_C .)
     CLOSE_SQUARE_BRACKET reduce using rule 118 (FACTOR_A -> PLUS FACTOR_C .)
     COMMA           reduce using rule 118 (FACTOR_A -> PLUS FACTOR_C .)
     ID              reduce using rule 118 (FACTOR_A -> PLUS FACTOR_C .)
@@ -3068,6 +3114,7 @@ state 175
     AND             reduce using rule 119 (FACTOR_A -> MINS FACTOR_C .)
     OR              reduce using rule 119 (FACTOR_A -> MINS FACTOR_C .)
     CLOSE_PARENTHESIS reduce using rule 119 (FACTOR_A -> MINS FACTOR_C .)
+    CONCATENATE     reduce using rule 119 (FACTOR_A -> MINS FACTOR_C .)
     CLOSE_SQUARE_BRACKET reduce using rule 119 (FACTOR_A -> MINS FACTOR_C .)
     COMMA           reduce using rule 119 (FACTOR_A -> MINS FACTOR_C .)
     ID              reduce using rule 119 (FACTOR_A -> MINS FACTOR_C .)
@@ -3095,6 +3142,7 @@ state 176
     AND             reduce using rule 127 (VARS_CTE -> ID VARS_CTE_A .)
     OR              reduce using rule 127 (VARS_CTE -> ID VARS_CTE_A .)
     CLOSE_PARENTHESIS reduce using rule 127 (VARS_CTE -> ID VARS_CTE_A .)
+    CONCATENATE     reduce using rule 127 (VARS_CTE -> ID VARS_CTE_A .)
     CLOSE_SQUARE_BRACKET reduce using rule 127 (VARS_CTE -> ID VARS_CTE_A .)
     COMMA           reduce using rule 127 (VARS_CTE -> ID VARS_CTE_A .)
     ID              reduce using rule 127 (VARS_CTE -> ID VARS_CTE_A .)
@@ -3123,7 +3171,7 @@ state 177
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -3134,17 +3182,17 @@ state 177
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     VARS_CTE_B                     shift and go to state 231
     EXP                            shift and go to state 232
@@ -3167,7 +3215,7 @@ state 178
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -3178,16 +3226,16 @@ state 178
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     EXP                            shift and go to state 233
     TERMINO                        shift and go to state 121
@@ -3209,6 +3257,7 @@ state 179
     AND             reduce using rule 130 (VARS_CTE_A -> EMPTY .)
     OR              reduce using rule 130 (VARS_CTE_A -> EMPTY .)
     CLOSE_PARENTHESIS reduce using rule 130 (VARS_CTE_A -> EMPTY .)
+    CONCATENATE     reduce using rule 130 (VARS_CTE_A -> EMPTY .)
     CLOSE_SQUARE_BRACKET reduce using rule 130 (VARS_CTE_A -> EMPTY .)
     COMMA           reduce using rule 130 (VARS_CTE_A -> EMPTY .)
     ID              reduce using rule 130 (VARS_CTE_A -> EMPTY .)
@@ -3244,43 +3293,53 @@ state 181
 
 state 182
 
-    (180) PRINT_A -> PRINT_B CLOSE_PARENTHESIS . SEMICOLON
+    (180) PRINT_A -> PRINT_B CLOSE_PARENTHESIS . print_quad SEMICOLON
+    (185) print_quad -> .
 
-    SEMICOLON       shift and go to state 236
+    SEMICOLON       reduce using rule 185 (print_quad -> .)
 
+    print_quad                     shift and go to state 236
 
 state 183
 
-    (181) PRINT_B -> CTE_STRING print_string . PRINT_C
-    (185) PRINT_C -> . CONCATENATE PRINT_B
-    (186) PRINT_C -> . EMPTY
-    (199) EMPTY -> .
+    (181) PRINT_B -> CTE_STRING add_string . PRINT_C
+    (188) PRINT_C -> . CONCATENATE EXPRESIONESVARIAS add_con PRINT_D
+    (189) PRINT_C -> . CONCATENATE CTE_STRING add_exp PRINT_D
+    (190) PRINT_C -> . EMPTY
+    (208) EMPTY -> .
 
     CONCATENATE     shift and go to state 238
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
 
     PRINT_C                        shift and go to state 237
     EMPTY                          shift and go to state 239
 
 state 184
 
-    (182) PRINT_B -> EXPRESIONESVARIAS print_id .
+    (182) PRINT_B -> EXPRESIONESVARIAS add_temp . PRINT_C
+    (188) PRINT_C -> . CONCATENATE EXPRESIONESVARIAS add_con PRINT_D
+    (189) PRINT_C -> . CONCATENATE CTE_STRING add_exp PRINT_D
+    (190) PRINT_C -> . EMPTY
+    (208) EMPTY -> .
 
-    CLOSE_PARENTHESIS reduce using rule 182 (PRINT_B -> EXPRESIONESVARIAS print_id .)
+    CONCATENATE     shift and go to state 238
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
 
+    PRINT_C                        shift and go to state 240
+    EMPTY                          shift and go to state 239
 
 state 185
 
     (136) INPUT -> INPUT_KEYWORD INPUTSYMBOL ID add_inputid . INPUT_A SEMICOLON quad_input
     (139) INPUT_A -> . OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET INPUT_B
     (140) INPUT_A -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    OPEN_SQUARE_BRACKET shift and go to state 241
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    OPEN_SQUARE_BRACKET shift and go to state 242
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
-    INPUT_A                        shift and go to state 240
-    EMPTY                          shift and go to state 242
+    INPUT_A                        shift and go to state 241
+    EMPTY                          shift and go to state 243
 
 state 186
 
@@ -3290,28 +3349,28 @@ state 186
     MODULE          reduce using rule 48 (endproc -> .)
     MAIN            reduce using rule 48 (endproc -> .)
 
-    endproc                        shift and go to state 243
+    endproc                        shift and go to state 244
 
 state 187
 
     (55) MODULO_C -> TIPO_P ID add_variable_m . MODULO_B MODULO_D
     (53) MODULO_B -> . COMMA MODULO_C
     (54) MODULO_B -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 245
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    MODULE          reduce using rule 199 (EMPTY -> .)
-    MAIN            reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 246
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    MODULE          reduce using rule 208 (EMPTY -> .)
+    MAIN            reduce using rule 208 (EMPTY -> .)
 
-    MODULO_B                       shift and go to state 244
-    EMPTY                          shift and go to state 246
+    MODULO_B                       shift and go to state 245
+    EMPTY                          shift and go to state 247
 
 state 188
 
     (15) VARS_F -> OPEN_SQUARE_BRACKET CTE_INTEGER . CLOSE_SQUARE_BRACKET VARS_C
 
-    CLOSE_SQUARE_BRACKET shift and go to state 247
+    CLOSE_SQUARE_BRACKET shift and go to state 248
 
 
 state 189
@@ -3341,18 +3400,18 @@ state 189
     DIVIDE          reduce using rule 76 (quad -> .)
     CLOSE_PARENTHESIS reduce using rule 76 (quad -> .)
 
-    quad                           shift and go to state 248
+    quad                           shift and go to state 249
 
 state 190
 
     (82) ASIGNACION_C -> EQUAL add_equal . EXPRESIONESVARIAS
-    (187) EXPRESIONESVARIAS -> . NOT EV_C
-    (188) EXPRESIONESVARIAS -> . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (196) EXPRESIONESVARIAS -> . NOT EV_C
+    (197) EXPRESIONESVARIAS -> . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -3369,12 +3428,12 @@ state 190
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINS resolved as shift
     NOT             shift and go to state 116
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -3383,10 +3442,10 @@ state 190
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
-    EXPRESIONESVARIAS              shift and go to state 249
+    EXPRESIONESVARIAS              shift and go to state 250
     EV_C                           shift and go to state 117
     EXP_RELOP                      shift and go to state 118
     EXP                            shift and go to state 119
@@ -3409,26 +3468,26 @@ state 192
     (78) ASIGNACION_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET . ASIGNACION_B
     (80) ASIGNACION_B -> . OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
     (81) ASIGNACION_B -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    OPEN_SQUARE_BRACKET shift and go to state 250
-    EQUAL           reduce using rule 199 (EMPTY -> .)
+    OPEN_SQUARE_BRACKET shift and go to state 251
+    EQUAL           reduce using rule 208 (EMPTY -> .)
 
-    ASIGNACION_B                   shift and go to state 251
-    EMPTY                          shift and go to state 252
+    ASIGNACION_B                   shift and go to state 252
+    EMPTY                          shift and go to state 253
 
 state 193
 
     (71) NOMBRAR -> ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING . CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_PARENTHESIS shift and go to state 253
+    CLOSE_PARENTHESIS shift and go to state 254
 
 
 state 194
 
     (109) COLOR -> ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A . CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_PARENTHESIS shift and go to state 254
+    CLOSE_PARENTHESIS shift and go to state 255
 
 
 state 195
@@ -3490,7 +3549,7 @@ state 202
 
     (158) PLOT_C -> PLOT_I . CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_PARENTHESIS shift and go to state 255
+    CLOSE_PARENTHESIS shift and go to state 256
 
 
 state 203
@@ -3498,26 +3557,26 @@ state 203
     (159) PLOT_I -> CTE_INTEGER . PLOT_D
     (161) PLOT_D -> . COMMA PLOT_I
     (162) PLOT_D -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 257
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 258
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
 
-    PLOT_D                         shift and go to state 256
-    EMPTY                          shift and go to state 258
+    PLOT_D                         shift and go to state 257
+    EMPTY                          shift and go to state 259
 
 state 204
 
     (160) PLOT_I -> CTE_FLOAT . PLOT_D
     (161) PLOT_D -> . COMMA PLOT_I
     (162) PLOT_D -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 257
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 258
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
 
-    PLOT_D                         shift and go to state 259
-    EMPTY                          shift and go to state 258
+    PLOT_D                         shift and go to state 260
+    EMPTY                          shift and go to state 259
 
 state 205
 
@@ -3536,7 +3595,7 @@ state 206
 
     (163) PLOT_E -> PLOT_F . SEMICOLON PLOT_G
 
-    SEMICOLON       shift and go to state 260
+    SEMICOLON       shift and go to state 261
 
 
 state 207
@@ -3544,26 +3603,26 @@ state 207
     (164) PLOT_F -> CTE_INTEGER . PLOT_J
     (166) PLOT_J -> . COMMA PLOT_F
     (167) PLOT_J -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 262
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 263
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
-    PLOT_J                         shift and go to state 261
-    EMPTY                          shift and go to state 263
+    PLOT_J                         shift and go to state 262
+    EMPTY                          shift and go to state 264
 
 state 208
 
     (165) PLOT_F -> CTE_FLOAT . PLOT_J
     (166) PLOT_J -> . COMMA PLOT_F
     (167) PLOT_J -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 262
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 263
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
-    PLOT_J                         shift and go to state 264
-    EMPTY                          shift and go to state 263
+    PLOT_J                         shift and go to state 265
+    EMPTY                          shift and go to state 264
 
 state 209
 
@@ -3621,7 +3680,7 @@ state 213
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER . COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
 
-    COMMA           shift and go to state 265
+    COMMA           shift and go to state 266
 
 
 state 214
@@ -3630,10 +3689,10 @@ state 214
     (172) PLOT_M -> . PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON
     (173) PLOT_N -> . CTE_STRING PLOT_O
 
-    CTE_STRING      shift and go to state 268
+    CTE_STRING      shift and go to state 269
 
-    PLOT_M                         shift and go to state 266
-    PLOT_N                         shift and go to state 267
+    PLOT_M                         shift and go to state 267
+    PLOT_N                         shift and go to state 268
 
 state 215
 
@@ -3653,20 +3712,20 @@ state 216
     (67) LLAMADAMODULO_C -> EXP check_types . LLAMADAMODULO_A LLAMADAMODULO_D
     (64) LLAMADAMODULO_A -> . COMMA incK LLAMADAMODULO_C
     (65) LLAMADAMODULO_A -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 270
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    ID              reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 271
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    ID              reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
 
-    LLAMADAMODULO_A                shift and go to state 269
-    EMPTY                          shift and go to state 271
+    LLAMADAMODULO_A                shift and go to state 270
+    EMPTY                          shift and go to state 272
 
 state 217
 
@@ -3680,6 +3739,7 @@ state 217
     AND             reduce using rule 117 (FACTOR_A -> OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS .)
     OR              reduce using rule 117 (FACTOR_A -> OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS .)
     CLOSE_PARENTHESIS reduce using rule 117 (FACTOR_A -> OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS .)
+    CONCATENATE     reduce using rule 117 (FACTOR_A -> OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS .)
     CLOSE_SQUARE_BRACKET reduce using rule 117 (FACTOR_A -> OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS .)
     COMMA           reduce using rule 117 (FACTOR_A -> OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS .)
     ID              reduce using rule 117 (FACTOR_A -> OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS .)
@@ -3709,16 +3769,16 @@ state 219
 
     OPEN_BRACKET    shift and go to state 40
 
-    BLOQUE                         shift and go to state 272
+    BLOQUE                         shift and go to state 273
 
 state 220
 
-    (190) EV_B -> AND add_ev . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (199) EV_B -> AND add_ev . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -3738,13 +3798,14 @@ state 220
   ! shift/reduce conflict for CTE_FLOAT resolved as shift
   ! shift/reduce conflict for BOOLEAN resolved as shift
   ! shift/reduce conflict for ID resolved as shift
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -3753,71 +3814,12 @@ state 220
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
-
-    EV_C                           shift and go to state 273
-    EXP_RELOP                      shift and go to state 118
-    EXP                            shift and go to state 119
-    EMPTY                          shift and go to state 120
-    TERMINO                        shift and go to state 121
-    FACTOR                         shift and go to state 122
-    FACTOR_A                       shift and go to state 123
-    FACTOR_C                       shift and go to state 125
-    VARS_CTE                       shift and go to state 127
-
-state 221
-
-    (191) EV_B -> OR add_ev . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
-    (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
-    (103) TERMINO -> . FACTOR pop_term TERMINO_A
-    (116) FACTOR -> . FACTOR_A
-    (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
-    (118) FACTOR_A -> . PLUS FACTOR_C
-    (119) FACTOR_A -> . MINS FACTOR_C
-    (120) FACTOR_A -> . FACTOR_C
-    (121) FACTOR_A -> . EMPTY
-    (123) FACTOR_C -> . VARS_CTE
-    (124) VARS_CTE -> . CTE_INTEGER
-    (125) VARS_CTE -> . CTE_FLOAT
-    (126) VARS_CTE -> . BOOLEAN
-    (127) VARS_CTE -> . ID VARS_CTE_A
-
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINS resolved as shift
-  ! shift/reduce conflict for CTE_INTEGER resolved as shift
-  ! shift/reduce conflict for CTE_FLOAT resolved as shift
-  ! shift/reduce conflict for BOOLEAN resolved as shift
-  ! shift/reduce conflict for ID resolved as shift
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    OPEN_PARENTHESIS shift and go to state 114
-    PLUS            shift and go to state 124
-    MINS            shift and go to state 126
-    CTE_INTEGER     shift and go to state 128
-    CTE_FLOAT       shift and go to state 129
-    BOOLEAN         shift and go to state 130
-    ID              shift and go to state 131
-
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
     EV_C                           shift and go to state 274
     EXP_RELOP                      shift and go to state 118
@@ -3829,9 +3831,69 @@ state 221
     FACTOR_C                       shift and go to state 125
     VARS_CTE                       shift and go to state 127
 
+state 221
+
+    (200) EV_B -> OR add_ev . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
+    (97) EXP -> . TERMINO pop_exp EXP_A
+    (208) EMPTY -> .
+    (103) TERMINO -> . FACTOR pop_term TERMINO_A
+    (116) FACTOR -> . FACTOR_A
+    (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
+    (118) FACTOR_A -> . PLUS FACTOR_C
+    (119) FACTOR_A -> . MINS FACTOR_C
+    (120) FACTOR_A -> . FACTOR_C
+    (121) FACTOR_A -> . EMPTY
+    (123) FACTOR_C -> . VARS_CTE
+    (124) VARS_CTE -> . CTE_INTEGER
+    (125) VARS_CTE -> . CTE_FLOAT
+    (126) VARS_CTE -> . BOOLEAN
+    (127) VARS_CTE -> . ID VARS_CTE_A
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINS resolved as shift
+  ! shift/reduce conflict for CTE_INTEGER resolved as shift
+  ! shift/reduce conflict for CTE_FLOAT resolved as shift
+  ! shift/reduce conflict for BOOLEAN resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    OPEN_PARENTHESIS shift and go to state 114
+    PLUS            shift and go to state 124
+    MINS            shift and go to state 126
+    CTE_INTEGER     shift and go to state 128
+    CTE_FLOAT       shift and go to state 129
+    BOOLEAN         shift and go to state 130
+    ID              shift and go to state 131
+
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+
+    EV_C                           shift and go to state 275
+    EXP_RELOP                      shift and go to state 118
+    EXP                            shift and go to state 119
+    EMPTY                          shift and go to state 120
+    TERMINO                        shift and go to state 121
+    FACTOR                         shift and go to state 122
+    FACTOR_A                       shift and go to state 123
+    FACTOR_C                       shift and go to state 125
+    VARS_CTE                       shift and go to state 127
+
 state 222
 
-    (196) EXP_RELOP_A -> RELOP add_relop . EXP
+    (205) EXP_RELOP_A -> RELOP add_relop . EXP
     (97) EXP -> . TERMINO pop_exp EXP_A
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
@@ -3841,7 +3903,7 @@ state 222
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -3856,25 +3918,26 @@ state 222
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
 
-    EXP                            shift and go to state 275
+    EXP                            shift and go to state 276
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
@@ -3890,6 +3953,7 @@ state 223
     AND             reduce using rule 97 (EXP -> TERMINO pop_exp EXP_A .)
     OR              reduce using rule 97 (EXP -> TERMINO pop_exp EXP_A .)
     CLOSE_PARENTHESIS reduce using rule 97 (EXP -> TERMINO pop_exp EXP_A .)
+    CONCATENATE     reduce using rule 97 (EXP -> TERMINO pop_exp EXP_A .)
     CLOSE_SQUARE_BRACKET reduce using rule 97 (EXP -> TERMINO pop_exp EXP_A .)
     COMMA           reduce using rule 97 (EXP -> TERMINO pop_exp EXP_A .)
     ID              reduce using rule 97 (EXP -> TERMINO pop_exp EXP_A .)
@@ -3923,6 +3987,7 @@ state 224
     AND             reduce using rule 102 (append_operator -> .)
     OR              reduce using rule 102 (append_operator -> .)
     CLOSE_PARENTHESIS reduce using rule 102 (append_operator -> .)
+    CONCATENATE     reduce using rule 102 (append_operator -> .)
     CLOSE_SQUARE_BRACKET reduce using rule 102 (append_operator -> .)
     COMMA           reduce using rule 102 (append_operator -> .)
     IF              reduce using rule 102 (append_operator -> .)
@@ -3933,7 +3998,7 @@ state 224
     CLOSE_BRACKET   reduce using rule 102 (append_operator -> .)
     SEMICOLON       reduce using rule 102 (append_operator -> .)
 
-    append_operator                shift and go to state 276
+    append_operator                shift and go to state 277
 
 state 225
 
@@ -3953,6 +4018,7 @@ state 225
     AND             reduce using rule 102 (append_operator -> .)
     OR              reduce using rule 102 (append_operator -> .)
     CLOSE_PARENTHESIS reduce using rule 102 (append_operator -> .)
+    CONCATENATE     reduce using rule 102 (append_operator -> .)
     CLOSE_SQUARE_BRACKET reduce using rule 102 (append_operator -> .)
     COMMA           reduce using rule 102 (append_operator -> .)
     IF              reduce using rule 102 (append_operator -> .)
@@ -3963,7 +4029,7 @@ state 225
     CLOSE_BRACKET   reduce using rule 102 (append_operator -> .)
     SEMICOLON       reduce using rule 102 (append_operator -> .)
 
-    append_operator                shift and go to state 277
+    append_operator                shift and go to state 278
 
 state 226
 
@@ -3973,6 +4039,7 @@ state 226
     AND             reduce using rule 101 (EXP_A -> EMPTY .)
     OR              reduce using rule 101 (EXP_A -> EMPTY .)
     CLOSE_PARENTHESIS reduce using rule 101 (EXP_A -> EMPTY .)
+    CONCATENATE     reduce using rule 101 (EXP_A -> EMPTY .)
     CLOSE_SQUARE_BRACKET reduce using rule 101 (EXP_A -> EMPTY .)
     COMMA           reduce using rule 101 (EXP_A -> EMPTY .)
     ID              reduce using rule 101 (EXP_A -> EMPTY .)
@@ -3998,6 +4065,7 @@ state 227
     AND             reduce using rule 103 (TERMINO -> FACTOR pop_term TERMINO_A .)
     OR              reduce using rule 103 (TERMINO -> FACTOR pop_term TERMINO_A .)
     CLOSE_PARENTHESIS reduce using rule 103 (TERMINO -> FACTOR pop_term TERMINO_A .)
+    CONCATENATE     reduce using rule 103 (TERMINO -> FACTOR pop_term TERMINO_A .)
     CLOSE_SQUARE_BRACKET reduce using rule 103 (TERMINO -> FACTOR pop_term TERMINO_A .)
     COMMA           reduce using rule 103 (TERMINO -> FACTOR pop_term TERMINO_A .)
     ID              reduce using rule 103 (TERMINO -> FACTOR pop_term TERMINO_A .)
@@ -4031,6 +4099,7 @@ state 228
     AND             reduce using rule 108 (add_operator -> .)
     OR              reduce using rule 108 (add_operator -> .)
     CLOSE_PARENTHESIS reduce using rule 108 (add_operator -> .)
+    CONCATENATE     reduce using rule 108 (add_operator -> .)
     CLOSE_SQUARE_BRACKET reduce using rule 108 (add_operator -> .)
     COMMA           reduce using rule 108 (add_operator -> .)
     IF              reduce using rule 108 (add_operator -> .)
@@ -4041,7 +4110,7 @@ state 228
     CLOSE_BRACKET   reduce using rule 108 (add_operator -> .)
     SEMICOLON       reduce using rule 108 (add_operator -> .)
 
-    add_operator                   shift and go to state 278
+    add_operator                   shift and go to state 279
 
 state 229
 
@@ -4061,6 +4130,7 @@ state 229
     AND             reduce using rule 108 (add_operator -> .)
     OR              reduce using rule 108 (add_operator -> .)
     CLOSE_PARENTHESIS reduce using rule 108 (add_operator -> .)
+    CONCATENATE     reduce using rule 108 (add_operator -> .)
     CLOSE_SQUARE_BRACKET reduce using rule 108 (add_operator -> .)
     COMMA           reduce using rule 108 (add_operator -> .)
     IF              reduce using rule 108 (add_operator -> .)
@@ -4071,7 +4141,7 @@ state 229
     CLOSE_BRACKET   reduce using rule 108 (add_operator -> .)
     SEMICOLON       reduce using rule 108 (add_operator -> .)
 
-    add_operator                   shift and go to state 279
+    add_operator                   shift and go to state 280
 
 state 230
 
@@ -4083,6 +4153,7 @@ state 230
     AND             reduce using rule 107 (TERMINO_A -> EMPTY .)
     OR              reduce using rule 107 (TERMINO_A -> EMPTY .)
     CLOSE_PARENTHESIS reduce using rule 107 (TERMINO_A -> EMPTY .)
+    CONCATENATE     reduce using rule 107 (TERMINO_A -> EMPTY .)
     CLOSE_SQUARE_BRACKET reduce using rule 107 (TERMINO_A -> EMPTY .)
     COMMA           reduce using rule 107 (TERMINO_A -> EMPTY .)
     ID              reduce using rule 107 (TERMINO_A -> EMPTY .)
@@ -4110,6 +4181,7 @@ state 231
     AND             reduce using rule 128 (VARS_CTE_A -> OPEN_PARENTHESIS VARS_CTE_B .)
     OR              reduce using rule 128 (VARS_CTE_A -> OPEN_PARENTHESIS VARS_CTE_B .)
     CLOSE_PARENTHESIS reduce using rule 128 (VARS_CTE_A -> OPEN_PARENTHESIS VARS_CTE_B .)
+    CONCATENATE     reduce using rule 128 (VARS_CTE_A -> OPEN_PARENTHESIS VARS_CTE_B .)
     CLOSE_SQUARE_BRACKET reduce using rule 128 (VARS_CTE_A -> OPEN_PARENTHESIS VARS_CTE_B .)
     COMMA           reduce using rule 128 (VARS_CTE_A -> OPEN_PARENTHESIS VARS_CTE_B .)
     ID              reduce using rule 128 (VARS_CTE_A -> OPEN_PARENTHESIS VARS_CTE_B .)
@@ -4130,26 +4202,26 @@ state 232
     (131) VARS_CTE_B -> EXP . VARS_CTE_C CLOSE_PARENTHESIS
     (132) VARS_CTE_C -> . COMMA VARS_CTE_B
     (133) VARS_CTE_C -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 281
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 282
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
 
-    VARS_CTE_C                     shift and go to state 280
-    EMPTY                          shift and go to state 282
+    VARS_CTE_C                     shift and go to state 281
+    EMPTY                          shift and go to state 283
 
 state 233
 
     (129) VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP . CLOSE_SQUARE_BRACKET VARS_CTE_D
 
-    CLOSE_SQUARE_BRACKET shift and go to state 283
+    CLOSE_SQUARE_BRACKET shift and go to state 284
 
 
 state 234
 
     (91) FOR -> FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_for . SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for
 
-    SEMICOLON       shift and go to state 284
+    SEMICOLON       shift and go to state 285
 
 
 state 235
@@ -4159,40 +4231,33 @@ state 235
 
     OPEN_BRACKET    shift and go to state 40
 
-    BLOQUE                         shift and go to state 285
+    BLOQUE                         shift and go to state 286
 
 state 236
 
-    (180) PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON .
+    (180) PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad . SEMICOLON
 
-    ID              reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON .)
-    IF              reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON .)
-    FOR_KEYWORD     reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON .)
-    WHILE_KEYWORD   reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON .)
-    PRINT_KEYWORD   reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON .)
-    INPUT_KEYWORD   reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON .)
-    CLOSE_BRACKET   reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS SEMICOLON .)
+    SEMICOLON       shift and go to state 287
 
 
 state 237
 
-    (181) PRINT_B -> CTE_STRING print_string PRINT_C .
+    (181) PRINT_B -> CTE_STRING add_string PRINT_C .
 
-    CLOSE_PARENTHESIS reduce using rule 181 (PRINT_B -> CTE_STRING print_string PRINT_C .)
+    CLOSE_PARENTHESIS reduce using rule 181 (PRINT_B -> CTE_STRING add_string PRINT_C .)
 
 
 state 238
 
-    (185) PRINT_C -> CONCATENATE . PRINT_B
-    (181) PRINT_B -> . CTE_STRING print_string PRINT_C
-    (182) PRINT_B -> . EXPRESIONESVARIAS print_id
-    (187) EXPRESIONESVARIAS -> . NOT EV_C
-    (188) EXPRESIONESVARIAS -> . EV_C
-    (189) EV_C -> . EXP_RELOP EV_B
-    (194) EXP_RELOP -> . EXP EXP_RELOP_A
-    (195) EXP_RELOP -> . EMPTY
+    (188) PRINT_C -> CONCATENATE . EXPRESIONESVARIAS add_con PRINT_D
+    (189) PRINT_C -> CONCATENATE . CTE_STRING add_exp PRINT_D
+    (196) EXPRESIONESVARIAS -> . NOT EV_C
+    (197) EXPRESIONESVARIAS -> . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
     (97) EXP -> . TERMINO pop_exp EXP_A
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
     (116) FACTOR -> . FACTOR_A
     (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
@@ -4208,14 +4273,15 @@ state 238
 
   ! shift/reduce conflict for PLUS resolved as shift
   ! shift/reduce conflict for MINS resolved as shift
-    CTE_STRING      shift and go to state 137
+    CTE_STRING      shift and go to state 289
     NOT             shift and go to state 116
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
@@ -4224,11 +4290,10 @@ state 238
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
-    PRINT_B                        shift and go to state 286
-    EXPRESIONESVARIAS              shift and go to state 138
+    EXPRESIONESVARIAS              shift and go to state 288
     EV_C                           shift and go to state 117
     EXP_RELOP                      shift and go to state 118
     EXP                            shift and go to state 119
@@ -4241,19 +4306,26 @@ state 238
 
 state 239
 
-    (186) PRINT_C -> EMPTY .
+    (190) PRINT_C -> EMPTY .
 
-    CLOSE_PARENTHESIS reduce using rule 186 (PRINT_C -> EMPTY .)
+    CLOSE_PARENTHESIS reduce using rule 190 (PRINT_C -> EMPTY .)
 
 
 state 240
 
-    (136) INPUT -> INPUT_KEYWORD INPUTSYMBOL ID add_inputid INPUT_A . SEMICOLON quad_input
+    (182) PRINT_B -> EXPRESIONESVARIAS add_temp PRINT_C .
 
-    SEMICOLON       shift and go to state 287
+    CLOSE_PARENTHESIS reduce using rule 182 (PRINT_B -> EXPRESIONESVARIAS add_temp PRINT_C .)
 
 
 state 241
+
+    (136) INPUT -> INPUT_KEYWORD INPUTSYMBOL ID add_inputid INPUT_A . SEMICOLON quad_input
+
+    SEMICOLON       shift and go to state 290
+
+
+state 242
 
     (139) INPUT_A -> OPEN_SQUARE_BRACKET . EXP CLOSE_SQUARE_BRACKET INPUT_B
     (97) EXP -> . TERMINO pop_exp EXP_A
@@ -4265,7 +4337,7 @@ state 241
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -4276,18 +4348,18 @@ state 241
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
-    EXP                            shift and go to state 288
+    EXP                            shift and go to state 291
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
@@ -4295,14 +4367,14 @@ state 241
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 242
+state 243
 
     (140) INPUT_A -> EMPTY .
 
     SEMICOLON       reduce using rule 140 (INPUT_A -> EMPTY .)
 
 
-state 243
+state 244
 
     (46) MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc .
 
@@ -4310,24 +4382,24 @@ state 243
     MAIN            reduce using rule 46 (MODULO -> MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc .)
 
 
-state 244
+state 245
 
     (55) MODULO_C -> TIPO_P ID add_variable_m MODULO_B . MODULO_D
     (57) MODULO_D -> . CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS add_count add_start BLOQUE CLOSE_BRACKET
     (58) MODULO_D -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
   ! shift/reduce conflict for CLOSE_PARENTHESIS resolved as shift
-    CLOSE_PARENTHESIS shift and go to state 290
-    MODULE          reduce using rule 199 (EMPTY -> .)
-    MAIN            reduce using rule 199 (EMPTY -> .)
+    CLOSE_PARENTHESIS shift and go to state 293
+    MODULE          reduce using rule 208 (EMPTY -> .)
+    MAIN            reduce using rule 208 (EMPTY -> .)
 
-  ! CLOSE_PARENTHESIS [ reduce using rule 199 (EMPTY -> .) ]
+  ! CLOSE_PARENTHESIS [ reduce using rule 208 (EMPTY -> .) ]
 
-    MODULO_D                       shift and go to state 289
-    EMPTY                          shift and go to state 291
+    MODULO_D                       shift and go to state 292
+    EMPTY                          shift and go to state 294
 
-state 245
+state 246
 
     (53) MODULO_B -> COMMA . MODULO_C
     (55) MODULO_C -> . TIPO_P ID add_variable_m MODULO_B MODULO_D
@@ -4341,10 +4413,10 @@ state 245
     BOOL            shift and go to state 19
     CHAR            shift and go to state 20
 
-    MODULO_C                       shift and go to state 292
+    MODULO_C                       shift and go to state 295
     TIPO_P                         shift and go to state 91
 
-state 246
+state 247
 
     (54) MODULO_B -> EMPTY .
 
@@ -4353,7 +4425,7 @@ state 246
     MAIN            reduce using rule 54 (MODULO_B -> EMPTY .)
 
 
-state 247
+state 248
 
     (15) VARS_F -> OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET . VARS_C
     (17) VARS_C -> . SEMICOLON VARS_D
@@ -4362,9 +4434,9 @@ state 247
     SEMICOLON       shift and go to state 76
     COMMA           shift and go to state 77
 
-    VARS_C                         shift and go to state 293
+    VARS_C                         shift and go to state 296
 
-state 248
+state 249
 
     (75) ASIGNACION -> ID addStackO ASIGNACION_A ASIGNACION_C SEMICOLON quad .
 
@@ -4391,14 +4463,14 @@ state 248
     CLOSE_PARENTHESIS reduce using rule 75 (ASIGNACION -> ID addStackO ASIGNACION_A ASIGNACION_C SEMICOLON quad .)
 
 
-state 249
+state 250
 
     (82) ASIGNACION_C -> EQUAL add_equal EXPRESIONESVARIAS .
 
     SEMICOLON       reduce using rule 82 (ASIGNACION_C -> EQUAL add_equal EXPRESIONESVARIAS .)
 
 
-state 250
+state 251
 
     (80) ASIGNACION_B -> OPEN_SQUARE_BRACKET . EXP CLOSE_SQUARE_BRACKET
     (97) EXP -> . TERMINO pop_exp EXP_A
@@ -4410,7 +4482,7 @@ state 250
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -4421,18 +4493,18 @@ state 250
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
-    EXP                            shift and go to state 294
+    EXP                            shift and go to state 297
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
@@ -4440,49 +4512,49 @@ state 250
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 251
+state 252
 
     (78) ASIGNACION_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ASIGNACION_B .
 
     EQUAL           reduce using rule 78 (ASIGNACION_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ASIGNACION_B .)
 
 
-state 252
+state 253
 
     (81) ASIGNACION_B -> EMPTY .
 
     EQUAL           reduce using rule 81 (ASIGNACION_B -> EMPTY .)
 
 
-state 253
+state 254
 
     (71) NOMBRAR -> ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS . SEMICOLON
 
-    SEMICOLON       shift and go to state 295
-
-
-state 254
-
-    (109) COLOR -> ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A CLOSE_PARENTHESIS . SEMICOLON
-
-    SEMICOLON       shift and go to state 296
+    SEMICOLON       shift and go to state 298
 
 
 state 255
 
-    (158) PLOT_C -> PLOT_I CLOSE_PARENTHESIS . SEMICOLON
+    (109) COLOR -> ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A CLOSE_PARENTHESIS . SEMICOLON
 
-    SEMICOLON       shift and go to state 297
+    SEMICOLON       shift and go to state 299
 
 
 state 256
+
+    (158) PLOT_C -> PLOT_I CLOSE_PARENTHESIS . SEMICOLON
+
+    SEMICOLON       shift and go to state 300
+
+
+state 257
 
     (159) PLOT_I -> CTE_INTEGER PLOT_D .
 
     CLOSE_PARENTHESIS reduce using rule 159 (PLOT_I -> CTE_INTEGER PLOT_D .)
 
 
-state 257
+state 258
 
     (161) PLOT_D -> COMMA . PLOT_I
     (159) PLOT_I -> . CTE_INTEGER PLOT_D
@@ -4491,41 +4563,41 @@ state 257
     CTE_INTEGER     shift and go to state 203
     CTE_FLOAT       shift and go to state 204
 
-    PLOT_I                         shift and go to state 298
+    PLOT_I                         shift and go to state 301
 
-state 258
+state 259
 
     (162) PLOT_D -> EMPTY .
 
     CLOSE_PARENTHESIS reduce using rule 162 (PLOT_D -> EMPTY .)
 
 
-state 259
+state 260
 
     (160) PLOT_I -> CTE_FLOAT PLOT_D .
 
     CLOSE_PARENTHESIS reduce using rule 160 (PLOT_I -> CTE_FLOAT PLOT_D .)
 
 
-state 260
+state 261
 
     (163) PLOT_E -> PLOT_F SEMICOLON . PLOT_G
     (168) PLOT_G -> . PLOT_K CLOSE_PARENTHESIS SEMICOLON
     (169) PLOT_K -> . CTE_STRING PLOT_H
 
-    CTE_STRING      shift and go to state 301
+    CTE_STRING      shift and go to state 304
 
-    PLOT_G                         shift and go to state 299
-    PLOT_K                         shift and go to state 300
+    PLOT_G                         shift and go to state 302
+    PLOT_K                         shift and go to state 303
 
-state 261
+state 262
 
     (164) PLOT_F -> CTE_INTEGER PLOT_J .
 
     SEMICOLON       reduce using rule 164 (PLOT_F -> CTE_INTEGER PLOT_J .)
 
 
-state 262
+state 263
 
     (166) PLOT_J -> COMMA . PLOT_F
     (164) PLOT_F -> . CTE_INTEGER PLOT_J
@@ -4534,30 +4606,30 @@ state 262
     CTE_INTEGER     shift and go to state 207
     CTE_FLOAT       shift and go to state 208
 
-    PLOT_F                         shift and go to state 302
+    PLOT_F                         shift and go to state 305
 
-state 263
+state 264
 
     (167) PLOT_J -> EMPTY .
 
     SEMICOLON       reduce using rule 167 (PLOT_J -> EMPTY .)
 
 
-state 264
+state 265
 
     (165) PLOT_F -> CTE_FLOAT PLOT_J .
 
     SEMICOLON       reduce using rule 165 (PLOT_F -> CTE_FLOAT PLOT_J .)
 
 
-state 265
+state 266
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA . CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
 
-    CTE_INTEGER     shift and go to state 303
+    CTE_INTEGER     shift and go to state 306
 
 
-state 266
+state 267
 
     (157) PLOT_B -> ID POINT CREATEN OPEN_PARENTHESIS OPEN_SQUARE_BRACKET PLOT_M .
 
@@ -4570,49 +4642,49 @@ state 266
     CLOSE_BRACKET   reduce using rule 157 (PLOT_B -> ID POINT CREATEN OPEN_PARENTHESIS OPEN_SQUARE_BRACKET PLOT_M .)
 
 
-state 267
+state 268
 
     (172) PLOT_M -> PLOT_N . CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_SQUARE_BRACKET shift and go to state 304
+    CLOSE_SQUARE_BRACKET shift and go to state 307
 
 
-state 268
+state 269
 
     (173) PLOT_N -> CTE_STRING . PLOT_O
     (174) PLOT_O -> . COMMA PLOT_N
     (175) PLOT_O -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 306
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 309
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
 
-    PLOT_O                         shift and go to state 305
-    EMPTY                          shift and go to state 307
+    PLOT_O                         shift and go to state 308
+    EMPTY                          shift and go to state 310
 
-state 269
+state 270
 
     (67) LLAMADAMODULO_C -> EXP check_types LLAMADAMODULO_A . LLAMADAMODULO_D
     (69) LLAMADAMODULO_D -> . CLOSE_PARENTHESIS SEMICOLON
     (70) LLAMADAMODULO_D -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
   ! shift/reduce conflict for CLOSE_PARENTHESIS resolved as shift
-    CLOSE_PARENTHESIS shift and go to state 309
-    ID              reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
+    CLOSE_PARENTHESIS shift and go to state 312
+    ID              reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
 
-  ! CLOSE_PARENTHESIS [ reduce using rule 199 (EMPTY -> .) ]
+  ! CLOSE_PARENTHESIS [ reduce using rule 208 (EMPTY -> .) ]
 
-    LLAMADAMODULO_D                shift and go to state 308
-    EMPTY                          shift and go to state 310
+    LLAMADAMODULO_D                shift and go to state 311
+    EMPTY                          shift and go to state 313
 
-state 270
+state 271
 
     (64) LLAMADAMODULO_A -> COMMA . incK LLAMADAMODULO_C
     (66) incK -> .
@@ -4635,9 +4707,9 @@ state 270
     INPUT_KEYWORD   reduce using rule 66 (incK -> .)
     CLOSE_BRACKET   reduce using rule 66 (incK -> .)
 
-    incK                           shift and go to state 311
+    incK                           shift and go to state 314
 
-state 271
+state 272
 
     (65) LLAMADAMODULO_A -> EMPTY .
 
@@ -4651,66 +4723,69 @@ state 271
     CLOSE_BRACKET   reduce using rule 65 (LLAMADAMODULO_A -> EMPTY .)
 
 
-state 272
+state 273
 
     (85) CONDICION -> IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE . CONDICION_A fill_end
     (88) CONDICION_A -> . gotoElse ELSE BLOQUE
     (89) CONDICION_A -> . EMPTY
     (90) gotoElse -> .
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
     ELSE            reduce using rule 90 (gotoElse -> .)
-    ID              reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
+    ID              reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
 
-    CONDICION_A                    shift and go to state 312
-    gotoElse                       shift and go to state 313
-    EMPTY                          shift and go to state 314
-
-state 273
-
-    (190) EV_B -> AND add_ev EV_C .
-
-    CLOSE_PARENTHESIS reduce using rule 190 (EV_B -> AND add_ev EV_C .)
-    CTE_INTEGER     reduce using rule 190 (EV_B -> AND add_ev EV_C .)
-    CTE_FLOAT       reduce using rule 190 (EV_B -> AND add_ev EV_C .)
-    BOOLEAN         reduce using rule 190 (EV_B -> AND add_ev EV_C .)
-    ID              reduce using rule 190 (EV_B -> AND add_ev EV_C .)
-    SEMICOLON       reduce using rule 190 (EV_B -> AND add_ev EV_C .)
-
+    CONDICION_A                    shift and go to state 315
+    gotoElse                       shift and go to state 316
+    EMPTY                          shift and go to state 317
 
 state 274
 
-    (191) EV_B -> OR add_ev EV_C .
+    (199) EV_B -> AND add_ev EV_C .
 
-    CLOSE_PARENTHESIS reduce using rule 191 (EV_B -> OR add_ev EV_C .)
-    CTE_INTEGER     reduce using rule 191 (EV_B -> OR add_ev EV_C .)
-    CTE_FLOAT       reduce using rule 191 (EV_B -> OR add_ev EV_C .)
-    BOOLEAN         reduce using rule 191 (EV_B -> OR add_ev EV_C .)
-    ID              reduce using rule 191 (EV_B -> OR add_ev EV_C .)
-    SEMICOLON       reduce using rule 191 (EV_B -> OR add_ev EV_C .)
+    CLOSE_PARENTHESIS reduce using rule 199 (EV_B -> AND add_ev EV_C .)
+    CONCATENATE     reduce using rule 199 (EV_B -> AND add_ev EV_C .)
+    CTE_INTEGER     reduce using rule 199 (EV_B -> AND add_ev EV_C .)
+    CTE_FLOAT       reduce using rule 199 (EV_B -> AND add_ev EV_C .)
+    BOOLEAN         reduce using rule 199 (EV_B -> AND add_ev EV_C .)
+    ID              reduce using rule 199 (EV_B -> AND add_ev EV_C .)
+    SEMICOLON       reduce using rule 199 (EV_B -> AND add_ev EV_C .)
 
 
 state 275
 
-    (196) EXP_RELOP_A -> RELOP add_relop EXP .
+    (200) EV_B -> OR add_ev EV_C .
 
-    AND             reduce using rule 196 (EXP_RELOP_A -> RELOP add_relop EXP .)
-    OR              reduce using rule 196 (EXP_RELOP_A -> RELOP add_relop EXP .)
-    CLOSE_PARENTHESIS reduce using rule 196 (EXP_RELOP_A -> RELOP add_relop EXP .)
-    CTE_INTEGER     reduce using rule 196 (EXP_RELOP_A -> RELOP add_relop EXP .)
-    CTE_FLOAT       reduce using rule 196 (EXP_RELOP_A -> RELOP add_relop EXP .)
-    BOOLEAN         reduce using rule 196 (EXP_RELOP_A -> RELOP add_relop EXP .)
-    ID              reduce using rule 196 (EXP_RELOP_A -> RELOP add_relop EXP .)
-    SEMICOLON       reduce using rule 196 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    CLOSE_PARENTHESIS reduce using rule 200 (EV_B -> OR add_ev EV_C .)
+    CONCATENATE     reduce using rule 200 (EV_B -> OR add_ev EV_C .)
+    CTE_INTEGER     reduce using rule 200 (EV_B -> OR add_ev EV_C .)
+    CTE_FLOAT       reduce using rule 200 (EV_B -> OR add_ev EV_C .)
+    BOOLEAN         reduce using rule 200 (EV_B -> OR add_ev EV_C .)
+    ID              reduce using rule 200 (EV_B -> OR add_ev EV_C .)
+    SEMICOLON       reduce using rule 200 (EV_B -> OR add_ev EV_C .)
 
 
 state 276
+
+    (205) EXP_RELOP_A -> RELOP add_relop EXP .
+
+    AND             reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    OR              reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    CLOSE_PARENTHESIS reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    CONCATENATE     reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    CTE_INTEGER     reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    CTE_FLOAT       reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    BOOLEAN         reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    ID              reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+    SEMICOLON       reduce using rule 205 (EXP_RELOP_A -> RELOP add_relop EXP .)
+
+
+state 277
 
     (99) EXP_A -> PLUS append_operator . EXP
     (97) EXP -> . TERMINO pop_exp EXP_A
@@ -4722,7 +4797,7 @@ state 276
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -4737,34 +4812,35 @@ state 276
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
 
-    EXP                            shift and go to state 315
+    EXP                            shift and go to state 318
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
@@ -4772,7 +4848,7 @@ state 276
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 277
+state 278
 
     (100) EXP_A -> MINS append_operator . EXP
     (97) EXP -> . TERMINO pop_exp EXP_A
@@ -4784,7 +4860,7 @@ state 277
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -4799,34 +4875,35 @@ state 277
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
 
-    EXP                            shift and go to state 316
+    EXP                            shift and go to state 319
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
@@ -4834,7 +4911,7 @@ state 277
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 278
+state 279
 
     (105) TERMINO_A -> TIMES add_operator . TERMINO
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
@@ -4845,7 +4922,7 @@ state 278
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -4860,41 +4937,42 @@ state 278
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
 
-    TERMINO                        shift and go to state 317
+    TERMINO                        shift and go to state 320
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
     FACTOR_C                       shift and go to state 125
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 279
+state 280
 
     (106) TERMINO_A -> DIVIDE add_operator . TERMINO
     (103) TERMINO -> . FACTOR pop_term TERMINO_A
@@ -4905,7 +4983,7 @@ state 279
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -4920,48 +4998,49 @@ state 279
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_INTEGER     [ reduce using rule 199 (EMPTY -> .) ]
-  ! CTE_FLOAT       [ reduce using rule 199 (EMPTY -> .) ]
-  ! BOOLEAN         [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_INTEGER     [ reduce using rule 208 (EMPTY -> .) ]
+  ! CTE_FLOAT       [ reduce using rule 208 (EMPTY -> .) ]
+  ! BOOLEAN         [ reduce using rule 208 (EMPTY -> .) ]
 
-    TERMINO                        shift and go to state 318
+    TERMINO                        shift and go to state 321
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
     FACTOR_C                       shift and go to state 125
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 280
+state 281
 
     (131) VARS_CTE_B -> EXP VARS_CTE_C . CLOSE_PARENTHESIS
 
-    CLOSE_PARENTHESIS shift and go to state 319
+    CLOSE_PARENTHESIS shift and go to state 322
 
 
-state 281
+state 282
 
     (132) VARS_CTE_C -> COMMA . VARS_CTE_B
     (131) VARS_CTE_B -> . EXP VARS_CTE_C CLOSE_PARENTHESIS
@@ -4974,7 +5053,7 @@ state 281
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -4985,19 +5064,19 @@ state 281
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
-    VARS_CTE_B                     shift and go to state 320
+    VARS_CTE_B                     shift and go to state 323
     EXP                            shift and go to state 232
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
@@ -5006,56 +5085,57 @@ state 281
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 282
+state 283
 
     (133) VARS_CTE_C -> EMPTY .
 
     CLOSE_PARENTHESIS reduce using rule 133 (VARS_CTE_C -> EMPTY .)
 
 
-state 283
+state 284
 
     (129) VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET . VARS_CTE_D
     (134) VARS_CTE_D -> . OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
     (135) VARS_CTE_D -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    OPEN_SQUARE_BRACKET shift and go to state 321
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    PLUS            reduce using rule 199 (EMPTY -> .)
-    MINS            reduce using rule 199 (EMPTY -> .)
-    RELOP           reduce using rule 199 (EMPTY -> .)
-    AND             reduce using rule 199 (EMPTY -> .)
-    OR              reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    ID              reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
-    CTE_INTEGER     reduce using rule 199 (EMPTY -> .)
-    CTE_FLOAT       reduce using rule 199 (EMPTY -> .)
-    BOOLEAN         reduce using rule 199 (EMPTY -> .)
-    SEMICOLON       reduce using rule 199 (EMPTY -> .)
+    OPEN_SQUARE_BRACKET shift and go to state 324
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    PLUS            reduce using rule 208 (EMPTY -> .)
+    MINS            reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    ID              reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
+    CTE_INTEGER     reduce using rule 208 (EMPTY -> .)
+    CTE_FLOAT       reduce using rule 208 (EMPTY -> .)
+    BOOLEAN         reduce using rule 208 (EMPTY -> .)
+    SEMICOLON       reduce using rule 208 (EMPTY -> .)
 
-    VARS_CTE_D                     shift and go to state 322
-    EMPTY                          shift and go to state 323
+    VARS_CTE_D                     shift and go to state 325
+    EMPTY                          shift and go to state 326
 
-state 284
+state 285
 
     (91) FOR -> FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_for SEMICOLON . ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for
     (75) ASIGNACION -> . ID addStackO ASIGNACION_A ASIGNACION_C SEMICOLON quad
 
     ID              shift and go to state 133
 
-    ASIGNACION                     shift and go to state 324
+    ASIGNACION                     shift and go to state 327
 
-state 285
+state 286
 
     (94) WHILE -> WHILE_KEYWORD OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS bool_while BLOQUE . goto_while
     (95) goto_while -> .
@@ -5068,16 +5148,42 @@ state 285
     INPUT_KEYWORD   reduce using rule 95 (goto_while -> .)
     CLOSE_BRACKET   reduce using rule 95 (goto_while -> .)
 
-    goto_while                     shift and go to state 325
-
-state 286
-
-    (185) PRINT_C -> CONCATENATE PRINT_B .
-
-    CLOSE_PARENTHESIS reduce using rule 185 (PRINT_C -> CONCATENATE PRINT_B .)
-
+    goto_while                     shift and go to state 328
 
 state 287
+
+    (180) PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON .
+
+    ID              reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON .)
+    IF              reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON .)
+    FOR_KEYWORD     reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON .)
+    WHILE_KEYWORD   reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON .)
+    PRINT_KEYWORD   reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON .)
+    INPUT_KEYWORD   reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON .)
+    CLOSE_BRACKET   reduce using rule 180 (PRINT_A -> PRINT_B CLOSE_PARENTHESIS print_quad SEMICOLON .)
+
+
+state 288
+
+    (188) PRINT_C -> CONCATENATE EXPRESIONESVARIAS . add_con PRINT_D
+    (192) add_con -> .
+
+    CONCATENATE     reduce using rule 192 (add_con -> .)
+    CLOSE_PARENTHESIS reduce using rule 192 (add_con -> .)
+
+    add_con                        shift and go to state 329
+
+state 289
+
+    (189) PRINT_C -> CONCATENATE CTE_STRING . add_exp PRINT_D
+    (191) add_exp -> .
+
+    CONCATENATE     reduce using rule 191 (add_exp -> .)
+    CLOSE_PARENTHESIS reduce using rule 191 (add_exp -> .)
+
+    add_exp                        shift and go to state 330
+
+state 290
 
     (136) INPUT -> INPUT_KEYWORD INPUTSYMBOL ID add_inputid INPUT_A SEMICOLON . quad_input
     (138) quad_input -> .
@@ -5090,16 +5196,16 @@ state 287
     INPUT_KEYWORD   reduce using rule 138 (quad_input -> .)
     CLOSE_BRACKET   reduce using rule 138 (quad_input -> .)
 
-    quad_input                     shift and go to state 326
+    quad_input                     shift and go to state 331
 
-state 288
+state 291
 
     (139) INPUT_A -> OPEN_SQUARE_BRACKET EXP . CLOSE_SQUARE_BRACKET INPUT_B
 
-    CLOSE_SQUARE_BRACKET shift and go to state 327
+    CLOSE_SQUARE_BRACKET shift and go to state 332
 
 
-state 289
+state 292
 
     (55) MODULO_C -> TIPO_P ID add_variable_m MODULO_B MODULO_D .
 
@@ -5108,16 +5214,16 @@ state 289
     CLOSE_PARENTHESIS reduce using rule 55 (MODULO_C -> TIPO_P ID add_variable_m MODULO_B MODULO_D .)
 
 
-state 290
+state 293
 
     (57) MODULO_D -> CLOSE_PARENTHESIS . param_table OPEN_BRACKET VARS add_count add_start BLOQUE CLOSE_BRACKET
     (60) param_table -> .
 
     OPEN_BRACKET    reduce using rule 60 (param_table -> .)
 
-    param_table                    shift and go to state 328
+    param_table                    shift and go to state 333
 
-state 291
+state 294
 
     (58) MODULO_D -> EMPTY .
 
@@ -5126,7 +5232,7 @@ state 291
     CLOSE_PARENTHESIS reduce using rule 58 (MODULO_D -> EMPTY .)
 
 
-state 292
+state 295
 
     (53) MODULO_B -> COMMA MODULO_C .
 
@@ -5135,7 +5241,7 @@ state 292
     MAIN            reduce using rule 53 (MODULO_B -> COMMA MODULO_C .)
 
 
-state 293
+state 296
 
     (15) VARS_F -> OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_C .
 
@@ -5143,14 +5249,14 @@ state 293
     COMMA           reduce using rule 15 (VARS_F -> OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_C .)
 
 
-state 294
+state 297
 
     (80) ASIGNACION_B -> OPEN_SQUARE_BRACKET EXP . CLOSE_SQUARE_BRACKET
 
-    CLOSE_SQUARE_BRACKET shift and go to state 329
+    CLOSE_SQUARE_BRACKET shift and go to state 334
 
 
-state 295
+state 298
 
     (71) NOMBRAR -> ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS SEMICOLON .
 
@@ -5163,7 +5269,7 @@ state 295
     CLOSE_BRACKET   reduce using rule 71 (NOMBRAR -> ID POINT NOMBRAR_A OPEN_PARENTHESIS CTE_STRING CLOSE_PARENTHESIS SEMICOLON .)
 
 
-state 296
+state 299
 
     (109) COLOR -> ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A CLOSE_PARENTHESIS SEMICOLON .
 
@@ -5176,7 +5282,7 @@ state 296
     CLOSE_BRACKET   reduce using rule 109 (COLOR -> ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A CLOSE_PARENTHESIS SEMICOLON .)
 
 
-state 297
+state 300
 
     (158) PLOT_C -> PLOT_I CLOSE_PARENTHESIS SEMICOLON .
 
@@ -5189,14 +5295,14 @@ state 297
     CLOSE_BRACKET   reduce using rule 158 (PLOT_C -> PLOT_I CLOSE_PARENTHESIS SEMICOLON .)
 
 
-state 298
+state 301
 
     (161) PLOT_D -> COMMA PLOT_I .
 
     CLOSE_PARENTHESIS reduce using rule 161 (PLOT_D -> COMMA PLOT_I .)
 
 
-state 299
+state 302
 
     (163) PLOT_E -> PLOT_F SEMICOLON PLOT_G .
 
@@ -5209,71 +5315,71 @@ state 299
     CLOSE_BRACKET   reduce using rule 163 (PLOT_E -> PLOT_F SEMICOLON PLOT_G .)
 
 
-state 300
+state 303
 
     (168) PLOT_G -> PLOT_K . CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_PARENTHESIS shift and go to state 330
+    CLOSE_PARENTHESIS shift and go to state 335
 
 
-state 301
+state 304
 
     (169) PLOT_K -> CTE_STRING . PLOT_H
     (170) PLOT_H -> . COMMA PLOT_K
     (171) PLOT_H -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 332
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 337
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
 
-    PLOT_H                         shift and go to state 331
-    EMPTY                          shift and go to state 333
+    PLOT_H                         shift and go to state 336
+    EMPTY                          shift and go to state 338
 
-state 302
+state 305
 
     (166) PLOT_J -> COMMA PLOT_F .
 
     SEMICOLON       reduce using rule 166 (PLOT_J -> COMMA PLOT_F .)
 
 
-state 303
+state 306
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER . COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
 
-    COMMA           shift and go to state 334
+    COMMA           shift and go to state 339
 
 
-state 304
+state 307
 
     (172) PLOT_M -> PLOT_N CLOSE_SQUARE_BRACKET . SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON
 
-    SEMICOLON       shift and go to state 335
+    SEMICOLON       shift and go to state 340
 
 
-state 305
+state 308
 
     (173) PLOT_N -> CTE_STRING PLOT_O .
 
     CLOSE_SQUARE_BRACKET reduce using rule 173 (PLOT_N -> CTE_STRING PLOT_O .)
 
 
-state 306
+state 309
 
     (174) PLOT_O -> COMMA . PLOT_N
     (173) PLOT_N -> . CTE_STRING PLOT_O
 
-    CTE_STRING      shift and go to state 268
+    CTE_STRING      shift and go to state 269
 
-    PLOT_N                         shift and go to state 336
+    PLOT_N                         shift and go to state 341
 
-state 307
+state 310
 
     (175) PLOT_O -> EMPTY .
 
     CLOSE_SQUARE_BRACKET reduce using rule 175 (PLOT_O -> EMPTY .)
 
 
-state 308
+state 311
 
     (67) LLAMADAMODULO_C -> EXP check_types LLAMADAMODULO_A LLAMADAMODULO_D .
 
@@ -5287,14 +5393,14 @@ state 308
     CLOSE_PARENTHESIS reduce using rule 67 (LLAMADAMODULO_C -> EXP check_types LLAMADAMODULO_A LLAMADAMODULO_D .)
 
 
-state 309
+state 312
 
     (69) LLAMADAMODULO_D -> CLOSE_PARENTHESIS . SEMICOLON
 
-    SEMICOLON       shift and go to state 337
+    SEMICOLON       shift and go to state 342
 
 
-state 310
+state 313
 
     (70) LLAMADAMODULO_D -> EMPTY .
 
@@ -5308,7 +5414,7 @@ state 310
     CLOSE_PARENTHESIS reduce using rule 70 (LLAMADAMODULO_D -> EMPTY .)
 
 
-state 311
+state 314
 
     (64) LLAMADAMODULO_A -> COMMA incK . LLAMADAMODULO_C
     (67) LLAMADAMODULO_C -> . EXP check_types LLAMADAMODULO_A LLAMADAMODULO_D
@@ -5321,7 +5427,7 @@ state 311
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -5333,26 +5439,26 @@ state 311
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    COMMA           reduce using rule 199 (EMPTY -> .)
-    CLOSE_PARENTHESIS reduce using rule 199 (EMPTY -> .)
-    IF              reduce using rule 199 (EMPTY -> .)
-    FOR_KEYWORD     reduce using rule 199 (EMPTY -> .)
-    WHILE_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    PRINT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    INPUT_KEYWORD   reduce using rule 199 (EMPTY -> .)
-    CLOSE_BRACKET   reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    COMMA           reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    IF              reduce using rule 208 (EMPTY -> .)
+    FOR_KEYWORD     reduce using rule 208 (EMPTY -> .)
+    WHILE_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    PRINT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    INPUT_KEYWORD   reduce using rule 208 (EMPTY -> .)
+    CLOSE_BRACKET   reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! ID              [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! ID              [ reduce using rule 208 (EMPTY -> .) ]
 
-    LLAMADAMODULO_C                shift and go to state 338
+    LLAMADAMODULO_C                shift and go to state 343
     EXP                            shift and go to state 160
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
@@ -5361,7 +5467,7 @@ state 311
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 312
+state 315
 
     (85) CONDICION -> IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE CONDICION_A . fill_end
     (86) fill_end -> .
@@ -5374,16 +5480,16 @@ state 312
     INPUT_KEYWORD   reduce using rule 86 (fill_end -> .)
     CLOSE_BRACKET   reduce using rule 86 (fill_end -> .)
 
-    fill_end                       shift and go to state 339
+    fill_end                       shift and go to state 344
 
-state 313
+state 316
 
     (88) CONDICION_A -> gotoElse . ELSE BLOQUE
 
-    ELSE            shift and go to state 340
+    ELSE            shift and go to state 345
 
 
-state 314
+state 317
 
     (89) CONDICION_A -> EMPTY .
 
@@ -5396,7 +5502,7 @@ state 314
     CLOSE_BRACKET   reduce using rule 89 (CONDICION_A -> EMPTY .)
 
 
-state 315
+state 318
 
     (99) EXP_A -> PLUS append_operator EXP .
 
@@ -5404,6 +5510,7 @@ state 315
     AND             reduce using rule 99 (EXP_A -> PLUS append_operator EXP .)
     OR              reduce using rule 99 (EXP_A -> PLUS append_operator EXP .)
     CLOSE_PARENTHESIS reduce using rule 99 (EXP_A -> PLUS append_operator EXP .)
+    CONCATENATE     reduce using rule 99 (EXP_A -> PLUS append_operator EXP .)
     CLOSE_SQUARE_BRACKET reduce using rule 99 (EXP_A -> PLUS append_operator EXP .)
     COMMA           reduce using rule 99 (EXP_A -> PLUS append_operator EXP .)
     ID              reduce using rule 99 (EXP_A -> PLUS append_operator EXP .)
@@ -5419,7 +5526,7 @@ state 315
     SEMICOLON       reduce using rule 99 (EXP_A -> PLUS append_operator EXP .)
 
 
-state 316
+state 319
 
     (100) EXP_A -> MINS append_operator EXP .
 
@@ -5427,6 +5534,7 @@ state 316
     AND             reduce using rule 100 (EXP_A -> MINS append_operator EXP .)
     OR              reduce using rule 100 (EXP_A -> MINS append_operator EXP .)
     CLOSE_PARENTHESIS reduce using rule 100 (EXP_A -> MINS append_operator EXP .)
+    CONCATENATE     reduce using rule 100 (EXP_A -> MINS append_operator EXP .)
     CLOSE_SQUARE_BRACKET reduce using rule 100 (EXP_A -> MINS append_operator EXP .)
     COMMA           reduce using rule 100 (EXP_A -> MINS append_operator EXP .)
     ID              reduce using rule 100 (EXP_A -> MINS append_operator EXP .)
@@ -5442,7 +5550,7 @@ state 316
     SEMICOLON       reduce using rule 100 (EXP_A -> MINS append_operator EXP .)
 
 
-state 317
+state 320
 
     (105) TERMINO_A -> TIMES add_operator TERMINO .
 
@@ -5452,6 +5560,7 @@ state 317
     AND             reduce using rule 105 (TERMINO_A -> TIMES add_operator TERMINO .)
     OR              reduce using rule 105 (TERMINO_A -> TIMES add_operator TERMINO .)
     CLOSE_PARENTHESIS reduce using rule 105 (TERMINO_A -> TIMES add_operator TERMINO .)
+    CONCATENATE     reduce using rule 105 (TERMINO_A -> TIMES add_operator TERMINO .)
     CLOSE_SQUARE_BRACKET reduce using rule 105 (TERMINO_A -> TIMES add_operator TERMINO .)
     COMMA           reduce using rule 105 (TERMINO_A -> TIMES add_operator TERMINO .)
     ID              reduce using rule 105 (TERMINO_A -> TIMES add_operator TERMINO .)
@@ -5467,7 +5576,7 @@ state 317
     SEMICOLON       reduce using rule 105 (TERMINO_A -> TIMES add_operator TERMINO .)
 
 
-state 318
+state 321
 
     (106) TERMINO_A -> DIVIDE add_operator TERMINO .
 
@@ -5477,6 +5586,7 @@ state 318
     AND             reduce using rule 106 (TERMINO_A -> DIVIDE add_operator TERMINO .)
     OR              reduce using rule 106 (TERMINO_A -> DIVIDE add_operator TERMINO .)
     CLOSE_PARENTHESIS reduce using rule 106 (TERMINO_A -> DIVIDE add_operator TERMINO .)
+    CONCATENATE     reduce using rule 106 (TERMINO_A -> DIVIDE add_operator TERMINO .)
     CLOSE_SQUARE_BRACKET reduce using rule 106 (TERMINO_A -> DIVIDE add_operator TERMINO .)
     COMMA           reduce using rule 106 (TERMINO_A -> DIVIDE add_operator TERMINO .)
     ID              reduce using rule 106 (TERMINO_A -> DIVIDE add_operator TERMINO .)
@@ -5492,7 +5602,7 @@ state 318
     SEMICOLON       reduce using rule 106 (TERMINO_A -> DIVIDE add_operator TERMINO .)
 
 
-state 319
+state 322
 
     (131) VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .
 
@@ -5504,6 +5614,7 @@ state 319
     AND             reduce using rule 131 (VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .)
     OR              reduce using rule 131 (VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .)
     CLOSE_PARENTHESIS reduce using rule 131 (VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .)
+    CONCATENATE     reduce using rule 131 (VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .)
     CLOSE_SQUARE_BRACKET reduce using rule 131 (VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .)
     COMMA           reduce using rule 131 (VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .)
     ID              reduce using rule 131 (VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .)
@@ -5519,14 +5630,14 @@ state 319
     SEMICOLON       reduce using rule 131 (VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS .)
 
 
-state 320
+state 323
 
     (132) VARS_CTE_C -> COMMA VARS_CTE_B .
 
     CLOSE_PARENTHESIS reduce using rule 132 (VARS_CTE_C -> COMMA VARS_CTE_B .)
 
 
-state 321
+state 324
 
     (134) VARS_CTE_D -> OPEN_SQUARE_BRACKET . EXP CLOSE_SQUARE_BRACKET
     (97) EXP -> . TERMINO pop_exp EXP_A
@@ -5538,7 +5649,7 @@ state 321
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -5549,18 +5660,18 @@ state 321
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
-    EXP                            shift and go to state 341
+    EXP                            shift and go to state 346
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
@@ -5568,7 +5679,7 @@ state 321
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 322
+state 325
 
     (129) VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .
 
@@ -5580,6 +5691,7 @@ state 322
     AND             reduce using rule 129 (VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .)
     OR              reduce using rule 129 (VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .)
     CLOSE_PARENTHESIS reduce using rule 129 (VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .)
+    CONCATENATE     reduce using rule 129 (VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .)
     CLOSE_SQUARE_BRACKET reduce using rule 129 (VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .)
     COMMA           reduce using rule 129 (VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .)
     ID              reduce using rule 129 (VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .)
@@ -5595,7 +5707,7 @@ state 322
     SEMICOLON       reduce using rule 129 (VARS_CTE_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D .)
 
 
-state 323
+state 326
 
     (135) VARS_CTE_D -> EMPTY .
 
@@ -5607,6 +5719,7 @@ state 323
     AND             reduce using rule 135 (VARS_CTE_D -> EMPTY .)
     OR              reduce using rule 135 (VARS_CTE_D -> EMPTY .)
     CLOSE_PARENTHESIS reduce using rule 135 (VARS_CTE_D -> EMPTY .)
+    CONCATENATE     reduce using rule 135 (VARS_CTE_D -> EMPTY .)
     CLOSE_SQUARE_BRACKET reduce using rule 135 (VARS_CTE_D -> EMPTY .)
     COMMA           reduce using rule 135 (VARS_CTE_D -> EMPTY .)
     ID              reduce using rule 135 (VARS_CTE_D -> EMPTY .)
@@ -5622,14 +5735,14 @@ state 323
     SEMICOLON       reduce using rule 135 (VARS_CTE_D -> EMPTY .)
 
 
-state 324
+state 327
 
     (91) FOR -> FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_for SEMICOLON ASIGNACION . CLOSE_PARENTHESIS BLOQUE repeat_for
 
-    CLOSE_PARENTHESIS shift and go to state 342
+    CLOSE_PARENTHESIS shift and go to state 347
 
 
-state 325
+state 328
 
     (94) WHILE -> WHILE_KEYWORD OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS bool_while BLOQUE goto_while .
 
@@ -5642,7 +5755,33 @@ state 325
     CLOSE_BRACKET   reduce using rule 94 (WHILE -> WHILE_KEYWORD OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS bool_while BLOQUE goto_while .)
 
 
-state 326
+state 329
+
+    (188) PRINT_C -> CONCATENATE EXPRESIONESVARIAS add_con . PRINT_D
+    (193) PRINT_D -> . CONCATENATE add_sign PRINT_B
+    (194) PRINT_D -> . EMPTY
+    (208) EMPTY -> .
+
+    CONCATENATE     shift and go to state 348
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+
+    PRINT_D                        shift and go to state 349
+    EMPTY                          shift and go to state 350
+
+state 330
+
+    (189) PRINT_C -> CONCATENATE CTE_STRING add_exp . PRINT_D
+    (193) PRINT_D -> . CONCATENATE add_sign PRINT_B
+    (194) PRINT_D -> . EMPTY
+    (208) EMPTY -> .
+
+    CONCATENATE     shift and go to state 348
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+
+    PRINT_D                        shift and go to state 351
+    EMPTY                          shift and go to state 350
+
+state 331
 
     (136) INPUT -> INPUT_KEYWORD INPUTSYMBOL ID add_inputid INPUT_A SEMICOLON quad_input .
 
@@ -5655,81 +5794,81 @@ state 326
     CLOSE_BRACKET   reduce using rule 136 (INPUT -> INPUT_KEYWORD INPUTSYMBOL ID add_inputid INPUT_A SEMICOLON quad_input .)
 
 
-state 327
+state 332
 
     (139) INPUT_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET . INPUT_B
     (141) INPUT_B -> . OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
 
-    OPEN_SQUARE_BRACKET shift and go to state 343
+    OPEN_SQUARE_BRACKET shift and go to state 352
 
-    INPUT_B                        shift and go to state 344
+    INPUT_B                        shift and go to state 353
 
-state 328
+state 333
 
     (57) MODULO_D -> CLOSE_PARENTHESIS param_table . OPEN_BRACKET VARS add_count add_start BLOQUE CLOSE_BRACKET
 
-    OPEN_BRACKET    shift and go to state 345
+    OPEN_BRACKET    shift and go to state 354
 
 
-state 329
+state 334
 
     (80) ASIGNACION_B -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .
 
     EQUAL           reduce using rule 80 (ASIGNACION_B -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
 
 
-state 330
+state 335
 
     (168) PLOT_G -> PLOT_K CLOSE_PARENTHESIS . SEMICOLON
 
-    SEMICOLON       shift and go to state 346
+    SEMICOLON       shift and go to state 355
 
 
-state 331
+state 336
 
     (169) PLOT_K -> CTE_STRING PLOT_H .
 
     CLOSE_PARENTHESIS reduce using rule 169 (PLOT_K -> CTE_STRING PLOT_H .)
 
 
-state 332
+state 337
 
     (170) PLOT_H -> COMMA . PLOT_K
     (169) PLOT_K -> . CTE_STRING PLOT_H
 
-    CTE_STRING      shift and go to state 301
+    CTE_STRING      shift and go to state 304
 
-    PLOT_K                         shift and go to state 347
+    PLOT_K                         shift and go to state 356
 
-state 333
+state 338
 
     (171) PLOT_H -> EMPTY .
 
     CLOSE_PARENTHESIS reduce using rule 171 (PLOT_H -> EMPTY .)
 
 
-state 334
+state 339
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA . CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
 
-    CTE_INTEGER     shift and go to state 348
+    CTE_INTEGER     shift and go to state 357
 
 
-state 335
+state 340
 
     (172) PLOT_M -> PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON . OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON
 
-    OPEN_SQUARE_BRACKET shift and go to state 349
+    OPEN_SQUARE_BRACKET shift and go to state 358
 
 
-state 336
+state 341
 
     (174) PLOT_O -> COMMA PLOT_N .
 
     CLOSE_SQUARE_BRACKET reduce using rule 174 (PLOT_O -> COMMA PLOT_N .)
 
 
-state 337
+state 342
 
     (69) LLAMADAMODULO_D -> CLOSE_PARENTHESIS SEMICOLON .
 
@@ -5743,7 +5882,7 @@ state 337
     CLOSE_PARENTHESIS reduce using rule 69 (LLAMADAMODULO_D -> CLOSE_PARENTHESIS SEMICOLON .)
 
 
-state 338
+state 343
 
     (64) LLAMADAMODULO_A -> COMMA incK LLAMADAMODULO_C .
 
@@ -5757,7 +5896,7 @@ state 338
     CLOSE_BRACKET   reduce using rule 64 (LLAMADAMODULO_A -> COMMA incK LLAMADAMODULO_C .)
 
 
-state 339
+state 344
 
     (85) CONDICION -> IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE CONDICION_A fill_end .
 
@@ -5770,32 +5909,77 @@ state 339
     CLOSE_BRACKET   reduce using rule 85 (CONDICION -> IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE CONDICION_A fill_end .)
 
 
-state 340
+state 345
 
     (88) CONDICION_A -> gotoElse ELSE . BLOQUE
     (21) BLOQUE -> . OPEN_BRACKET ESTATUTO_A CLOSE_BRACKET
 
     OPEN_BRACKET    shift and go to state 40
 
-    BLOQUE                         shift and go to state 350
+    BLOQUE                         shift and go to state 359
 
-state 341
+state 346
 
     (134) VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP . CLOSE_SQUARE_BRACKET
 
-    CLOSE_SQUARE_BRACKET shift and go to state 351
+    CLOSE_SQUARE_BRACKET shift and go to state 360
 
 
-state 342
+state 347
 
     (91) FOR -> FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_for SEMICOLON ASIGNACION CLOSE_PARENTHESIS . BLOQUE repeat_for
     (21) BLOQUE -> . OPEN_BRACKET ESTATUTO_A CLOSE_BRACKET
 
     OPEN_BRACKET    shift and go to state 40
 
-    BLOQUE                         shift and go to state 352
+    BLOQUE                         shift and go to state 361
 
-state 343
+state 348
+
+    (193) PRINT_D -> CONCATENATE . add_sign PRINT_B
+    (195) add_sign -> .
+
+    CTE_STRING      reduce using rule 195 (add_sign -> .)
+    NOT             reduce using rule 195 (add_sign -> .)
+    OPEN_PARENTHESIS reduce using rule 195 (add_sign -> .)
+    PLUS            reduce using rule 195 (add_sign -> .)
+    MINS            reduce using rule 195 (add_sign -> .)
+    CTE_INTEGER     reduce using rule 195 (add_sign -> .)
+    CTE_FLOAT       reduce using rule 195 (add_sign -> .)
+    BOOLEAN         reduce using rule 195 (add_sign -> .)
+    ID              reduce using rule 195 (add_sign -> .)
+    CONCATENATE     reduce using rule 195 (add_sign -> .)
+    AND             reduce using rule 195 (add_sign -> .)
+    OR              reduce using rule 195 (add_sign -> .)
+    RELOP           reduce using rule 195 (add_sign -> .)
+    TIMES           reduce using rule 195 (add_sign -> .)
+    DIVIDE          reduce using rule 195 (add_sign -> .)
+    CLOSE_PARENTHESIS reduce using rule 195 (add_sign -> .)
+
+    add_sign                       shift and go to state 362
+
+state 349
+
+    (188) PRINT_C -> CONCATENATE EXPRESIONESVARIAS add_con PRINT_D .
+
+    CLOSE_PARENTHESIS reduce using rule 188 (PRINT_C -> CONCATENATE EXPRESIONESVARIAS add_con PRINT_D .)
+
+
+state 350
+
+    (194) PRINT_D -> EMPTY .
+
+    CLOSE_PARENTHESIS reduce using rule 194 (PRINT_D -> EMPTY .)
+
+
+state 351
+
+    (189) PRINT_C -> CONCATENATE CTE_STRING add_exp PRINT_D .
+
+    CLOSE_PARENTHESIS reduce using rule 189 (PRINT_C -> CONCATENATE CTE_STRING add_exp PRINT_D .)
+
+
+state 352
 
     (141) INPUT_B -> OPEN_SQUARE_BRACKET . EXP CLOSE_SQUARE_BRACKET
     (97) EXP -> . TERMINO pop_exp EXP_A
@@ -5807,7 +5991,7 @@ state 343
     (120) FACTOR_A -> . FACTOR_C
     (121) FACTOR_A -> . EMPTY
     (123) FACTOR_C -> . VARS_CTE
-    (199) EMPTY -> .
+    (208) EMPTY -> .
     (124) VARS_CTE -> . CTE_INTEGER
     (125) VARS_CTE -> . CTE_FLOAT
     (126) VARS_CTE -> . BOOLEAN
@@ -5818,18 +6002,18 @@ state 343
     OPEN_PARENTHESIS shift and go to state 114
     PLUS            shift and go to state 124
     MINS            shift and go to state 126
-    TIMES           reduce using rule 199 (EMPTY -> .)
-    DIVIDE          reduce using rule 199 (EMPTY -> .)
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
     CTE_INTEGER     shift and go to state 128
     CTE_FLOAT       shift and go to state 129
     BOOLEAN         shift and go to state 130
     ID              shift and go to state 131
 
-  ! PLUS            [ reduce using rule 199 (EMPTY -> .) ]
-  ! MINS            [ reduce using rule 199 (EMPTY -> .) ]
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
 
-    EXP                            shift and go to state 353
+    EXP                            shift and go to state 363
     TERMINO                        shift and go to state 121
     FACTOR                         shift and go to state 122
     FACTOR_A                       shift and go to state 123
@@ -5837,23 +6021,23 @@ state 343
     EMPTY                          shift and go to state 148
     VARS_CTE                       shift and go to state 127
 
-state 344
+state 353
 
     (139) INPUT_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET INPUT_B .
 
     SEMICOLON       reduce using rule 139 (INPUT_A -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET INPUT_B .)
 
 
-state 345
+state 354
 
     (57) MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET . VARS add_count add_start BLOQUE CLOSE_BRACKET
     (8) VARS -> . VARS_KEYWORD OPEN_BRACKET VARS_A
 
     VARS_KEYWORD    shift and go to state 7
 
-    VARS                           shift and go to state 354
+    VARS                           shift and go to state 364
 
-state 346
+state 355
 
     (168) PLOT_G -> PLOT_K CLOSE_PARENTHESIS SEMICOLON .
 
@@ -5866,30 +6050,30 @@ state 346
     CLOSE_BRACKET   reduce using rule 168 (PLOT_G -> PLOT_K CLOSE_PARENTHESIS SEMICOLON .)
 
 
-state 347
+state 356
 
     (170) PLOT_H -> COMMA PLOT_K .
 
     CLOSE_PARENTHESIS reduce using rule 170 (PLOT_H -> COMMA PLOT_K .)
 
 
-state 348
+state 357
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER . SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
 
-    SEMICOLON       shift and go to state 355
+    SEMICOLON       shift and go to state 365
 
 
-state 349
+state 358
 
     (172) PLOT_M -> PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET . PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON
     (176) PLOT_P -> . CTE_STRING PLOT_Q
 
-    CTE_STRING      shift and go to state 357
+    CTE_STRING      shift and go to state 367
 
-    PLOT_P                         shift and go to state 356
+    PLOT_P                         shift and go to state 366
 
-state 350
+state 359
 
     (88) CONDICION_A -> gotoElse ELSE BLOQUE .
 
@@ -5902,7 +6086,7 @@ state 350
     CLOSE_BRACKET   reduce using rule 88 (CONDICION_A -> gotoElse ELSE BLOQUE .)
 
 
-state 351
+state 360
 
     (134) VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .
 
@@ -5914,6 +6098,7 @@ state 351
     AND             reduce using rule 134 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
     OR              reduce using rule 134 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
     CLOSE_PARENTHESIS reduce using rule 134 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
+    CONCATENATE     reduce using rule 134 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
     CLOSE_SQUARE_BRACKET reduce using rule 134 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
     COMMA           reduce using rule 134 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
     ID              reduce using rule 134 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
@@ -5929,7 +6114,7 @@ state 351
     SEMICOLON       reduce using rule 134 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
 
 
-state 352
+state 361
 
     (91) FOR -> FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_for SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE . repeat_for
     (92) repeat_for -> .
@@ -5942,52 +6127,111 @@ state 352
     INPUT_KEYWORD   reduce using rule 92 (repeat_for -> .)
     CLOSE_BRACKET   reduce using rule 92 (repeat_for -> .)
 
-    repeat_for                     shift and go to state 358
+    repeat_for                     shift and go to state 368
 
-state 353
+state 362
+
+    (193) PRINT_D -> CONCATENATE add_sign . PRINT_B
+    (181) PRINT_B -> . CTE_STRING add_string PRINT_C
+    (182) PRINT_B -> . EXPRESIONESVARIAS add_temp PRINT_C
+    (196) EXPRESIONESVARIAS -> . NOT EV_C
+    (197) EXPRESIONESVARIAS -> . EV_C
+    (198) EV_C -> . EXP_RELOP EV_B
+    (203) EXP_RELOP -> . EXP EXP_RELOP_A
+    (204) EXP_RELOP -> . EMPTY
+    (97) EXP -> . TERMINO pop_exp EXP_A
+    (208) EMPTY -> .
+    (103) TERMINO -> . FACTOR pop_term TERMINO_A
+    (116) FACTOR -> . FACTOR_A
+    (117) FACTOR_A -> . OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS
+    (118) FACTOR_A -> . PLUS FACTOR_C
+    (119) FACTOR_A -> . MINS FACTOR_C
+    (120) FACTOR_A -> . FACTOR_C
+    (121) FACTOR_A -> . EMPTY
+    (123) FACTOR_C -> . VARS_CTE
+    (124) VARS_CTE -> . CTE_INTEGER
+    (125) VARS_CTE -> . CTE_FLOAT
+    (126) VARS_CTE -> . BOOLEAN
+    (127) VARS_CTE -> . ID VARS_CTE_A
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINS resolved as shift
+    CTE_STRING      shift and go to state 137
+    NOT             shift and go to state 116
+    AND             reduce using rule 208 (EMPTY -> .)
+    OR              reduce using rule 208 (EMPTY -> .)
+    CONCATENATE     reduce using rule 208 (EMPTY -> .)
+    CLOSE_PARENTHESIS reduce using rule 208 (EMPTY -> .)
+    TIMES           reduce using rule 208 (EMPTY -> .)
+    DIVIDE          reduce using rule 208 (EMPTY -> .)
+    RELOP           reduce using rule 208 (EMPTY -> .)
+    OPEN_PARENTHESIS shift and go to state 114
+    PLUS            shift and go to state 124
+    MINS            shift and go to state 126
+    CTE_INTEGER     shift and go to state 128
+    CTE_FLOAT       shift and go to state 129
+    BOOLEAN         shift and go to state 130
+    ID              shift and go to state 131
+
+  ! PLUS            [ reduce using rule 208 (EMPTY -> .) ]
+  ! MINS            [ reduce using rule 208 (EMPTY -> .) ]
+
+    PRINT_B                        shift and go to state 369
+    EXPRESIONESVARIAS              shift and go to state 138
+    EV_C                           shift and go to state 117
+    EXP_RELOP                      shift and go to state 118
+    EXP                            shift and go to state 119
+    EMPTY                          shift and go to state 120
+    TERMINO                        shift and go to state 121
+    FACTOR                         shift and go to state 122
+    FACTOR_A                       shift and go to state 123
+    FACTOR_C                       shift and go to state 125
+    VARS_CTE                       shift and go to state 127
+
+state 363
 
     (141) INPUT_B -> OPEN_SQUARE_BRACKET EXP . CLOSE_SQUARE_BRACKET
 
-    CLOSE_SQUARE_BRACKET shift and go to state 359
+    CLOSE_SQUARE_BRACKET shift and go to state 370
 
 
-state 354
+state 364
 
     (57) MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS . add_count add_start BLOQUE CLOSE_BRACKET
     (3) add_count -> .
 
     OPEN_BRACKET    reduce using rule 3 (add_count -> .)
 
-    add_count                      shift and go to state 360
+    add_count                      shift and go to state 371
 
-state 355
+state 365
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON . CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
 
-    CTE_STRING      shift and go to state 361
+    CTE_STRING      shift and go to state 372
 
 
-state 356
+state 366
 
     (172) PLOT_M -> PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P . CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_SQUARE_BRACKET shift and go to state 362
+    CLOSE_SQUARE_BRACKET shift and go to state 373
 
 
-state 357
+state 367
 
     (176) PLOT_P -> CTE_STRING . PLOT_Q
     (177) PLOT_Q -> . COMMA PLOT_P
     (178) PLOT_Q -> . EMPTY
-    (199) EMPTY -> .
+    (208) EMPTY -> .
 
-    COMMA           shift and go to state 364
-    CLOSE_SQUARE_BRACKET reduce using rule 199 (EMPTY -> .)
+    COMMA           shift and go to state 375
+    CLOSE_SQUARE_BRACKET reduce using rule 208 (EMPTY -> .)
 
-    PLOT_Q                         shift and go to state 363
-    EMPTY                          shift and go to state 365
+    PLOT_Q                         shift and go to state 374
+    EMPTY                          shift and go to state 376
 
-state 358
+state 368
 
     (91) FOR -> FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_for SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for .
 
@@ -6000,104 +6244,111 @@ state 358
     CLOSE_BRACKET   reduce using rule 91 (FOR -> FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION EXPRESIONESVARIAS bool_for SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for .)
 
 
-state 359
+state 369
+
+    (193) PRINT_D -> CONCATENATE add_sign PRINT_B .
+
+    CLOSE_PARENTHESIS reduce using rule 193 (PRINT_D -> CONCATENATE add_sign PRINT_B .)
+
+
+state 370
 
     (141) INPUT_B -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .
 
     SEMICOLON       reduce using rule 141 (INPUT_B -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
 
 
-state 360
+state 371
 
     (57) MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS add_count . add_start BLOQUE CLOSE_BRACKET
     (59) add_start -> .
 
     OPEN_BRACKET    reduce using rule 59 (add_start -> .)
 
-    add_start                      shift and go to state 366
+    add_start                      shift and go to state 377
 
-state 361
+state 372
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING . COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON
 
-    COMMA           shift and go to state 367
+    COMMA           shift and go to state 378
 
 
-state 362
+state 373
 
     (172) PLOT_M -> PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET . CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_PARENTHESIS shift and go to state 368
+    CLOSE_PARENTHESIS shift and go to state 379
 
 
-state 363
+state 374
 
     (176) PLOT_P -> CTE_STRING PLOT_Q .
 
     CLOSE_SQUARE_BRACKET reduce using rule 176 (PLOT_P -> CTE_STRING PLOT_Q .)
 
 
-state 364
+state 375
 
     (177) PLOT_Q -> COMMA . PLOT_P
     (176) PLOT_P -> . CTE_STRING PLOT_Q
 
-    CTE_STRING      shift and go to state 357
+    CTE_STRING      shift and go to state 367
 
-    PLOT_P                         shift and go to state 369
+    PLOT_P                         shift and go to state 380
 
-state 365
+state 376
 
     (178) PLOT_Q -> EMPTY .
 
     CLOSE_SQUARE_BRACKET reduce using rule 178 (PLOT_Q -> EMPTY .)
 
 
-state 366
+state 377
 
     (57) MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS add_count add_start . BLOQUE CLOSE_BRACKET
     (21) BLOQUE -> . OPEN_BRACKET ESTATUTO_A CLOSE_BRACKET
 
     OPEN_BRACKET    shift and go to state 40
 
-    BLOQUE                         shift and go to state 370
+    BLOQUE                         shift and go to state 381
 
-state 367
+state 378
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA . CTE_STRING CLOSE_PARENTHESIS SEMICOLON
 
-    CTE_STRING      shift and go to state 371
+    CTE_STRING      shift and go to state 382
 
 
-state 368
+state 379
 
     (172) PLOT_M -> PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS . SEMICOLON
 
-    SEMICOLON       shift and go to state 372
+    SEMICOLON       shift and go to state 383
 
 
-state 369
+state 380
 
     (177) PLOT_Q -> COMMA PLOT_P .
 
     CLOSE_SQUARE_BRACKET reduce using rule 177 (PLOT_Q -> COMMA PLOT_P .)
 
 
-state 370
+state 381
 
     (57) MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS add_count add_start BLOQUE . CLOSE_BRACKET
 
-    CLOSE_BRACKET   shift and go to state 373
+    CLOSE_BRACKET   shift and go to state 384
 
 
-state 371
+state 382
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING . CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_PARENTHESIS shift and go to state 374
+    CLOSE_PARENTHESIS shift and go to state 385
 
 
-state 372
+state 383
 
     (172) PLOT_M -> PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON .
 
@@ -6110,7 +6361,7 @@ state 372
     CLOSE_BRACKET   reduce using rule 172 (PLOT_M -> PLOT_N CLOSE_SQUARE_BRACKET SEMICOLON OPEN_SQUARE_BRACKET PLOT_P CLOSE_SQUARE_BRACKET CLOSE_PARENTHESIS SEMICOLON .)
 
 
-state 373
+state 384
 
     (57) MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS add_count add_start BLOQUE CLOSE_BRACKET .
 
@@ -6119,14 +6370,14 @@ state 373
     CLOSE_PARENTHESIS reduce using rule 57 (MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS add_count add_start BLOQUE CLOSE_BRACKET .)
 
 
-state 374
+state 385
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS . SEMICOLON
 
-    SEMICOLON       shift and go to state 375
+    SEMICOLON       shift and go to state 386
 
 
-state 375
+state 386
 
     (156) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON .
 
@@ -6192,18 +6443,12 @@ WARNING: shift/reduce conflict for BOOLEAN in state 222 resolved as shift
 WARNING: shift/reduce conflict for ID in state 222 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 238 resolved as shift
 WARNING: shift/reduce conflict for MINS in state 238 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 241 resolved as shift
-WARNING: shift/reduce conflict for MINS in state 241 resolved as shift
-WARNING: shift/reduce conflict for CLOSE_PARENTHESIS in state 244 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 250 resolved as shift
-WARNING: shift/reduce conflict for MINS in state 250 resolved as shift
-WARNING: shift/reduce conflict for CLOSE_PARENTHESIS in state 269 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 276 resolved as shift
-WARNING: shift/reduce conflict for MINS in state 276 resolved as shift
-WARNING: shift/reduce conflict for CTE_INTEGER in state 276 resolved as shift
-WARNING: shift/reduce conflict for CTE_FLOAT in state 276 resolved as shift
-WARNING: shift/reduce conflict for BOOLEAN in state 276 resolved as shift
-WARNING: shift/reduce conflict for ID in state 276 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 242 resolved as shift
+WARNING: shift/reduce conflict for MINS in state 242 resolved as shift
+WARNING: shift/reduce conflict for CLOSE_PARENTHESIS in state 245 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 251 resolved as shift
+WARNING: shift/reduce conflict for MINS in state 251 resolved as shift
+WARNING: shift/reduce conflict for CLOSE_PARENTHESIS in state 270 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 277 resolved as shift
 WARNING: shift/reduce conflict for MINS in state 277 resolved as shift
 WARNING: shift/reduce conflict for CTE_INTEGER in state 277 resolved as shift
@@ -6222,15 +6467,23 @@ WARNING: shift/reduce conflict for CTE_INTEGER in state 279 resolved as shift
 WARNING: shift/reduce conflict for CTE_FLOAT in state 279 resolved as shift
 WARNING: shift/reduce conflict for BOOLEAN in state 279 resolved as shift
 WARNING: shift/reduce conflict for ID in state 279 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 281 resolved as shift
-WARNING: shift/reduce conflict for MINS in state 281 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 311 resolved as shift
-WARNING: shift/reduce conflict for MINS in state 311 resolved as shift
-WARNING: shift/reduce conflict for ID in state 311 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 321 resolved as shift
-WARNING: shift/reduce conflict for MINS in state 321 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 343 resolved as shift
-WARNING: shift/reduce conflict for MINS in state 343 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 280 resolved as shift
+WARNING: shift/reduce conflict for MINS in state 280 resolved as shift
+WARNING: shift/reduce conflict for CTE_INTEGER in state 280 resolved as shift
+WARNING: shift/reduce conflict for CTE_FLOAT in state 280 resolved as shift
+WARNING: shift/reduce conflict for BOOLEAN in state 280 resolved as shift
+WARNING: shift/reduce conflict for ID in state 280 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 282 resolved as shift
+WARNING: shift/reduce conflict for MINS in state 282 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 314 resolved as shift
+WARNING: shift/reduce conflict for MINS in state 314 resolved as shift
+WARNING: shift/reduce conflict for ID in state 314 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 324 resolved as shift
+WARNING: shift/reduce conflict for MINS in state 324 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 352 resolved as shift
+WARNING: shift/reduce conflict for MINS in state 352 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 362 resolved as shift
+WARNING: shift/reduce conflict for MINS in state 362 resolved as shift
 WARNING: reduce/reduce conflict in state 120 resolved using rule (FACTOR_A -> EMPTY)
 WARNING: rejected rule (EXP_RELOP -> EMPTY) in state 120
 WARNING: Rule (EXP_RELOP -> EMPTY) is never reduced
