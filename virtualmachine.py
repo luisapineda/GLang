@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+from matplotlib_venn import venn2
 import time
 from semanticCube import codes, codesTwisted
 from memory import memory
+
 
 class virtualMachine: 
     
@@ -61,6 +63,8 @@ class virtualMachine:
                 self.GOTO(tempResult)
             elif (tempOperator == 'print'):
                 self.PRINT(tempResult)
+            elif (tempOperator == '&'):
+                self.CONCATENATE(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == 'GOTOF'):
                 self.GOTOF(tempLeftOperand,tempResult)
             elif (tempOperator == 'ENDPROC'):
@@ -113,8 +117,7 @@ class virtualMachine:
     def PLUS(self,leftOperandAdress, rightOperandAdress, resultAdress):
         numTemp = int(memory.accessAValue(leftOperandAdress)) + int(memory.accessAValue(rightOperandAdress))
         memory.save(numTemp,resultAdress)
-
-        
+  
     def DIVISION(self,leftOperandAdress, rightOperandAdress, resultAdress):
         numTemp = int(memory.accessAValue(leftOperandAdress)) / int(memory.accessAValue(rightOperandAdress))
         memory.save(numTemp,resultAdress)
@@ -198,13 +201,17 @@ class virtualMachine:
 
     def GOTO(self, nextQuad):
         print('AQUI ESTA EL GOTO')
-        #self.cont = nextQuad
+        self.cont = nextQuad - 1
 
     def GOTOF(self, address, nextQuad):
-        print('h')
+        if (memory.accessAValue(address)==False):
+            self.cont = nextQuad - 1
     
     def PRINT(self, adress):
         print(memory.accessAValue(adress))
+    
+    def CONCATENATE(self, left, right, address):
+        memory.save(str(memory.accessAValue(left)) + str(memory.accessAValue(right)),address)
 
     def ENDPROC(self):
         print('Esta en ENDPROC')
@@ -219,6 +226,7 @@ class virtualMachine:
         print('Esta en COLOR')
 
     def NAME(self):
+        if 
         print('Esta en NAME')
 
     def NAMEX(self):
@@ -256,6 +264,9 @@ class virtualMachine:
         print('Esta en CREATER')
 
     def CREATEV(self):
+        plt.title("Reprobados")
+        venn2(subsets = (10, 20, 5), set_labels = ('Matematicas', 'Quimica'))
+        plt.show()
         print('Esta en CREATEV')
     
     def CREATEN(self):

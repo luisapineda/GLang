@@ -340,6 +340,7 @@ def p_ESTATUTO(t):
              | LLAMADAMODULO
              | INPUT
              | COLOR
+			 | RETURNOP
     '''
 
 #Tipos primitivos
@@ -376,7 +377,40 @@ def p_MODULO(t):
     '''
 	MODULO : MODULE MODULO_A ID add_functionr OPEN_PARENTHESIS MODULO_C release_vars change_scope endproc
 	'''
+#Regla de retorno en una funcion
+def p_RETURNOP(t):
+	'''
+	RETURNOP : RETURN EXPRESIONESVARIAS return_quad SEMICOLON
+	'''
 
+def p_return_quad(t):
+	'return_quad :'
+	ver_type = directory.return_functype(SScope[-1])
+	
+	if(ver_type=="void" or ver_type=="PROGRAM"):
+		raise Exception("ERROR: Invalid return statement")
+
+	#Se saca el resultado de la pila de operandos
+	result=StackO.pop()
+		
+	#Se saca el tipo del resultado de la pila de tipos
+	#result_type = SType.pop()
+		
+	#FALTA CHECAR LA COMPROBACION DEL TIPO CON EL CUBO SEMANTICO********************************************************************************************************************
+		
+	#Se hace el cuadruplo de asignacion =, no se utiliza el operando derecho ya que solo se va a asociar el operando izquierdo con el resultado
+	quadrup=["return",None,None,result]
+		
+	#Se mete el resultado a la pila de operandos
+	StackO.append(result)
+		
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+	
+	
 #Para liberar la tabla de variables
 def p_release_vars(t):
 	'release_vars :'
@@ -422,7 +456,7 @@ def p_add_functionr(t):
 	print(SScope)
 	#Borrar
 	
-	#Se añade el nombre de la funcion y su tipo al directorio de funciones
+	#Se aΓ±ade el nombre de la funcion y su tipo al directorio de funciones
 	directory.add_function(v.Id,f.Type)
 
 #El modulo puede ser de tipo void o de tipo primitivo
@@ -2081,10 +2115,17 @@ def p_add_temp(t):
 			#Se saca el tipo del operador izquierdo y se mete en left_type
 			left_type=SType.pop()
 	
-			result=ListaTemps[q.contList]
-			q.contList = q.contList + 1
+			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+			if (result_type == -1):
+				raise Exception("ERROR: TYPE DISMATCH")
+
+			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+				raise Exception("ERROR: Not enough space in memory")
+			
+			result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
+
 			quadrup=[operator,left_operand,right_operand,result]
-			q.contList = q.contList + 1
+			#q.contList = q.contList + 1
 	
 			#Se agrega el resultado a la pila de operandos
 			StackO.append(result)
@@ -2112,18 +2153,32 @@ def p_add_string(t):
 			
 			#Se saca el operador derecho y se mete en right_operand
 			right_operand=StackO.pop()
-
+			print('right operand:')
+			print(right_operand)
 			#Se saca el tipo del operador derecho y se mete en right_type
 			right_type=SType.pop()
-
+			print('right type:')
+			print(right_type)
 			#Se saca el operador izquierdo y se mete en left_operand
 			left_operand=StackO.pop()
-
+			print('leftoperand:')
+			print(left_operand)
 			#Se saca el tipo del operador izquierdo y se mete en left_type
-			left_type=SType.pop()
-	
-			result=ListaTemps[q.contList]
-			q.contList = q.contList + 1
+			print('left type:')
+			try: 
+				left_type=SType.pop()
+			except:
+				left_type="CString"
+
+			print(left_type)
+			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+			if (result_type == -1):
+				raise Exception("ERROR: TYPE DISMATCH")
+
+			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+				raise Exception("ERROR: Not enough space in memory")
+			
+			result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
 			
 			quadrup=[operator,left_operand,right_operand,result]
 			
@@ -2235,19 +2290,19 @@ def p_print_id(t):
 			print("checamos ahora:")
 			print(StackO)
 			#Borrar
-		
+			print('                  ················································')
 			#Se saca el operador derecho y se mete en right_operand
 			right_operand=StackO.pop()
 
 			#Se saca el tipo del operador derecho y se mete en right_type
 			right_type=SType.pop()
-
+			print(right_type)
 			#Se saca el operador izquierdo y se mete en left_operand
 			left_operand=StackO.pop()
-
+			
 			#Se saca el tipo del operador izquierdo y se mete en left_type
 			left_type=SType.pop()
-			
+			print(left_type)
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
 				raise Exception("ERROR: TYPE DISMATCH")
@@ -2290,7 +2345,7 @@ def p_PRINT_C(t):
  | CONCATENATE CTE_STRING add_exp PRINT_D
  | EMPTY
 	'''
-
+#Para agarrar el string pasado
 def p_add_exp(t):
 	'add_exp :'
 	StackO.append(t[-1])
@@ -2311,9 +2366,16 @@ def p_add_exp(t):
 
 	#Se saca el tipo del operador izquierdo y se mete en left_type
 	#left_type=SType.pop()
-	
-	result=ListaTemps[q.contList]
-	q.contList = q.contList + 1
+	#############################################################################
+	result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+	if (result_type == -1):
+		raise Exception("ERROR: TYPE DISMATCH")
+
+	if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+		raise Exception("ERROR: Not enough space in memory")
+			
+	result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
+
 	quadrup=["&",left_operand,right_operand,result]
 	
 	#Se agrega el resultado a la pila de operandos
@@ -2327,22 +2389,30 @@ def p_add_exp(t):
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
 	
+#Para meter el result en el cuadruplo
 def p_add_con(t):
 	'add_con :'
 	#Se saca el operador derecho y se mete en right_operand
 	right_operand=StackO.pop()
 
 	#Se saca el tipo del operador derecho y se mete en right_type
-	#right_type=SType.pop()
+	right_type=SType.pop()
 
 	#Se saca el operador izquierdo y se mete en left_operand
 	left_operand=StackO.pop()
 
 	#Se saca el tipo del operador izquierdo y se mete en left_type
-	#left_type=SType.pop()
+	left_type=SType.pop()
 	
-	result=ListaTemps[q.contList]
-	q.contList = q.contList + 1
+	result_type = semanticCube[operators["&"]][typesOfVariables[left_type]][typesOfVariables[right_type]]
+	if (result_type == -1):
+		raise Exception("ERROR: TYPE DISMATCH")
+
+	if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
+		raise Exception("ERROR: Not enough space in memory")
+			
+	result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
+
 	quadrup=["&",left_operand,right_operand,result]
 	
 	#Se agrega el resultado a la pila de operandos

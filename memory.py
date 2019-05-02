@@ -68,7 +68,10 @@ class memory:
 
         self.ourTypeDescriptions = self.GGraph + self.memorySizePerOurType * 32 #type of variable = "Description"
         self.CString = self.GGraph + self.memorySizePerOurType * 33 #Esto es exclusivo para los strings a imprimir
+    
     def accessAValue(self, address):
+        if(isinstance(address, str)):
+            return address[1:-1]
         if self.memory[address]=='TRUE':
             return True
         elif self.memory[address]=='FALSE':

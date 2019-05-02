@@ -29,7 +29,7 @@ migrafica1.name("Crecimiento economico");
 migrafica1.nameX("Dias"); 
 migrafica1.nameY("Dinero"); 
 migrafica1.createG(0,1,3,4);
- 
+
 migrafica2.name("Animales");
 migrafica2.createPC(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos"); 
 

@@ -15,6 +15,9 @@ program miprograma {
     }
 
 main{ 
+
+    print("Numero es:" & 10 & "fin");
+    print(iNumero);
     migrafica1.name("Crecimiento economico"); 
     migrafica1.nameX("Dias"); 
     migrafica1.nameY("Dinero"); 

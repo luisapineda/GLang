@@ -72,6 +72,7 @@ print(4>3);
 print(3>4);
 print(iNumero>10);
 print(iNumero>a);
+print("hola" &  3);
 }
 }
 

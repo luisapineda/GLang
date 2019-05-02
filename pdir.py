@@ -35,6 +35,14 @@ def add_numlocal(namef,numlocal):
 def add_start(namef,numstart):
 	dir_func[namef]["start"]=numstart
 
+def return_functype(namef):
+	if namef not in dir_func:
+		raise Exception("ERROR Module not found")
+	
+	functype=dir_func[namef]["tipo"]
+
+	return functype
+	
 def return_type(namef,namev):
 	if namef not in dir_func:
 		raise Exception("ERROR Module not found")
