@@ -19,6 +19,7 @@ class virtualMachine:
         self.cont = 0
         self.quads=quads
         self.endIndicator = False
+        self.ListOfDirections = []
         print(self.quads)
         '''
         #CODIGO DEMO USANDO MATPLOT
@@ -30,12 +31,22 @@ class virtualMachine:
         
         while self.endIndicator == False:
             print(self.quads[self.cont])
-            #######
+            #############
             self.step = -1
             tempOperator = self.quads[self.cont][0]
             tempLeftOperand = self.quads[self.cont][1]
             tempRightOperand = self.quads[self.cont][2]
             tempResult = self.quads[self.cont][3]
+            if self.ListOfDirections.__contains__(tempLeftOperand):
+                self.ListOfDirections.remove(tempLeftOperand)
+                tempLeftOperand = memory.accessAValue(tempLeftOperand)
+            if self.ListOfDirections.__contains__(tempRightOperand):
+                self.ListOfDirections.remove(tempRightOperand)
+                tempLeftOperand = memory.accessAValue(tempRightOperand)
+            if self.ListOfDirections.__contains__(tempResult):
+                self.ListOfDirections.remove(tempResult)
+                tempLeftOperand = memory.accessAValue(tempResult)
+            #############
             if (tempOperator == '+'):
                 self.PLUS(tempLeftOperand,tempRightOperand,tempResult)
             elif (tempOperator == '-'):
@@ -106,6 +117,10 @@ class virtualMachine:
                 self.GOSUB()
             elif (tempOperator == 'ERA'):
                 self.ERA()
+            elif (tempOperator == 'VER'):
+                self.VER(tempLeftOperand, tempRightOperand, tempResult)
+            elif (tempOperator == 'SUMDIRECCIONES'):
+                self.SUMDIRECCIONES(tempLeftOperand, tempRightOperand, tempResult)
             
             self.cont = self.cont + 1
                 ###########
@@ -163,6 +178,10 @@ class virtualMachine:
 
     def EQUALS(self, value, address):
         try:
+            print('se guarda ')
+            print(value)
+            print('en')
+            print(address)
             memory.save(memory.accessAValue(value), address)
             #print('value ' + str(memory.accessAValue(value)) + ' stored in ' + str(address))
         except: 
@@ -657,6 +676,24 @@ class virtualMachine:
                 print('Network graph created')
         except:
             raise Exception("Information given for creating the Network Diagram wasn't correct")
+    
+    def VER(self, limInf, limSup, addressToCheck):
+        limInfValue = int(memory.accessAValue(limInf))
+        limSupValue = int(memory.accessAValue(limSup))
+        value = int(memory.accessAValue(addressToCheck))
+        if value<limInfValue or value>limSupValue:
+            raise Exception("Invalid value for the array")
+
+    def SUMDIRECCIONES(self, dirMovement, dirBase, newAddressTemp):
+        print(dirMovement)
+        memory.printMemory()
+        valueMovement = int(memory.accessAValue(dirMovement))
+        newAddress = int(valueMovement)+dirBase
+        print(newAddress)
+        print(newAddressTemp)
+        memory.save(newAddress, newAddressTemp)
+        self.ListOfDirections.append(newAddressTemp)
+
 
     def verify(self,addressOfVar):
         if not isinstance(memory.accessAValue(addressOfVar), list):

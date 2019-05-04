@@ -777,11 +777,18 @@ def p_ASIGNACION_A(t):
 
 def p_ver_arr(t):
 	'ver_arr :'
+	#Formula para matriz 
+	# dirbase + s1 - 1
 	
 	result = StackO.pop()
 	
-	right_operand = directory.return_dim1(SScope[-1],memory.accessAValue(StackO[-1]))
-		
+	SVDim.append(StackO.pop())
+	
+	right = directory.return_dim1(SScope[-1],memory.accessAValue(SVDim[-1]))
+	
+	#NOTA:podria fallar cuando no se repitan los cosntantes
+	right_operand = memory.addAVariable("int","constant",right,1)
+	
 	quadrup=["VER",VarUno,right_operand,result]
 	
 	#Se agrega el cuadruplo a la lista de cuadruplos
@@ -814,10 +821,10 @@ def p_ver_arr(t):
 	DirDesp = memory.addAVariable("int","temporal",'None', 1)
 	
 	#NOTA:podria fallar cuando no se repitan los cosntantes
-	VarDir = memory.addAVariable("int","constant",StackO[-1],1)
+	DirBase = directory.return_address(SScope[-1],memory.accessAValue(SVDim[-1]))
 	
 	#Se suma el temporal a la direccion base
-	quadrup=["+",temp,VarDir,DirDesp]
+	quadrup=["SUMDIRECCIONES",temp,DirBase,DirDesp]
 	
 	#Se agrega el cuadruplo a la lista de cuadruplos
 	q.quadruplesGen.append(quadrup)
@@ -843,9 +850,95 @@ def p_ver_arr(t):
 #Si se va a hacer una asignacion a una matriz
 def p_ASIGNACION_B(t):
 	'''
-   ASIGNACION_B : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET 
+   ASIGNACION_B : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat
    | EMPTY
 	'''
+
+def p_ver_mat(t):
+	'ver_mat :'
+	#Formula para matriz 
+	# dirbase + s1 - 1 + limsup1 * (s2 - 1)
+	result = StackO.pop()
+	
+	right = directory.return_dim2(SScope[-1],memory.accessAValue(SVDim[-1]))
+	
+	#NOTA:podria fallar cuando no se repitan los cosntantes
+	right_operand = memory.addAVariable("int","constant",right,1)
+	
+	quadrup=["VER",VarUno,right_operand,result]
+	
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+	
+	#Se checa que aun haya espacio en los temporales enteros
+	if not memory.checkAvailabilityOfAType("int",1,"temporal"):
+		raise Exception("ERROR: Not enough space in memory")
+	
+	#Dentro de temp esta la direccion del temporal entero
+	temp = memory.addAVariable("int","temporal",'None', 1)
+	
+	#Restar 1 a s2
+	quadrup=["-",result,VarUno,temp]
+	
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+	
+	#Se checa que aun haya espacio en los temporales enteros
+	if not memory.checkAvailabilityOfAType("int",1,"temporal"):
+		raise Exception("ERROR: Not enough space in memory")
+	
+	#Dentro de temp esta la direccion del temporal entero
+	temp2 = memory.addAVariable("int","temporal",'None', 1)
+	
+	#limsup1 * (s2-1)
+	quadrup=["*",right_operand,temp,temp2]
+	
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+
+	#Direccion calculada desde la parte de arreglo
+	DirArr = StackO.pop()
+	
+	#Se checa que aun haya espacio en los temporales enteros
+	if not memory.checkAvailabilityOfAType("int",1,"temporal"):
+		raise Exception("ERROR: Not enough space in memory")
+	
+	#Dentro de temp esta la direccion del temporal entero
+	DirDespMat = memory.addAVariable("int","temporal",'None', 1)
+	
+	#Suma de temporales
+	quadrup=["SUMDIRECCIONES",temp2,DirArr,DirDespMat]
+	
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+	
+	#Se agrega el la direccion desplazada del arreglo a la pila de operand
+	StackO.append(DirDespMat)
+	
+	#Se agrega el tipo 
+	SType.append("int")
+	
+	#Borrar
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	#Borrar
+	
 
 #La parte del igual donde se le asigna algo
 def p_ASIGNACION_C(t):
@@ -1547,127 +1640,137 @@ def p_FACTOR_C(t):
 
 def p_VARS_CTE(t):
 	'''
- VARS_CTE : CTE_INTEGER
- | CTE_FLOAT
- | BOOLEAN
- | ID VARS_CTE_A 
+ VARS_CTE : CTE_INTEGER append_cte_int
+ | CTE_FLOAT append_cte_float
+ | TRUE append_bool
+ | FALSE append_bool
+ | ID append_id
+ | ID append_id OPEN_SQUARE_BRACKET add_SB EXP CLOSE_SQUARE_BRACKET pop_SB ver_arr VARS_CTE_D
+ | ID append_id OPEN_PARENTHESIS VARS_CTE_B
 	'''
 	#Borrar
+	print(" ")
+	print(" ")
 	print("Adentro:") 
 	print(t[1])
+	print("Pasado:")
+	print(t[-2])
+	#Borrar
+			
+
+def p_append_id(t):
+	'append_id :'
+	#Se mete la direccion de memoria de t[1] a la pila de operandos
+	StackO.append(directory.return_address(SScope[-1],t[-1]))
+		
+	#Se checa el tipo del id con la funcion return_type de pdir, se envia el contexto acutal y el nombre del id para buscarlo en su tabla de variables
+	idtype = directory.return_type(SScope[-1],t[-1])
+		
+	#Se mete el tipo en la pila de tipos
+	SType.append(idtype)
+		
+	#Borrar
+	print(" ")
+	print("33333333333333333333333333333333333333333333333")
+	print(t[-1])
+	print("Pila de operandos")
+	print(StackO)
+	print("Pila de caracteres")
+	print(SOper)
+	print("Pila de TIPOS")
+	print(SType)
 	#Borrar
 	
-	#Si t[1] es entero
-	if ( isinstance(t[1],int)):
-		
-		if not memory.checkAvailabilityOfAType('int',1,'constant'):
-			raise Exception("ERROR: Not enough space in memory")
+def p_append_cte_int(t):
+	'append_cte_int :'
+	print("SALUDOS")
+	if not memory.checkAvailabilityOfAType('int',1,'constant'):
+		raise Exception("ERROR: Not enough space in memory")
 			
-		result = memory.addAVariable('int','constant',t[1], 1)
+	result = memory.addAVariable('int','constant',t[-1], 1)
 
-		#Se mete result a la pila de operandos
-		StackO.append(result)
+	#Se mete result a la pila de operandos
+	StackO.append(result)
 		
-		#Se mete su tipo a la pila de tipos
-		SType.append("int")
+	#Se mete su tipo a la pila de tipos
+	SType.append("int")
 
-		#Borrar
-		print(" ")
-		print("Pila de operandos")
-		print(StackO)
-		print(" ")
-		print("Pila de tipos")
-		print(SType)
-		print("Pila de caracteres")
-		print(SOper)
-		#Borrar
-		
-	#Si es float
-	elif(isinstance(t[1],float)):
-		#Se mete t[1] a la pila de operandos
-		StackO.append(t[1])
-		
-		#Se mete su tipo a la pila de tipos
-		SType.append("float")
-		
-		if not memory.checkAvailabilityOfAType('float',1,'constant'):
-			raise Exception("ERROR: Not enough space in memory")
+	#Borrar
+	print(" ")
+	print("Pila de operandos")
+	print(StackO)
+	print(" ")
+	print("Pila de tipos")
+	print(SType)
+	print("Pila de caracteres")
+	print(SOper)
+	#Borrar
+
+def p_append_cte_float(t):
+	'append_cte_float :'
+	
+	if not memory.checkAvailabilityOfAType('float',1,'constant'):
+		raise Exception("ERROR: Not enough space in memory")
 			
-		result = memory.addAVariable('float','constant',t[1], 1)
+	result = memory.addAVariable('float','constant',t[-1], 1)
 
-		#Se mete result a la pila de operandos
-		StackO.append(result)
+	#Se mete result a la pila de operandos
+	StackO.append(result)
 		
-		#Se mete su tipo a la pila de tipos
-		SType.append("float")
+	#Se mete su tipo a la pila de tipos
+	SType.append("float")
 		
-		#Borrar
-		print(" ")
-		print("Pila de operandos")
-		print(StackO)
-		print(" ")
-		print("Pila de tipos")
-		print(SType)
-		print("Pila de caracteres")
-		print(SOper)
-		#Borrar
-		
-	#Si t[1] es TRUE o FALSE
-	elif( t[1]=='TRUE' or t[1]=='FALSE'):
-
-		if not memory.checkAvailabilityOfAType('bool',1,'constant'):
-			raise Exception("ERROR: Not enough space in memory")
+	#Borrar
+	print(" ")
+	print("Pila de operandos")
+	print(StackO)
+	print(" ")
+	print("Pila de tipos")
+	print(SType)
+	print("Pila de caracteres")
+	print(SOper)
+	#Borrar
+	
+def p_append_bool(t):
+	'append_bool :'
+	if not memory.checkAvailabilityOfAType('bool',1,'constant'):
+		raise Exception("ERROR: Not enough space in memory")
 			
-		result = memory.addAVariable('bool','constant',t[1], 1)
+	result = memory.addAVariable('bool','constant',t[-1], 1)
 
-		#Se mete result a la pila de operandos
-		StackO.append(result)
+	#Se mete result a la pila de operandos
+	StackO.append(result)
 		
-		#Se mete su tipo a la pila de tipos
-		SType.append("bool")
+	#Se mete su tipo a la pila de tipos
+	SType.append("bool")
 
-		#Borrar
-		print(" ")
-		print("Pila de operandos")
-		print(StackO)
-		print(" ")
-		print("Pila de tipos")
-		print(SType)
-		print("Pila de caracteres")
-		print(SOper)
-		#Borrar
-		
-	#Si es un ID
-	else:
-		#Se mete la direccion de memoria de t[1] a la pila de operandos
-		StackO.append(directory.return_address(SScope[-1],t[1]))
-		
-		#Se checa el tipo del id con la funcion return_type de pdir, se envia el contexto acutal y el nombre del id para buscarlo en su tabla de variables
-		idtype = directory.return_type(SScope[-1],t[1])
-		
-		#Se mete el tipo en la pila de tipos
-		SType.append(idtype)
-		
-		#Borrar
-		print(" ")
-		print("33333333333333333333333333333333333333333333333")
-		print(t[1])
-		print("Pila de operandos")
-		print(StackO)
-		print("Pila de caracteres")
-		print(SOper)
-		print("Pila de TIPOS")
-		print(SType)
-		#Borrar
-
+	#Borrar
+	print(" ")
+	print("Pila de operandos")
+	print(StackO)
+	print(" ")
+	print("Pila de tipos")
+	print(SType)
+	print("Pila de caracteres")
+	print(SOper)
+	#Borrar
+	
 #Para arreglos y matrices
 def p_VARS_CTE_A(t):
 	'''
  VARS_CTE_A : OPEN_PARENTHESIS VARS_CTE_B
- | OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET VARS_CTE_D
+ | OPEN_SQUARE_BRACKET add_SB EXP CLOSE_SQUARE_BRACKET pop_SB ver_arr VARS_CTE_D
  | EMPTY
 
 	'''
+
+def p_add_SB(t):
+	'add_SB :'
+	SOper.append("[")
+
+def p_pop_SB(t):
+	'pop_SB :'
+	SOper.pop()
 
 def p_VARS_CTE_B(t):
 	'''

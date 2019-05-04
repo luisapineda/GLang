@@ -15,7 +15,7 @@ program miprograma {
     }
 
 main{ 
-    print("Numero es:" & 10 & "fin");
+    print("Asi hacemos una concatenacion con un numero " & 10 & " fin");
     iNumero = 1010;
     print(iNumero);
     migrafica1.name("Crecimiento economico"); 
@@ -71,20 +71,6 @@ main{
     } 
     print(iNumero);
 
-    print("EMPEZAMOS FIBONACCI");
-    iNumero2 = 0;
-    a = 10;
-    while(a>iNumero2)
-    {
-        if (iNumero2 == 0){
-            print(iNumero2);
-        } else {
-            iNumero = iNumero2 - 1;
-            iNumero2 = iNumero + iNumero2;
-            print(iNumero2);
-        }
-        iNumero2=iNumero2+1;
-    }
 
     b =20+30*40;
     print(b);

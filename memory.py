@@ -425,5 +425,12 @@ class memory:
     
     def save(self, value, address):
         self.memory[address] = value
+    
+    def checkForAnAddress(self, value):
+        for i in self.memory:
+            if i is not None:
+                if self.memory[i] == value:
+                    return self.memory[i]
+        return -1
 
 memory = memory()

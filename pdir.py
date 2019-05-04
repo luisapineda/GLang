@@ -18,6 +18,9 @@ def add_variable(namef,namev,type):
 		dir_func[namef]["vars"][namev]["scope"] = "local"
 
 	scope = dir_func[namef]["vars"][namev]["scope"] 
+	if not memory.checkAvailabilityOfAType(type,1,scope):
+		raise Exception("ERROR: Not enough space in memory")
+
 	dir_func[namef]["vars"][namev]["dir"] = memory.addAVariable(type,scope,0, 1) #cambiar el size para acoplarlo a vectores y a matrices
 	memory.save(namev,dir_func[namef]["vars"][namev]["dir"])
 	
@@ -28,14 +31,34 @@ def add_variable(namef,namev,type):
 
 def add_dim1(namef,namev,dim):
 	dir_func[namef]["vars"][namev]["dim1"] = dim 
+	missing = dim - 1
+	if missing<0:
+		raise Exception("ERROR: Arrays must have at least 1 dimension of sizing")
+	type = dir_func[namef]["vars"][namev]["tipo"]
+	scope = dir_func[namef]["vars"][namev]["scope"]
+	for x in range(missing):
+		if not memory.checkAvailabilityOfAType(type,1,scope):
+			raise Exception("ERROR: Not enough space in memory")
+		result = memory.addAVariable(type,scope,namev, 1) #cambiar el size para acoplarlo a vectores y a matrices
+
 	
 def return_dim1(namef,namev):
 	dim = dir_func[namef]["vars"][namev]["dim1"]
-	
 	return dim
 	
 def add_dim2(namef,namev,dim):
 	dir_func[namef]["vars"][namev]["dim2"] = dim 
+	dim1 = dir_func[namef]["vars"][namev]["dim1"]
+	if dim<=0:
+		raise Exception("ERROR: Arrays must have at least 1 dimension of sizing")
+	missing = ( dim * dim1 ) - dim1 
+	type = dir_func[namef]["vars"][namev]["tipo"]
+	scope = dir_func[namef]["vars"][namev]["scope"]
+	for x in range(missing):
+		if not memory.checkAvailabilityOfAType(type,1,scope):
+			raise Exception("ERROR: Not enough space in memory")
+		result = memory.addAVariable(type,scope,namev, 1) #cambiar el size para acoplarlo a vectores y a matrices
+
 
 def return_dim2(namef,namev):
 	dim = dir_func[namef]["vars"][namev]["dim2"]
