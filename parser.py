@@ -26,6 +26,8 @@ SParam = [] #Lista de parametros
 SResult = []
 SRed = []
 SRedD = []
+SVDim = []
+VarUno = memory.addAVariable("int","constant",1,1)
 ListaTemps = list(range(9600,10000))
 
 #TOKENS
@@ -291,15 +293,23 @@ def p_add_variable(t):
 
 #Arreglo
 def p_VARS_E(t):
-    '''VARS_E : OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_F
+    '''VARS_E : OPEN_SQUARE_BRACKET CTE_INTEGER add_s1 CLOSE_SQUARE_BRACKET VARS_F
               | EMPTY
     '''
 
+def p_add_s1(t):
+	'add_s1 :'
+	directory.add_dim1(SScope[-1],v.Id,t[-1])
+	
 #Matriz
 def p_VARS_F(t):
-    '''VARS_F : OPEN_SQUARE_BRACKET CTE_INTEGER CLOSE_SQUARE_BRACKET VARS_C
-                 | VARS_C
+    '''VARS_F : OPEN_SQUARE_BRACKET CTE_INTEGER add_s2 CLOSE_SQUARE_BRACKET 
+                 | EMPTY
     '''
+
+def p_add_s2(t):
+	'add_s2 :'
+	directory.add_dim2(SScope[-1],v.Id,t[-1])
 
 #La declaracion de la variable termina con un ; pero si es del mismo tipo se puede seguir con una coma
 def p_VARS_C(t):
@@ -394,7 +404,7 @@ def p_return_quad(t):
 	result=StackO.pop()
 		
 	#Se saca el tipo del resultado de la pila de tipos
-	#result_type = SType.pop()
+	result_type = SType.pop()
 		
 	#FALTA CHECAR LA COMPROBACION DEL TIPO CON EL CUBO SEMANTICO********************************************************************************************************************
 		
@@ -496,10 +506,15 @@ def p_add_variable_m(t):
 #Resto de la estructura de una funcion
 def p_MODULO_D(t):
 	'''
-	MODULO_D : CLOSE_PARENTHESIS param_table OPEN_BRACKET VARS add_count add_start BLOQUE CLOSE_BRACKET
+	MODULO_D : CLOSE_PARENTHESIS param_table OPEN_BRACKET OPVARS add_count add_start BLOQUE CLOSE_BRACKET
 	| EMPTY
 	'''
 
+def p_OPVARS(t):
+	'''
+	OPVARS : VARS
+			| EMPTY
+	'''
 #Se guarda en la tabla de funciones el numero de cuadruplo de inicio de la funcion
 def p_add_start(t):
 	'add_start :'
@@ -756,9 +771,74 @@ def p_addStackO(t):
 #Si se va a hacer una asignacion a un arreglo	
 def p_ASIGNACION_A(t):
 	'''
-   ASIGNACION_A : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ASIGNACION_B
+   ASIGNACION_A : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_arr ASIGNACION_B
    | EMPTY
 	'''
+
+def p_ver_arr(t):
+	'ver_arr :'
+	
+	result = StackO.pop()
+	
+	right_operand = directory.return_dim1(SScope[-1],memory.accessAValue(StackO[-1]))
+		
+	quadrup=["VER",VarUno,right_operand,result]
+	
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+	
+	#Se checa que aun haya espacio en los temporales enteros
+	if not memory.checkAvailabilityOfAType("int",1,"temporal"):
+		raise Exception("ERROR: Not enough space in memory")
+	
+	#Dentro de temp esta la direccion del temporal entero
+	temp = memory.addAVariable("int","temporal",'None', 1)
+	
+	#Restar 1 a s1
+	quadrup=["-",result,VarUno,temp]
+	
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+	
+	#Se checa que aun haya espacio en los temporales enteros
+	if not memory.checkAvailabilityOfAType("int",1,"temporal"):
+		raise Exception("ERROR: Not enough space in memory")
+	
+	#Dentro de temp esta la direccion del temporal entero
+	DirDesp = memory.addAVariable("int","temporal",'None', 1)
+	
+	#NOTA:podria fallar cuando no se repitan los cosntantes
+	VarDir = memory.addAVariable("int","constant",StackO[-1],1)
+	
+	#Se suma el temporal a la direccion base
+	quadrup=["+",temp,VarDir,DirDesp]
+	
+	#Se agrega el cuadruplo a la lista de cuadruplos
+	q.quadruplesGen.append(quadrup)
+		
+	#Se incrementa el contador de cuadruplos
+	q.contQuad = q.contQuad + 1
+	
+	#Se agrega el la direccion desplazada del arreglo a la pila de operand
+	StackO.append(DirDesp)
+	
+	#Se agrega el tipo 
+	SType.append("int")
+	
+	#Borrar
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
+	#Borrar
 
 #Si se va a hacer una asignacion a una matriz
 def p_ASIGNACION_B(t):
@@ -834,7 +914,9 @@ def p_check_bool(t):
 		
 		#Se agrega el resultado a la pila de operadores
 		StackO.append(result)
-		#FALTA AGREGAR EL TIPO DEL RESULTADO********************************************************************************************************************************************+
+		
+		#Se agrega el tipo de resultado a la pila de resultados
+		SType.append("bool")
 		
 		#Se agrega el cuadruplo a la lista de cuadruplos
 		q.quadruplesGen.append(quadrup)
@@ -870,23 +952,35 @@ def p_check_bool(t):
 	
 	#Pero si el operador es
 	elif operator=='>' or operator=='<' or operator=='>=' or operator=='<=' or operator=='and' or operator=='or' or operator=='==':
-		#Se saca el operando derecho de la pila de operadores y se mete en right_operand
-		right_operand=StackO.pop()
-		#Se saca el tipo del operando derecho de la pila de tipos y se mete en right_type
-		right_type=SType.pop()
-		#Se saca el operando izquierdo de la pila de operadores y se mete en left_operand
-		left_operand=StackO.pop()
-		#Se saca el tipo del operando izquierdo de la pila de tipos y se mete en left_type
-		left_type=SType.pop()
 		
-		print('👌👌👌👌👌👌👌')
+		print('OLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
 		print(operator + str(operators[operator]))
+		print("Pila tipos")
+		print(SType)
+		print('operando')
+		
+		#Se saca el operando derecho de la pila de operadores y se mete en right_operand
+		
+		right_operand=StackO.pop()
+		print(right_operand)
+		#Se saca el tipo del operando derecho de la pila de tipos y se mete en right_type
+		print('tipo del operando')
+		
+		right_type=SType.pop()
+		print("RIIIGHT!!!")
+		print(right_type)
+		print(right_type  + str(typesOfVariables[right_type]))
+		#Se saca el operando izquierdo de la pila de operadores y se mete en left_operand
+
+		left_operand=StackO.pop()
 		print('operando')
 		print(left_operand)
-		print(right_operand)
+		#Se saca el tipo del operando izquierdo de la pila de tipos y se mete en left_type
+		left_type=SType.pop()
 		print('tipo del operando')
 		print(left_type  + str(typesOfVariables[left_type]))
-		print(right_type  + str(typesOfVariables[right_type]))
+		
+	
 		
 		#FALTA HACER LA COMPROBACION DE LOS TIPOS, TAL VEZ SE DEBA DE CAMBIAR AND Y OR*******************************************************************************************
 
@@ -907,7 +1001,9 @@ def p_check_bool(t):
 		
 		#Se mete el resultado en la pila de operandos
 		StackO.append(result)
-		#FALTA AGREGA EL TIPO DEL RESULTADO*******************************************************************************************************************************************
+
+		#Se agrega el tipo del resultado a la pila de tipos
+		SType.append(typesOfVariablesTwisted[result_type])
 		
 		#Se agrega el cuadruplo a la lista de cuadruplos
 		q.quadruplesGen.append(quadrup)
@@ -1077,7 +1173,8 @@ def p_bool_for(t):
 		#Se agrega a la pila de operandos el resultado 
 		StackO.append(result)
 		
-		#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
+		#Se agrega el tipo del resultado a la pila de tipos
+		SType.append(typesOfVariablesTwisted[result_type])
 		
 		#Se agrega el cuadruplo a la lista de cuadruplos
 		q.quadruplesGen.append(quadrup)
@@ -1194,7 +1291,8 @@ def p_bool_while(t):
 		#Se agrega el resultado a la pila de operandos
 		StackO.append(result)
 		
-		#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
+		#Se agrega el tipo del resultado a la pila de tipos
+		SType.append(typesOfVariablesTwisted[result_type])
 		
 		#Se agrega el cuadruplo a la lista de cuadruplos
 		q.quadruplesGen.append(quadrup)
@@ -1280,8 +1378,9 @@ def p_pop_exp(t):
 				#Se agrega el resultado a la pila de operandos 
 				StackO.append(result)
 				
-				#FALTA AGREGAR A LA PILA DE OPERANDOES EL TIPO DEL RESULTADO*********************************************************************************************************************************
-			
+				#Se agrega el tipo del resultado a la pila de tipos
+				SType.append(typesOfVariablesTwisted[result_type])
+				
 				#Se agrega el cuadruplo a la lista de cuadruplos
 				q.quadruplesGen.append(quadrup)		
 				
@@ -1353,8 +1452,10 @@ def p_pop_term(t):
 			quadrup=[codes[operator],left_operand,right_operand,result]
 		
 			StackO.append(result)
-			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
-		
+			
+			#Se agrega el tipo del resultado a la pila de tipos
+			SType.append(typesOfVariablesTwisted[result_type])
+			
 			#Se agrega el cuadruplo a la lista de cuadruplos
 			q.quadruplesGen.append(quadrup)
 			
@@ -1549,10 +1650,14 @@ def p_VARS_CTE(t):
 		
 		#Borrar
 		print(" ")
+		print("33333333333333333333333333333333333333333333333")
+		print(t[1])
 		print("Pila de operandos")
 		print(StackO)
 		print("Pila de caracteres")
 		print(SOper)
+		print("Pila de TIPOS")
+		print(SType)
 		#Borrar
 
 #Para arreglos y matrices
@@ -2130,8 +2235,9 @@ def p_add_temp(t):
 			#Se agrega el resultado a la pila de operandos
 			StackO.append(result)
 
-			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
-
+			#Se agrega el tipo del resultado a la pila de tipos
+			SType.append(typesOfVariablesTwisted[result_type])
+			
 			#Se agrega el cuadruplo a la lista de cuadruplos
 			q.quadruplesGen.append(quadrup)
 
@@ -2186,8 +2292,9 @@ def p_add_string(t):
 			#Se agrega el resultado a la pila de operandos
 			StackO.append(result)
 
-			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
-
+			#Se agrega el tipo del resultado a la pila de tipos
+			SType.append(typesOfVariablesTwisted[result_type])
+			
 			#Se agrega el cuadruplo a la lista de cuadruplos
 			q.quadruplesGen.append(quadrup)
 
@@ -2234,8 +2341,9 @@ def p_print_quad(t):
 			#Se agrega el resultado a la pila de operandos
 			StackO.append(result)
 
-			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
-
+			#Se agrega el tipo del resultado a la pila de tipos
+			SType.append(typesOfVariablesTwisted[result_type])
+			
 			#Se agrega el cuadruplo a la lista de cuadruplos
 			q.quadruplesGen.append(quadrup)
 
@@ -2317,8 +2425,9 @@ def p_print_id(t):
 			#Se agrega el resultado a la pila de operandos
 			StackO.append(result)
 
-			#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
-
+			#Se agrega el tipo del resultado a la pila de tipos
+			SType.append(typesOfVariablesTwisted[result_type])
+			
 			#Se agrega el cuadruplo a la lista de cuadruplos
 			q.quadruplesGen.append(quadrup)
 
@@ -2381,8 +2490,9 @@ def p_add_exp(t):
 	#Se agrega el resultado a la pila de operandos
 	StackO.append(result)
 
-	#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
-
+	#Se agrega el tipo del resultado a la pila de tipos
+	SType.append(typesOfVariablesTwisted[result_type])
+	
 	#Se agrega el cuadruplo a la lista de cuadruplos
 	q.quadruplesGen.append(quadrup)
 
@@ -2418,8 +2528,9 @@ def p_add_con(t):
 	#Se agrega el resultado a la pila de operandos
 	StackO.append(result)
 
-	#FALTA AGREGAR EL TIPO DEL RESULTADO*********************************************************************************************************************************
-
+	#Se agrega el tipo del resultado a la pila de tipos
+	SType.append(typesOfVariablesTwisted[result_type])
+	
 	#Se agrega el cuadruplo a la lista de cuadruplos
 	q.quadruplesGen.append(quadrup)
 

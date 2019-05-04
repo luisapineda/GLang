@@ -52,7 +52,6 @@ miradar.createR(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
 mivenn.name("Reprobados");
 mivenn.createV( 10 , 5 , 20 ;"Matematicas","Quimica");
 
-mired.name("Problema del viajero");
 mired.createN(["A", "B", "C","A"];["D", "A", "E","C"]);
 
 print("Ingresa un numero");

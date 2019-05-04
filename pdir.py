@@ -20,7 +20,27 @@ def add_variable(namef,namev,type):
 	scope = dir_func[namef]["vars"][namev]["scope"] 
 	dir_func[namef]["vars"][namev]["dir"] = memory.addAVariable(type,scope,0, 1) #cambiar el size para acoplarlo a vectores y a matrices
 	memory.save(namev,dir_func[namef]["vars"][namev]["dir"])
+	
+	dir_func[namef]["vars"][namev]["dim1"] = 1
+	dir_func[namef]["vars"][namev]["dim2"] = 1
+	
 	print(dir_func)
+
+def add_dim1(namef,namev,dim):
+	dir_func[namef]["vars"][namev]["dim1"] = dim 
+	
+def return_dim1(namef,namev):
+	dim = dir_func[namef]["vars"][namev]["dim1"]
+	
+	return dim
+	
+def add_dim2(namef,namev,dim):
+	dir_func[namef]["vars"][namev]["dim2"] = dim 
+
+def return_dim2(namef,namev):
+	dim = dir_func[namef]["vars"][namev]["dim2"]
+	
+	return dim
 
 def add_parameters(namef,listtypes):
 	#una lista de tipos para la firma de la funciones
@@ -55,7 +75,13 @@ def return_type(namef,namev):
 	return type
 
 def return_address(namef,namev):
-	address = dir_func[namef]["vars"][namev]["dir"]
+	if namef not in dir_func:
+		raise Exception("ERROR Module not found")
+	
+	if namev not in dir_func[namef]["vars"]:
+		address = dir_func[f.GlobalName]["vars"][namev]["dir"]
+	else:
+		address = dir_func[namef]["vars"][namev]["dir"]
 	
 	return address
 

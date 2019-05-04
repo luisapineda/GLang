@@ -1,77 +1,14 @@
-0 : 2222
-1 : 2
-2 : 20
-3 : 4
-4 : 1220
-5 : 10
-6 : 4
-4000 : True
-4001 : False
-8000 : None
-8001 : 4
-8002 : 5
-8003 : None
-8004 : 1200
-8005 : 1220
-12000 : False
-12001 : False
-12002 : False
-12003 : False
-12004 : False
-12005 : False
-24000 : 10
-24001 : 20
-24002 : 111
-24003 : 2222
-24004 : 3
-24005 : 4
-24006 : 3333
-24007 : 22
-24008 : 1
-24009 : 5
-24010 : 1
-24011 : 0
-24012 : 5
-24013 : 1
-24014 : 10
-24015 : 2
-24016 : 1
-24017 : 1
-24018 : 10
-24019 : 20
-24020 : 30
-24021 : 40
-28000 : TRUE
-28001 : FALSE
-32000 : migrafica1
-33000 : migrafica2
-34000 : migrafica3
-35000 : migrafica4
-36000 : migrafica5
-37000 : mired
-38000 : mivenn
-39000 : miradar
-64000 : "Crecimiento economico"
-64001 : "Dias"
-64002 : "Dinero"
-64003 : [0, 1, 3, 4]
-64004 : "Animales"
-64005 : ['"Perros"', '"Gatos"', '"Osos"', '"Murcielagos"', 25, 25, 25, 25]
-64006 : "Animales"
-64007 : "Porcentaje de animales"
-64008 : ['"Perros"', '"Gatos"', '"Osos"', '"Murcielagos"', 25, 25, 25, 25]
-64009 : "Animales"
-64010 : "Porcentaje de animales"
-64011 : red
-64012 : ['"Perros"', '"Gatos"', '"Osos"', '"Murcielagos"', 25, 25, 25, 25]
-64013 : "Calificaciones"
-64014 : ['"Perros"', '"Gatos"', '"Osos"', '"Murcielagos"', 25, 25, 25, 25]
-64015 : "Animales"
-64016 : red
-64017 : ['"Perros"', '"Gatos"', '"Osos"', '"Murcielagos"', 25, 25, 25, 25]
-64018 : "Reprobados"
-64019 : [10, 5, 20, '"Matematicas"', '"Quimica"']
-64020 : "Problema del viajero"
-64021 : [['"A"', '"B"', '"C"', '"A"'], ['"D"', '"A"', '"E"', '"C"']]
-65000 : Numero es:10
-65001 : Numero es:10fin
+0 : t1
+1 : t2
+2 : actual
+3 : n
+4 : next
+12000 : None
+12001 : None
+24000 : 1
+24001 : 0
+24002 : 1
+24003 : 0
+24004 : 0
+24005 : 1
+24006 : 0

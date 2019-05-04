@@ -1,27 +1,32 @@
 program fibonacci {
 
 vars{
-int t1,t2,next,n;
+int t1,t2,actual,n, next;
 }
 
 
 
 main{
+print("Fibonnaci Solucion Iterativa");
 print("Teclea un numero positivo:");
 input>>n;
 
-print("Serie de fibonacci: ");
-print(t1);
-print(t2);
-
-next=t1+t2;
+t1 = 0;
+t2 = 1;
+actual = 0;
+next = 0;
 
 while(next<=n)
 {
-print(next);
-t1=t2;
-t2=next;
-next=t1+t2;
+    if (next == 1 or next == 0){
+        print(next);
+    } else {
+        actual = t1+t2;
+        print(actual);
+        t1 = t2;
+        t2 = actual;
+    }
+    next = next + 1;
 }
 
 }

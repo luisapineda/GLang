@@ -9,22 +9,22 @@ program miprograma {
         Network mired;
         Venn mivenn;
         RadarChart miradar;
-        int iNumero, i, a, iNumero2, b, iNumero3;
+        int iNumero, i, a, iNumero2, b, iNumero3, contador;
         int iNumeroTemp;
         bool c,d;
     }
 
 main{ 
-
     print("Numero es:" & 10 & "fin");
+    iNumero = 1010;
     print(iNumero);
     migrafica1.name("Crecimiento economico"); 
     migrafica1.nameX("Dias"); 
     migrafica1.nameY("Dinero"); 
     migrafica1.createG(0,1,3,4);
     
-    migrafica2.name("Animales");
-    migrafica2.createPC(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos"); 
+    migrafica2.name("Pastel");
+    migrafica2.createPC(25,25,25,25;"Chocolate", "Vainilla", "Fresa", "Durazno"); 
 
     migrafica3.name("Animales"); 
     migrafica3.nameY("Porcentaje de animales");
@@ -36,25 +36,25 @@ main{
     migrafica4.createGBH(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
 
     migrafica5.name("Calificaciones");
-    migrafica5.createD(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+    migrafica5.createD(25,25,25,25;"DonutTest Perro", "Gatos", "Osos", "Murcielagos");
 
-    miradar.name("Animales");
-    miradar.color(red);
-    miradar.createR(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+    miradar.name("Animales de RadarChart");
+    miradar.color(purple);
+    miradar.createR(10,25,13,2;"Perros RC", "Gatos RC", "Osos", "Murcielagos");
 
     mivenn.name("Reprobados");
     mivenn.createV( 10 , 5 , 20 ;"Matematicas","Quimica");
 
-    mired.name("Problema del viajero");
     mired.createN(["A", "B", "C","A"];["D", "A", "E","C"]);
 
-    print("Ingresa un numero");
+    print("Ingresa un numero: ");
 
     input>>iNumeroTemp;
 
-    a = 20;
+    a = 15;
     c = TRUE;
-    d = FALSE;
+    d = TRUE;
+
     if (c == d) 
     {
         iNumero=111;
@@ -63,35 +63,31 @@ main{
     {
         iNumero=2222;
     }
-
-    if (3>4) 
-    {
-        iNumero=3333;
-    } 
-
     print(iNumero);
-        iNumero2=22;
+
+    if (3>2) 
+    {
+        iNumero=4444;
+    } 
+    print(iNumero);
+
+    print("EMPEZAMOS FIBONACCI");
+    iNumero2 = 0;
+    a = 10;
     while(a>iNumero2)
     {
-        iNumero2=iNumero+1;
-    }
-
-    while(iNumero2>=5)
-    {
-        iNumero2=iNumero2-1;
-    }
-
-    for (i=0; i<5 ; i=i+1;)
-    {
-        iNumero3=10;
-    }
-
-    for (i=2; i<=1 ; i=i+1;)
-    {
-        iNumero3=10;
+        if (iNumero2 == 0){
+            print(iNumero2);
+        } else {
+            iNumero = iNumero2 - 1;
+            iNumero2 = iNumero + iNumero2;
+            print(iNumero2);
+        }
+        iNumero2=iNumero2+1;
     }
 
     b =20+30*40;
+    print(b);
 
     }
 }
