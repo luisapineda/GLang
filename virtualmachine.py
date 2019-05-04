@@ -20,7 +20,6 @@ class virtualMachine:
         self.quads=quads
         self.endIndicator = False
         self.ListOfDirections = []
-        print(self.quads)
         '''
         #CODIGO DEMO USANDO MATPLOT
         plt.plot([1,2,3,4])
@@ -42,10 +41,10 @@ class virtualMachine:
                 tempLeftOperand = memory.accessAValue(tempLeftOperand)
             if self.ListOfDirections.__contains__(tempRightOperand):
                 self.ListOfDirections.remove(tempRightOperand)
-                tempLeftOperand = memory.accessAValue(tempRightOperand)
+                tempRightOperand = memory.accessAValue(tempRightOperand)
             if self.ListOfDirections.__contains__(tempResult):
                 self.ListOfDirections.remove(tempResult)
-                tempLeftOperand = memory.accessAValue(tempResult)
+                tempResult = memory.accessAValue(tempResult)
             #############
             if (tempOperator == '+'):
                 self.PLUS(tempLeftOperand,tempRightOperand,tempResult)
@@ -123,8 +122,6 @@ class virtualMachine:
                 self.SUMDIRECCIONES(tempLeftOperand, tempRightOperand, tempResult)
             
             self.cont = self.cont + 1
-                ###########
-        #print('*******IMPRESION DE MEMORIA ACTUAL********')
         memory.printMemory()
         '''
         #esto era para implementarse sacandolo de un .txt
@@ -178,10 +175,6 @@ class virtualMachine:
 
     def EQUALS(self, value, address):
         try:
-            print('se guarda ')
-            print(value)
-            print('en')
-            print(address)
             memory.save(memory.accessAValue(value), address)
             #print('value ' + str(memory.accessAValue(value)) + ' stored in ' + str(address))
         except: 
@@ -209,7 +202,9 @@ class virtualMachine:
 
     def COMPARISON(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
-            boolTemp = bool(memory.accessAValue(leftOperandAdress)) == bool(memory.accessAValue(rightOperandAdress))
+            value1 = memory.accessAValue(leftOperandAdress)
+            value2 = memory.accessAValue(rightOperandAdress)
+            boolTemp = str(value1) == str(value2)
             memory.save(boolTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the comparison")
@@ -232,7 +227,7 @@ class virtualMachine:
         flag = False
         value = input()
         #print(type(value))
-        if value == 'TRUE' or value == 'FALSE':
+        if value == 'true' or value == 'false':
             #print("Boolean")
             if typeR=='bool':
                 flag = True
@@ -685,12 +680,8 @@ class virtualMachine:
             raise Exception("Invalid value for the array")
 
     def SUMDIRECCIONES(self, dirMovement, dirBase, newAddressTemp):
-        print(dirMovement)
-        memory.printMemory()
         valueMovement = int(memory.accessAValue(dirMovement))
         newAddress = int(valueMovement)+dirBase
-        print(newAddress)
-        print(newAddressTemp)
         memory.save(newAddress, newAddressTemp)
         self.ListOfDirections.append(newAddressTemp)
 

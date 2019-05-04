@@ -1,0 +1,41 @@
+program arreglos{
+    vars {
+        int a[9],B[3][4];
+        int i,n, temp,j;
+    }
+
+    main {
+        i = 1;
+        n = 100;
+        while(i<=9){
+            a[i] = n;
+            print(n);
+            n = n - 10;
+            i = i+1;
+        }
+        print("Vector poblado");
+
+        print("Inicia ordenamiento del vector");
+        
+        for (i=0; i<9 ; i=i+1;)
+        {
+            for (j=1; j<9 ; j=j+1;)
+            {
+                if(a[j-1] > a[j]) {
+                    temp = a[j-1];
+                    a[j-1] = a[j];
+                    a[j] = temp;
+                }
+            }
+        }
+
+        print("Vector ordenado");
+        i = 1;
+
+        while(i<=9){
+            temp = a[i];
+            print(temp);
+            i = i + 1;
+        }
+    }
+}

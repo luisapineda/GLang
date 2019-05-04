@@ -163,7 +163,7 @@ Rule 148   pop_SB -> <empty>
 Rule 149   VARS_CTE_B -> EXP VARS_CTE_C CLOSE_PARENTHESIS
 Rule 150   VARS_CTE_C -> COMMA VARS_CTE_B
 Rule 151   VARS_CTE_C -> EMPTY
-Rule 152   VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
+Rule 152   VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat
 Rule 153   VARS_CTE_D -> EMPTY
 Rule 154   INPUT -> INPUT_KEYWORD INPUTSYMBOL ID add_inputid INPUT_A SEMICOLON quad_input
 Rule 155   add_inputid -> <empty>
@@ -458,7 +458,7 @@ release_vars         : 49
 repeat_for           : 100
 return_quad          : 50
 ver_arr              : 85 138 145
-ver_mat              : 88
+ver_mat              : 88 152
 
 Parsing method: LALR
 
@@ -6671,7 +6671,7 @@ state 371
 state 372
 
     (138) VARS_CTE -> ID append_id OPEN_SQUARE_BRACKET add_SB EXP CLOSE_SQUARE_BRACKET pop_SB ver_arr . VARS_CTE_D
-    (152) VARS_CTE_D -> . OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET
+    (152) VARS_CTE_D -> . OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat
     (153) VARS_CTE_D -> . EMPTY
     (226) EMPTY -> .
 
@@ -6791,7 +6791,7 @@ state 382
 
 state 383
 
-    (152) VARS_CTE_D -> OPEN_SQUARE_BRACKET . EXP CLOSE_SQUARE_BRACKET
+    (152) VARS_CTE_D -> OPEN_SQUARE_BRACKET . EXP CLOSE_SQUARE_BRACKET ver_mat
     (106) EXP -> . TERMINO pop_exp EXP_A
     (112) TERMINO -> . FACTOR pop_term TERMINO_A
     (125) FACTOR -> . FACTOR_A
@@ -6943,7 +6943,7 @@ state 391
 
 state 392
 
-    (152) VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP . CLOSE_SQUARE_BRACKET
+    (152) VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP . CLOSE_SQUARE_BRACKET ver_mat
 
     CLOSE_SQUARE_BRACKET shift and go to state 397
 
@@ -6980,46 +6980,48 @@ state 396
 
 state 397
 
-    (152) VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .
+    (152) VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET . ver_mat
+    (90) ver_mat -> .
 
-    TIMES           reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    DIVIDE          reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    PLUS            reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    MINS            reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    RELOP           reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    AND             reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    OR              reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    SEMICOLON       reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    CLOSE_PARENTHESIS reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    CONCATENATE     reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    CTE_INTEGER     reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    CTE_FLOAT       reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    TRUE            reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    FALSE           reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    ID              reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    CLOSE_SQUARE_BRACKET reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    COMMA           reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    IF              reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    FOR_KEYWORD     reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    WHILE_KEYWORD   reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    PRINT_KEYWORD   reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    INPUT_KEYWORD   reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    RETURN          reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
-    CLOSE_BRACKET   reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET .)
+    TIMES           reduce using rule 90 (ver_mat -> .)
+    DIVIDE          reduce using rule 90 (ver_mat -> .)
+    PLUS            reduce using rule 90 (ver_mat -> .)
+    MINS            reduce using rule 90 (ver_mat -> .)
+    RELOP           reduce using rule 90 (ver_mat -> .)
+    AND             reduce using rule 90 (ver_mat -> .)
+    OR              reduce using rule 90 (ver_mat -> .)
+    SEMICOLON       reduce using rule 90 (ver_mat -> .)
+    CLOSE_PARENTHESIS reduce using rule 90 (ver_mat -> .)
+    CONCATENATE     reduce using rule 90 (ver_mat -> .)
+    CTE_INTEGER     reduce using rule 90 (ver_mat -> .)
+    CTE_FLOAT       reduce using rule 90 (ver_mat -> .)
+    TRUE            reduce using rule 90 (ver_mat -> .)
+    FALSE           reduce using rule 90 (ver_mat -> .)
+    ID              reduce using rule 90 (ver_mat -> .)
+    CLOSE_SQUARE_BRACKET reduce using rule 90 (ver_mat -> .)
+    COMMA           reduce using rule 90 (ver_mat -> .)
+    IF              reduce using rule 90 (ver_mat -> .)
+    FOR_KEYWORD     reduce using rule 90 (ver_mat -> .)
+    WHILE_KEYWORD   reduce using rule 90 (ver_mat -> .)
+    PRINT_KEYWORD   reduce using rule 90 (ver_mat -> .)
+    INPUT_KEYWORD   reduce using rule 90 (ver_mat -> .)
+    RETURN          reduce using rule 90 (ver_mat -> .)
+    CLOSE_BRACKET   reduce using rule 90 (ver_mat -> .)
 
+    ver_mat                        shift and go to state 401
 
 state 398
 
     (62) MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET OPVARS add_count add_start BLOQUE . CLOSE_BRACKET
 
-    CLOSE_BRACKET   shift and go to state 401
+    CLOSE_BRACKET   shift and go to state 402
 
 
 state 399
 
     (174) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING . CLOSE_PARENTHESIS SEMICOLON
 
-    CLOSE_PARENTHESIS shift and go to state 402
+    CLOSE_PARENTHESIS shift and go to state 403
 
 
 state 400
@@ -7038,6 +7040,36 @@ state 400
 
 state 401
 
+    (152) VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .
+
+    TIMES           reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    DIVIDE          reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    PLUS            reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    MINS            reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    RELOP           reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    AND             reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    OR              reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    SEMICOLON       reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    CLOSE_PARENTHESIS reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    CONCATENATE     reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    CTE_INTEGER     reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    CTE_FLOAT       reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    TRUE            reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    FALSE           reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    ID              reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    CLOSE_SQUARE_BRACKET reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    COMMA           reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    IF              reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    FOR_KEYWORD     reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    WHILE_KEYWORD   reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    PRINT_KEYWORD   reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    INPUT_KEYWORD   reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    RETURN          reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+    CLOSE_BRACKET   reduce using rule 152 (VARS_CTE_D -> OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat .)
+
+
+state 402
+
     (62) MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET OPVARS add_count add_start BLOQUE CLOSE_BRACKET .
 
     MODULE          reduce using rule 62 (MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET OPVARS add_count add_start BLOQUE CLOSE_BRACKET .)
@@ -7045,14 +7077,14 @@ state 401
     CLOSE_PARENTHESIS reduce using rule 62 (MODULO_D -> CLOSE_PARENTHESIS param_table OPEN_BRACKET OPVARS add_count add_start BLOQUE CLOSE_BRACKET .)
 
 
-state 402
+state 403
 
     (174) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS . SEMICOLON
 
-    SEMICOLON       shift and go to state 403
+    SEMICOLON       shift and go to state 404
 
 
-state 403
+state 404
 
     (174) PVenn -> ID POINT CREATEV OPEN_PARENTHESIS CTE_INTEGER COMMA CTE_INTEGER COMMA CTE_INTEGER SEMICOLON CTE_STRING COMMA CTE_STRING CLOSE_PARENTHESIS SEMICOLON .
 

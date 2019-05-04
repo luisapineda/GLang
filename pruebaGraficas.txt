@@ -52,8 +52,8 @@ main{
     input>>iNumeroTemp;
 
     a = 15;
-    c = TRUE;
-    d = TRUE;
+    c = true;
+    d = true;
 
     if (c == d) 
     {

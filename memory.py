@@ -72,9 +72,9 @@ class memory:
     def accessAValue(self, address):
         if(isinstance(address, str)):
             return address[1:-1]
-        if self.memory[address]=='TRUE':
+        if self.memory[address]=='true':
             return True
-        elif self.memory[address]=='FALSE':
+        elif self.memory[address]=='false':
             return False
         #elif not isinstance(self.memory[address], int) and not isinstance(self.memory[address], float):
             #print(str(address) + ' con el valor ' + str(self.memory[address]) + ' no es valido. se remplazo por 1')
