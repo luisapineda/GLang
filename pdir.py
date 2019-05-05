@@ -134,3 +134,5 @@ def verify_type(namef,k,argumentType):
 	else:
 		return False
 	
+def return_dict():
+	return dir_func

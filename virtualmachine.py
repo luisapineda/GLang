@@ -12,7 +12,7 @@ import numpy as np
 class virtualMachine: 
     
     #Con esta funcion iniciaremos el trabajo de la maquina virtual
-    def begin(self, numOfQuads, quads, startTime):
+    def begin(self, numOfQuads, quads, startTime, directory):
         self.startTime=startTime
         self.step = -1
         self.pendiente = 0
@@ -20,6 +20,8 @@ class virtualMachine:
         self.quads=quads
         self.endIndicator = False
         self.ListOfDirections = []
+        self.contParameters = 0
+        self.directory = directory.return_dict()
         '''
         #CODIGO DEMO USANDO MATPLOT
         plt.plot([1,2,3,4])
@@ -29,7 +31,7 @@ class virtualMachine:
         print('--------------------------INICIA LA MAQUINA VIRTUAL--------------------------------')
         
         while self.endIndicator == False:
-            print(self.quads[self.cont])
+            #print(self.quads[self.cont])
             #############
             self.step = -1
             tempOperator = self.quads[self.cont][0]
@@ -115,7 +117,7 @@ class virtualMachine:
             elif (tempOperator == 'GOSUB'):
                 self.GOSUB()
             elif (tempOperator == 'ERA'):
-                self.ERA()
+                self.ERA(tempLeftOperand)
             elif (tempOperator == 'VER'):
                 self.VER(tempLeftOperand, tempRightOperand, tempResult)
             elif (tempOperator == 'SUMDIRECCIONES'):
@@ -123,6 +125,7 @@ class virtualMachine:
             
             self.cont = self.cont + 1
         memory.printMemory()
+        print(self.directory)
         '''
         #esto era para implementarse sacandolo de un .txt
         print('.txt')
@@ -278,6 +281,7 @@ class virtualMachine:
 
     def ENDPROC(self):
         self.cont = self.pendiente
+        self.namef = ''
 
     def END(self):
         self.endIndicator = True
@@ -326,13 +330,22 @@ class virtualMachine:
             memory.save([value0, value1, nameY, value3],addressOfVar)
 
     def PARAMETER(self):
-        print('Esta en PARAMETER')
+        if (self.contParameters > self.directory[self.namef]['numparam']):
+            return Exception('More parameters given in the function than declared')
+        #self.contParameters = self.contParameters + 1
+        
     
     def GOSUB(self):
         print('Esta en GOSUB')
 
-    def ERA(self):
-        print('Esta en ERA')
+    def ERA(self,namef):
+        self.namef=namef
+        self.contParameters = 0
+        #numparams = self.directory[self.namef]['numparam']
+        #print(numparams)
+        #if self.contParameters > numparams:
+        #    raise Exception('More parameters given to the function')
+        
 
     def CREATEG(self, addressGraph, addressDetails):
         self.verify(addressGraph)
