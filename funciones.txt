@@ -29,7 +29,7 @@ program x{
 
     main {
         i=2;
-        j=i*2-1;
+        j=i*2- 1;
         uno(j,i);
         dos(5);
         print(i);

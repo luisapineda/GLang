@@ -145,12 +145,12 @@ def t_CTE_STRING(t):
 	return t
 	
 def t_CTE_FLOAT(t):
-    r'\d+\.\d+'
+    r'-?\d+\.\d+'
     t.value = float(t.value)
     return t
 
 def t_CTE_INTEGER(t):
-    r'\d+'
+    r'-?\d+'
     t.value = int(t.value)
     return t
 
@@ -827,6 +827,7 @@ def p_ver_arr(t):
 	#Se suma el temporal a la direccion base
 	quadrup=["SUMDIRECCIONES",temp,DirBase,DirDesp]
 	
+	print("JUJUJUJUJUJUJUJUJUJUJUJUJ")
 	#Se agrega el cuadruplo a la lista de cuadruplos
 	q.quadruplesGen.append(quadrup)
 		
@@ -1744,16 +1745,24 @@ def p_FACTOR(t):
 
 def p_FACTOR_A(t):
 	'''
- FACTOR_A : OPEN_PARENTHESIS FACTOR_B CLOSE_PARENTHESIS 
+ FACTOR_A : OPEN_PARENTHESIS add_parenthesis FACTOR_B CLOSE_PARENTHESIS pop_parenthesis
  | PLUS FACTOR_C
  | MINS FACTOR_C
  | FACTOR_C
  | EMPTY
 	'''
 
+def p_add_parenthesis(t):
+	'add_parenthesis :'
+	SOper.append("(")
+
+def p_pop_parenthesis(t):
+	'pop_parenthesis :'
+	SOper.pop()
+	
 def p_FACTOR_B(t):
 	'''
- FACTOR_B : EXPRESIONESVARIAS FACTOR_C 
+ FACTOR_B : EXPRESIONESVARIAS  
 	'''
 
 def p_FACTOR_C(t):
@@ -1779,6 +1788,7 @@ def p_VARS_CTE(t):
 	print("Pasado:")
 	print(t[-2])
 	#Borrar
+			
 			
 
 def p_append_id(t):
@@ -1908,7 +1918,7 @@ def p_VARS_CTE_C(t):
 
 def p_VARS_CTE_D(t):
 	'''
- VARS_CTE_D : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat
+ VARS_CTE_D : OPEN_SQUARE_BRACKET add_SB EXP CLOSE_SQUARE_BRACKET pop_SB ver_mat
   | EMPTY
 	'''
 
@@ -3008,5 +3018,6 @@ finally:
 	print("Memory")
 	memory.printMemory()
 	print("Operation complete")
+	
 	virtualMachine.begin(q.contQuad,q.quadruplesGen,startTime, directory)
 	f.close() 

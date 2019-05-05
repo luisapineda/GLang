@@ -7,6 +7,7 @@ from math import pi
 from semanticCube import codes, codesTwisted
 from memory import memory
 import numpy as np
+from fun import f
 
 
 class virtualMachine: 
@@ -14,12 +15,12 @@ class virtualMachine:
     #Con esta funcion iniciaremos el trabajo de la maquina virtual
     def begin(self, numOfQuads, quads, startTime, directory):
         self.startTime=startTime
-        self.step = -1
         self.pendiente = []
         self.cont = 0
         self.quads=quads
         self.endIndicator = False
         self.ListOfDirections = []
+        self.ListOfReturns = []
         self.contParameters = 0
         self.directory = directory.return_dict()
         '''
@@ -29,11 +30,9 @@ class virtualMachine:
         plt.show()
         '''
         print('--------------------------INICIA LA MAQUINA VIRTUAL--------------------------------')
-        
         while self.endIndicator == False:
             print(self.quads[self.cont])
-            #############
-            self.step = -1
+            ############
             tempOperator = self.quads[self.cont][0]
             tempLeftOperand = self.quads[self.cont][1]
             tempRightOperand = self.quads[self.cont][2]
@@ -115,13 +114,15 @@ class virtualMachine:
             elif (tempOperator == 'PARAMETER'):
                 self.PARAMETER(tempLeftOperand)
             elif (tempOperator == 'GOSUB'):
-                self.GOSUB()
+                self.GOSUB(tempLeftOperand)
             elif (tempOperator == 'ERA'):
                 self.ERA(tempLeftOperand)
             elif (tempOperator == 'VER'):
                 self.VER(tempLeftOperand, tempRightOperand, tempResult)
             elif (tempOperator == 'SUMDIRECCIONES'):
                 self.SUMDIRECCIONES(tempLeftOperand, tempRightOperand, tempResult)
+            elif (tempOperator == 'return'):
+                self.RETURN(tempResult)
             
             self.cont = self.cont + 1
         memory.printMemory()
@@ -136,42 +137,54 @@ class virtualMachine:
         '''
     def PLUS(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
-            numTemp = int(memory.accessAValue(leftOperandAdress)) + int(memory.accessAValue(rightOperandAdress))
+            val1 = self.verifyTipo(leftOperandAdress)
+            val2 = self.verifyTipo(rightOperandAdress)
+            numTemp = val1 + val2
             memory.save(numTemp,resultAdress)
         except:
             raise Exception("Not a valid value in the sum")
   
     def DIVISION(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
-            numTemp = int(memory.accessAValue(leftOperandAdress)) / int(memory.accessAValue(rightOperandAdress))
+            val1 = self.verifyTipo(leftOperandAdress)
+            val2 = self.verifyTipo(rightOperandAdress)
+            numTemp = val1 / val2
             memory.save(numTemp,resultAdress)
         except:
             raise Exception("Not a valid value in the division")
 
     def MINS(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
-            numTemp = int(memory.accessAValue(leftOperandAdress)) - int(memory.accessAValue(rightOperandAdress))
+            val1 = self.verifyTipo(leftOperandAdress)
+            val2 = self.verifyTipo(rightOperandAdress)
+            numTemp = val1 - val2
             memory.save(numTemp,resultAdress)
         except:
             raise Exception("Not a valid value in the subtraction")
 
     def TIMES(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
-            numTemp = int(memory.accessAValue(leftOperandAdress)) * int(memory.accessAValue(rightOperandAdress))
+            val1 = self.verifyTipo(leftOperandAdress)
+            val2 = self.verifyTipo(rightOperandAdress)
+            numTemp = val1 * val2
             memory.save(numTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the multiplication")
 
     def BIGGERTHAN(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
-            numTemp = int(memory.accessAValue(leftOperandAdress)) > int(memory.accessAValue(rightOperandAdress))
+            val1 = self.verifyTipo(leftOperandAdress)
+            val2 = self.verifyTipo(rightOperandAdress)
+            numTemp = val1 > val2
             memory.save(numTemp,resultAdress)
         except:
             raise Exception("Not a valid value in the bigger than comparison")
     
     def LESSTHAN(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
-            numTemp = int(memory.accessAValue(leftOperandAdress)) < int(memory.accessAValue(rightOperandAdress))
+            val1 = self.verifyTipo(leftOperandAdress)
+            val2 = self.verifyTipo(rightOperandAdress)
+            numTemp = val1 < val2
             memory.save(numTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the less than comparison")
@@ -179,13 +192,12 @@ class virtualMachine:
     def EQUALS(self, value, address):
         try:
             memory.save(memory.accessAValue(value), address)
-            #print('value ' + str(memory.accessAValue(value)) + ' stored in ' + str(address))
         except: 
             raise Exception("Not a valid value in the assignment")
     
     def NOT(self, value, address):
         try: 
-            memory.save(not memory.accessAValue(value), address)
+            memory.save(not memory.accessAValue(value), address) #este statement en automatico verifica que el tipo es bool
         except: 
             raise Exception("Not a valid value in the not operation")
     
@@ -214,14 +226,18 @@ class virtualMachine:
 
     def BIGGEROREQUAL(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
-            numTemp = int(memory.accessAValue(leftOperandAdress)) >= int(memory.accessAValue(rightOperandAdress))
+            val1 = self.verifyTipo(leftOperandAdress)
+            val2 = self.verifyTipo(rightOperandAdress)
+            numTemp = val1 >= val2
             memory.save(numTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the bigger or equal comparison")
 
     def LESSOREQUAL(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
-            numTemp = int(memory.accessAValue(leftOperandAdress)) <= int(memory.accessAValue(rightOperandAdress))
+            val1 = self.verifyTipo(leftOperandAdress)
+            val2 = self.verifyTipo(rightOperandAdress)
+            numTemp = val1 <= val2
             memory.save(numTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the less or equal comparison")
@@ -362,16 +378,18 @@ class virtualMachine:
         self.contParameters = self.contParameters + 1
         
     
-    def GOSUB(self):
+    def GOSUB(self,addressToStore):
         if ((self.contParameters) != self.directory[self.namef]['numparam']):
             raise Exception('Function missing parameters')
         self.pendiente.append(self.cont)
         self.cont = self.directory[self.namef]['start'] -1
+        self.ListOfReturns.append(addressToStore)
 
     def ERA(self,namef):
         self.namef=namef
         self.contParameters = 0
         self.variablesOfFunction = list(self.directory[self.namef]['vars'])
+        #self.ListOfReturns.append(self.directory[f.GlobalName]['vars'][namef])
         #numparams = self.directory[self.namef]['numparam']
         #print(numparams)
         #if self.contParameters > numparams:
@@ -608,10 +626,10 @@ class virtualMachine:
             # Set data
             df = pd.DataFrame({
             'group': ['A','B','C','D'],
-            'Perros': [int(value1), 1.5, 30, 4],
-            'Gatos': [int(value2), 10, 9, 34],
-            'Osos': [int(value3), 39, 23, 24],
-            'Murcielagos': [int(value4), 31, 33, 14]
+            name1: [int(value1), 1.5, 30, 4],
+            name2: [int(value2), 10, 9, 34],
+            name3: [int(value3), 39, 23, 24],
+            name4: [int(value4), 31, 33, 14]
             })
             # number of variable
             categories=list(df)[1:]
@@ -729,9 +747,55 @@ class virtualMachine:
         memory.save(newAddress, newAddressTemp)
         self.ListOfDirections.append(newAddressTemp)
 
+    def RETURN(self, address):
+        value = memory.accessAValue(address)
+        if self.directory[self.namef]['tipo'] == 'int':
+            try: 
+                value = int(value)
+            except: 
+                raise Exception("ERROR: Type Dismatch")
+        elif self.directory[self.namef]['tipo'] == 'float':
+            try: 
+                value = float(value)
+            except: 
+                raise Exception("ERROR: Type Dismatch")
+        elif self.directory[self.namef]['tipo'] == 'bool':
+            try: 
+                if value == 'true':
+                    value = True
+                elif value =='false':
+                    value = False
+                else:
+                    value = bool(value)
+            except: 
+                raise Exception("ERROR: Type Dismatch")
+        elif self.directory[self.namef]['tipo'] == 'char':
+            try:
+                value = str(value)
+                #print("String")
+                if len(value) != 1:
+                    raise Exception("ERROR: Type Dismatch")
+            except:
+                raise Exception("ERROR: Type Dismatch")
+        else:
+            raise Exception("Void functions must not have returns")
+        self.EQUALS(str(value),str(self.ListOfReturns.pop))
 
+    #Esto es previo a la creacion de cada grafica. Se verifica si se tienen datos de namex, namey, name o color. Si no los tiene, los deja nulos
     def verify(self,addressOfVar):
         if not isinstance(memory.accessAValue(addressOfVar), list):
             memory.save(['None','None','None','None'],addressOfVar)
+    
+    #Funcion para verificar que el valor al que se accede es int o float. Para las operaciones basicas com suma, multiplicacion, resta y division
+    def verifyTipo(self, address):
+        try:
+            if memory.returnType(address)=='int':
+                return int(memory.accessAValue(address))
+            elif memory.returnType(address)=='float':
+                return float(memory.accessAValue(address))
+            else:
+                raise Exception ('ERROR: Type Dismatch')
+        except:
+            raise Exception ('Problem with the assignment of types')
     
 virtualMachine = virtualMachine()

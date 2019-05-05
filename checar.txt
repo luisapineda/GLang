@@ -84,13 +84,13 @@ iNumero2=iNumero+1;
 
 while(iNumero2>=5)
 {
-iNumero2=iNumero2-1;
+iNumero2=iNumero2- 1;
 }
 
 print("Aqui esta el inicio del for");
 for (i=0; i<5 ; i=i+1;)
 {
-    print(i-1);
+    print(i- 1);
 }
 
 for (i=2; i<=1 ; i=i+1;)

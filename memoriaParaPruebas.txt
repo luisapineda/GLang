@@ -1,26 +1,26 @@
-0 : iNumero
-1 : i
-2 : a
-3 : iNumero2
-4 : b
+0 : 2222
+1 : 2
+2 : 20
+3 : 4
+4 : 1220
 5 : iNumero3
-6 : iNumeroTemp
-4000 : c
-4001 : d
+6 : 4
+4000 : True
+4001 : False
 8000 : None
 8001 : None
-8002 : None
-8003 : None
-8004 : None
+8002 : 4
+8003 : 5
+8004 : 3
 8005 : None
-8006 : None
-8007 : None
-12000 : None
-12001 : None
-12002 : None
-12003 : None
-12004 : None
-12005 : None
+8006 : 1200
+8007 : 1220
+12000 : False
+12001 : False
+12002 : False
+12003 : False
+12004 : False
+12005 : False
 16000 : ola
 16001 : kih
 16002 : jon
@@ -50,14 +50,14 @@
 24022 : 40
 28000 : true
 28001 : false
-32000 : migrafica1
-33000 : migrafica2
-34000 : migrafica3
-35000 : migrafica4
-36000 : migrafica5
-37000 : mired
-38000 : mivenn
-39000 : miradar
+32000 : ['Crecimiento economico', 'Dias', 'Dinero', 'None']
+33000 : ['Animales', 'None', 'None', 'None']
+34000 : ['Animales', 'None', 'Porcentaje de animales', 'None']
+35000 : ['Animales', 'Porcentaje de animales', 'None', 'red']
+36000 : ['Calificaciones', 'None', 'None', 'None']
+37000 : ['None', 'None', 'None', 'None']
+38000 : ['Reprobados', 'None', 'None', 'None']
+39000 : ['Animales', 'None', 'None', 'red']
 64000 : "Crecimiento economico"
 64001 : "Dias"
 64002 : "Dinero"

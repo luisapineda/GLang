@@ -432,5 +432,15 @@ class memory:
                 if self.memory[i] == value:
                     return self.memory[i]
         return -1
+        #Esto esta hecho solo para regresar el tipo int o float
+    def returnType(self, address):
+        m = self.memorySizePerPrimitiveType
+        if ( 0 <= address < m*1  or   m*4 <= address < m*5  or  m*8 <= address < m*9  or  m*12 <= address < m*13):
+            return 'int'
+        elif (m <= address < m*2  or  m*5 <= address < m*6  or  m*9 <= address < m*10  or  m*13 <= address < m*14):
+            return 'float'
+        else: 
+            return 'other type'
+            
 
 memory = memory()
