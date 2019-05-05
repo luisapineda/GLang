@@ -10,11 +10,12 @@ program x{
         }
 
         {
-            i=a*2*b;
+            i=a*b;
             if(i<a+4) {
-                uno(a+1);
+                uno(a+1,b);
+            } else {
+                print(i);
             }
-            print(i);
         }
 
     }
@@ -30,6 +31,7 @@ program x{
         i=2;
         j=i*2-1;
         uno(j,i);
+        dos(5);
         print(i);
         print(j);
     }

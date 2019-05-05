@@ -15,7 +15,7 @@ class virtualMachine:
     def begin(self, numOfQuads, quads, startTime, directory):
         self.startTime=startTime
         self.step = -1
-        self.pendiente = 0
+        self.pendiente = []
         self.cont = 0
         self.quads=quads
         self.endIndicator = False
@@ -31,7 +31,7 @@ class virtualMachine:
         print('--------------------------INICIA LA MAQUINA VIRTUAL--------------------------------')
         
         while self.endIndicator == False:
-            #print(self.quads[self.cont])
+            print(self.quads[self.cont])
             #############
             self.step = -1
             tempOperator = self.quads[self.cont][0]
@@ -113,7 +113,7 @@ class virtualMachine:
             elif (tempOperator == 'CREATEN'):
                 self.CREATEN(tempLeftOperand, tempResult)
             elif (tempOperator == 'PARAMETER'):
-                self.PARAMETER()
+                self.PARAMETER(tempLeftOperand)
             elif (tempOperator == 'GOSUB'):
                 self.GOSUB()
             elif (tempOperator == 'ERA'):
@@ -280,7 +280,7 @@ class virtualMachine:
             raise Exception("Not a valid value in the concatenation operation")
 
     def ENDPROC(self):
-        self.cont = self.pendiente
+        self.cont = int(self.pendiente.pop())
         self.namef = ''
 
     def END(self):
@@ -329,18 +329,49 @@ class virtualMachine:
             value3 = memory.accessAValue(addressOfVar)[3]
             memory.save([value0, value1, nameY, value3],addressOfVar)
 
-    def PARAMETER(self):
-        if (self.contParameters > self.directory[self.namef]['numparam']):
+    def PARAMETER(self,value):
+        if ((self.contParameters + 1 ) > self.directory[self.namef]['numparam']):
             return Exception('More parameters given in the function than declared')
-        #self.contParameters = self.contParameters + 1
+        typeOfParameter = self.directory[self.namef]['vars'][self.variablesOfFunction[self.contParameters]]['tipo']
+        directionOfParameter = self.directory[self.namef]['vars'][self.variablesOfFunction[self.contParameters]]['dir']
+        if typeOfParameter == 'int':
+            try:
+                memory.save(int(memory.accessAValue(value)), directionOfParameter)
+            except:
+                return Exception('ERROR: Type Dismatch')
+        elif typeOfParameter == 'bool':
+            try:
+                memory.save(bool(memory.accessAValue(value)), directionOfParameter)
+            except:
+                return Exception('ERROR: Type Dismatch')
+        elif typeOfParameter == 'float':
+            try:
+                memory.save(float(memory.accessAValue(value)), directionOfParameter)
+            except:
+                return Exception('ERROR: Type Dismatch')
+        else:
+            try:
+                string = len(str(memory.accessAValue(value)))
+                if (string == 1):
+                    memory.save(str(memory.accessAValue(value)), directionOfParameter)
+                else: 
+                    return Exception('ERROR: Type Dismatch')
+            except:
+                return Exception('ERROR: Type Dismatch')
+
+        self.contParameters = self.contParameters + 1
         
     
     def GOSUB(self):
-        print('Esta en GOSUB')
+        if ((self.contParameters) != self.directory[self.namef]['numparam']):
+            raise Exception('Function missing parameters')
+        self.pendiente.append(self.cont)
+        self.cont = self.directory[self.namef]['start'] -1
 
     def ERA(self,namef):
         self.namef=namef
         self.contParameters = 0
+        self.variablesOfFunction = list(self.directory[self.namef]['vars'])
         #numparams = self.directory[self.namef]['numparam']
         #print(numparams)
         #if self.contParameters > numparams:
