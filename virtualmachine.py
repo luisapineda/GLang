@@ -1,19 +1,22 @@
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn2
 import networkx as nx
+import seaborn as sns
 import time
 import pandas as pd
 from math import pi
 from semanticCube import codes, codesTwisted
-from memory import memory
+from mem import memory
 import numpy as np
 from fun import f
+import mem
 
 
 class virtualMachine: 
     
     #Con esta funcion iniciaremos el trabajo de la maquina virtual
     def begin(self, numOfQuads, quads, startTime, directory):
+        self.f= open("cuadruplosEjecutandose.txt","w+")
         self.startTime=startTime
         self.pendiente = []
         self.cont = 0
@@ -21,6 +24,8 @@ class virtualMachine:
         self.endIndicator = False
         self.ListOfDirections = []
         #self.ListOfReturns = []
+        self.memory = memory
+        self.listOfMemories = []
         self.contParameters = 0
         self.directory = directory.return_dict()
         '''
@@ -32,6 +37,7 @@ class virtualMachine:
         print('--------------------------INICIA LA MAQUINA VIRTUAL--------------------------------')
         while self.endIndicator == False:
             print(self.quads[self.cont])
+            self.f.write(str(self.quads[self.cont])+'\n')
             ############
             tempOperator = self.quads[self.cont][0]
             tempLeftOperand = self.quads[self.cont][1]
@@ -39,13 +45,13 @@ class virtualMachine:
             tempResult = self.quads[self.cont][3]
             if self.ListOfDirections.__contains__(tempLeftOperand):
                 self.ListOfDirections.remove(tempLeftOperand)
-                tempLeftOperand = memory.accessAValue(tempLeftOperand)
+                tempLeftOperand = self.memory.accessAValue(tempLeftOperand)
             if self.ListOfDirections.__contains__(tempRightOperand):
                 self.ListOfDirections.remove(tempRightOperand)
-                tempRightOperand = memory.accessAValue(tempRightOperand)
+                tempRightOperand = self.memory.accessAValue(tempRightOperand)
             if self.ListOfDirections.__contains__(tempResult):
                 self.ListOfDirections.remove(tempResult)
-                tempResult = memory.accessAValue(tempResult)
+                tempResult = self.memory.accessAValue(tempResult)
             #############
             if (tempOperator == '+'):
                 self.PLUS(tempLeftOperand,tempRightOperand,tempResult)
@@ -125,7 +131,8 @@ class virtualMachine:
                 self.RETURN(tempLeftOperand,tempResult)
             
             self.cont = self.cont + 1
-        memory.printMemory()
+        self.memory.printMemory()
+        self.f.close() 
         print(self.directory)
         '''
         #esto era para implementarse sacandolo de un .txt
@@ -140,7 +147,10 @@ class virtualMachine:
             val1 = self.verifyTipo(leftOperandAdress)
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 + val2
-            memory.save(numTemp,resultAdress)
+            self.memory.save(numTemp,resultAdress)
+            print('-------')
+            print(str(resultAdress) + ' = ' + str(numTemp))
+            print('-------')
         except:
             raise Exception("Not a valid value in the sum")
   
@@ -149,7 +159,7 @@ class virtualMachine:
             val1 = self.verifyTipo(leftOperandAdress)
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 / val2
-            memory.save(numTemp,resultAdress)
+            self.memory.save(numTemp,resultAdress)
         except:
             raise Exception("Not a valid value in the division")
 
@@ -158,7 +168,7 @@ class virtualMachine:
             val1 = self.verifyTipo(leftOperandAdress)
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 - val2
-            memory.save(numTemp,resultAdress)
+            self.memory.save(numTemp,resultAdress)
         except:
             raise Exception("Not a valid value in the subtraction")
 
@@ -167,7 +177,7 @@ class virtualMachine:
             val1 = self.verifyTipo(leftOperandAdress)
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 * val2
-            memory.save(numTemp,resultAdress)
+            self.memory.save(numTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the multiplication")
 
@@ -176,7 +186,7 @@ class virtualMachine:
             val1 = self.verifyTipo(leftOperandAdress)
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 > val2
-            memory.save(numTemp,resultAdress)
+            self.memory.save(numTemp,resultAdress)
         except:
             raise Exception("Not a valid value in the bigger than comparison")
     
@@ -185,42 +195,42 @@ class virtualMachine:
             val1 = self.verifyTipo(leftOperandAdress)
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 < val2
-            memory.save(numTemp,resultAdress)
+            self.memory.save(numTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the less than comparison")
 
     def EQUALS(self, value, address):
         try:
-            memory.save(memory.accessAValue(value), address)
+            self.memory.save(self.memory.accessAValue(value), address)
         except: 
             raise Exception("Not a valid value in the assignment")
     
     def NOT(self, value, address):
         try: 
-            memory.save(not memory.accessAValue(value), address) #este statement en automatico verifica que el tipo es bool
+            self.memory.save(not self.memory.accessAValue(value), address) #este statement en automatico verifica que el tipo es bool
         except: 
             raise Exception("Not a valid value in the not operation")
     
     def AND(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
-            boolTemp = bool(memory.accessAValue(leftOperandAdress)) and bool(memory.accessAValue(rightOperandAdress))
-            memory.save(boolTemp,resultAdress)
+            boolTemp = bool(self.memory.accessAValue(leftOperandAdress)) and bool(self.memory.accessAValue(rightOperandAdress))
+            self.memory.save(boolTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the and operation")
 
     def OR(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
-            boolTemp = bool(memory.accessAValue(leftOperandAdress)) or bool(memory.accessAValue(rightOperandAdress))
-            memory.save(boolTemp,resultAdress)
+            boolTemp = bool(self.memory.accessAValue(leftOperandAdress)) or bool(self.memory.accessAValue(rightOperandAdress))
+            self.memory.save(boolTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the or operation")
 
     def COMPARISON(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
-            value1 = memory.accessAValue(leftOperandAdress)
-            value2 = memory.accessAValue(rightOperandAdress)
+            value1 = self.memory.accessAValue(leftOperandAdress)
+            value2 = self.memory.accessAValue(rightOperandAdress)
             boolTemp = str(value1) == str(value2)
-            memory.save(boolTemp,resultAdress)
+            self.memory.save(boolTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the comparison")
 
@@ -229,7 +239,7 @@ class virtualMachine:
             val1 = self.verifyTipo(leftOperandAdress)
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 >= val2
-            memory.save(numTemp,resultAdress)
+            self.memory.save(numTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the bigger or equal comparison")
 
@@ -238,7 +248,7 @@ class virtualMachine:
             val1 = self.verifyTipo(leftOperandAdress)
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 <= val2
-            memory.save(numTemp,resultAdress)
+            self.memory.save(numTemp,resultAdress)
         except: 
             raise Exception("Not a valid value in the less or equal comparison")
     
@@ -272,7 +282,7 @@ class virtualMachine:
                         raise Exception("ERROR: TYPE DOESN'T MATCH")
         
         if flag:
-            memory.save(value, address)
+            self.memory.save(value, address)
         else: 
             raise Exception("ERROR: TYPE DISMATCH")
 
@@ -280,18 +290,18 @@ class virtualMachine:
         self.cont = nextQuad - 1
 
     def GOTOF(self, address, nextQuad):
-        if (memory.accessAValue(address)==False):
+        if (self.memory.accessAValue(address)==False):
             self.cont = nextQuad - 1
     
     def PRINT(self, adress):
         try: 
-            print(memory.accessAValue(adress))
+            print(self.memory.accessAValue(adress))
         except: 
             raise Exception("Problems with the print")
     
     def CONCATENATE(self, left, right, address):
         try: 
-            memory.save(str(memory.accessAValue(left)) + str(memory.accessAValue(right)),address)
+            self.memory.save(str(self.memory.accessAValue(left)) + str(self.memory.accessAValue(right)),address)
         except: 
             raise Exception("Not a valid value in the concatenation operation")
 
@@ -306,70 +316,72 @@ class virtualMachine:
         print('')
     
     def COLOR(self, addressOfVar, addressOfName):
-        color = memory.accessAValue(addressOfName)
+        color = self.memory.accessAValue(addressOfName)
         if not isinstance(memory.accessAValue(addressOfVar), list):
-            memory.save(['None','None','None',str(color)],addressOfVar)
+            self.memory.save(['None','None','None',str(color)],addressOfVar)
         else:
-            value1 = memory.accessAValue(addressOfVar)[1]
-            value2 = memory.accessAValue(addressOfVar)[2]
-            value0 = memory.accessAValue(addressOfVar)[0]
-            memory.save([value0, value1, value2, str(color)],addressOfVar)
+            value1 = self.memory.accessAValue(addressOfVar)[1]
+            value2 = self.memory.accessAValue(addressOfVar)[2]
+            value0 = self.memory.accessAValue(addressOfVar)[0]
+            self.memory.save([value0, value1, value2, str(color)],addressOfVar)
 
     def NAME(self, addressOfVar, addressOfName):
-        name = memory.accessAValue(addressOfName)[1:-1]
-        if not isinstance(memory.accessAValue(addressOfVar), list):
-            memory.save([name,'None','None','None'],addressOfVar)
+        name = self.memory.accessAValue(addressOfName)[1:-1]
+        if not isinstance(self.memory.accessAValue(addressOfVar), list):
+            self.memory.save([name,'None','None','None'],addressOfVar)
         else:
-            value1 = memory.accessAValue(addressOfVar)[1]
-            value2 = memory.accessAValue(addressOfVar)[2]
-            value3 = memory.accessAValue(addressOfVar)[3]
-            memory.save([name, value1, value2, value3],addressOfVar)
+            value1 = self.memory.accessAValue(addressOfVar)[1]
+            value2 = self.memory.accessAValue(addressOfVar)[2]
+            value3 = self.memory.accessAValue(addressOfVar)[3]
+            self.memory.save([name, value1, value2, value3],addressOfVar)
             
     def NAMEX(self, addressOfVar, addressOfName):
-        nameX = memory.accessAValue(addressOfName)[1:-1]
-        if not isinstance(memory.accessAValue(addressOfVar), list):
-            memory.save(['None',nameX,'None','None'],addressOfVar)
+        nameX = self.memory.accessAValue(addressOfName)[1:-1]
+        if not isinstance(self.memory.accessAValue(addressOfVar), list):
+            self.memory.save(['None',nameX,'None','None'],addressOfVar)
         else:
-            value0 = memory.accessAValue(addressOfVar)[0]
-            value2 = memory.accessAValue(addressOfVar)[2]
-            value3 = memory.accessAValue(addressOfVar)[3]
-            memory.save([value0, nameX, value2, value3],addressOfVar)
+            value0 = self.memory.accessAValue(addressOfVar)[0]
+            value2 = self.memory.accessAValue(addressOfVar)[2]
+            value3 = self.memory.accessAValue(addressOfVar)[3]
+            self.memory.save([value0, nameX, value2, value3],addressOfVar)
     
     def NAMEY(self, addressOfVar, addressOfName):
-        nameY = memory.accessAValue(addressOfName)[1:-1]
-        if not isinstance(memory.accessAValue(addressOfVar), list):
-            memory.save(['None','None',nameY,'None'],addressOfVar)
+        nameY = self.memory.accessAValue(addressOfName)[1:-1]
+        if not isinstance(self.memory.accessAValue(addressOfVar), list):
+            self.memory.save(['None','None',nameY,'None'],addressOfVar)
         else:
-            value0 = memory.accessAValue(addressOfVar)[0]
-            value1 = memory.accessAValue(addressOfVar)[1]
-            value3 = memory.accessAValue(addressOfVar)[3]
-            memory.save([value0, value1, nameY, value3],addressOfVar)
+            value0 = self.memory.accessAValue(addressOfVar)[0]
+            value1 = self.memory.accessAValue(addressOfVar)[1]
+            value3 = self.memory.accessAValue(addressOfVar)[3]
+            self.memory.save([value0, value1, nameY, value3],addressOfVar)
 
     def PARAMETER(self,value):
         if ((self.contParameters + 1 ) > self.directory[self.namef]['numparam']):
             return Exception('More parameters given in the function than declared')
         typeOfParameter = self.directory[self.namef]['vars'][self.variablesOfFunction[self.contParameters]]['tipo']
         directionOfParameter = self.directory[self.namef]['vars'][self.variablesOfFunction[self.contParameters]]['dir']
+        #self.parametersPendientes.append([directionOfParameter,self.memory.accessAValue(directionOfParameter)])
+        v = self.memory.accessAValue(value)
         if typeOfParameter == 'int':
             try:
-                memory.save(int(memory.accessAValue(value)), directionOfParameter)
+                self.memory.save(int(v), directionOfParameter)
             except:
                 return Exception('ERROR: Type Dismatch')
         elif typeOfParameter == 'bool':
             try:
-                memory.save(bool(memory.accessAValue(value)), directionOfParameter)
+                self.memory.save(bool(v), directionOfParameter)
             except:
                 return Exception('ERROR: Type Dismatch')
         elif typeOfParameter == 'float':
             try:
-                memory.save(float(memory.accessAValue(value)), directionOfParameter)
+                self.memory.save(float(v), directionOfParameter)
             except:
                 return Exception('ERROR: Type Dismatch')
         else:
             try:
-                string = len(str(memory.accessAValue(value)))
+                string = len(str(v))
                 if (string == 1):
-                    memory.save(str(memory.accessAValue(value)), directionOfParameter)
+                    self.memory.save(str(self.memory.accessAValue(value)), directionOfParameter)
                 else: 
                     return Exception('ERROR: Type Dismatch')
             except:
@@ -386,9 +398,23 @@ class virtualMachine:
         #self.ListOfReturns.append(addressToStore)
 
     def ERA(self,namef):
+        self.memory.printMemory()
         self.namef=namef
         self.contParameters = 0
         self.variablesOfFunction = list(self.directory[self.namef]['vars'])
+        newMemory = mem.mem()
+####aqui hacemos el copy de newmemory
+        count = 0
+        for i in self.memory.memory:
+            if i is not None:
+                #print(str(count) + " : " + str(i))
+                newMemory.save(i,count) 
+            count = count + 1
+##########
+        self.listOfMemories.append(self.memory)
+        self.memory=newMemory
+        
+        
         #self.ListOfReturns.append(self.directory[f.GlobalName]['vars'][namef])
         #numparams = self.directory[self.namef]['numparam']
         #print(numparams)
@@ -399,10 +425,10 @@ class virtualMachine:
     def CREATEG(self, addressGraph, addressDetails):
         self.verify(addressGraph)
         try:  
-            name = memory.accessAValue(addressGraph)[0]
-            nameX = memory.accessAValue(addressGraph)[1]
-            nameY = memory.accessAValue(addressGraph)[2]
-            color = memory.accessAValue(addressGraph)[3]
+            name = self.memory.accessAValue(addressGraph)[0]
+            nameX = self.memory.accessAValue(addressGraph)[1]
+            nameY = self.memory.accessAValue(addressGraph)[2]
+            color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None':
                 plt.title(name)
             if nameX != 'None':
@@ -412,10 +438,10 @@ class virtualMachine:
             if color == 'None':
                 color = 'orange'
                 
-            a = int(memory.accessAValue(addressDetails)[0])
-            b = int(memory.accessAValue(addressDetails)[1])
-            c = int(memory.accessAValue(addressDetails)[2])
-            d = int(memory.accessAValue(addressDetails)[3])
+            a = int(self.memory.accessAValue(addressDetails)[0])
+            b = int(self.memory.accessAValue(addressDetails)[1])
+            c = int(self.memory.accessAValue(addressDetails)[2])
+            d = int(self.memory.accessAValue(addressDetails)[3])
             
             x = np.linspace(0, 10, 256, endpoint = True)
             y = (a * (x * x * x)) + (b * (x * x)) + (c * x) + d
@@ -429,7 +455,7 @@ class virtualMachine:
             plt.legend(loc='upper left')
             plt.show()
             try:
-                invalidvalue = memory.accessAValue(addressDetails)[4]
+                invalidvalue = self.memory.accessAValue(addressDetails)[4]
                 raise Exception("Invalid number of parameters")
             except:
                 print('Graphic created')
@@ -440,30 +466,27 @@ class virtualMachine:
     def CREATEPC(self, addressGraph, addressDetails):
         self.verify(addressGraph)
         try:  
-            name = memory.accessAValue(addressGraph)[0]
-            nameX = memory.accessAValue(addressGraph)[1]
-            nameY = memory.accessAValue(addressGraph)[2]
-            color = memory.accessAValue(addressGraph)[3]
+            name = self.memory.accessAValue(addressGraph)[0]
+            nameX = self.memory.accessAValue(addressGraph)[1]
+            nameY = self.memory.accessAValue(addressGraph)[2]
+            color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None':
                 plt.title(name)
             if nameX != 'None' or nameY != 'None' or color != 'None':
                 raise Exception("Pie Charts must not have nameX, nameY nor color") 
-            name1 = memory.accessAValue(addressDetails)[0][1:-1]
-            name2 = memory.accessAValue(addressDetails)[1][1:-1]
-            name3 = memory.accessAValue(addressDetails)[2][1:-1]
-            name4 = memory.accessAValue(addressDetails)[3][1:-1]
-            value1 = memory.accessAValue(addressDetails)[4]
-            value2 = memory.accessAValue(addressDetails)[5]
-            value3 = memory.accessAValue(addressDetails)[6]
-            value4 = memory.accessAValue(addressDetails)[7]
-            labels = str(name1), str(name2), str(name3), str(name4),
-            sizes=[int(value1), int(value2), int(value3), int(value4)]
+            labels = []
+            sizes = []
+            array = list(self.memory.accessAValue(addressDetails))
+            numOfValues = int(len(array)/2)
+            for x in range(0, numOfValues):
+                labels.append(str(array[x][1:-1]))
+                sizes.append(int(array[numOfValues+x]))
             # Plot
             plt.pie(sizes,labels=labels,autopct='%1.1f%%', startangle=140)
             plt.show()
             try:
-                invalidvalue = memory.accessAValue(addressDetails)[8]
-                raise Exception("Invalid number of parameters")
+                invalidvalue = array[int(len(array))]
+                raise Exception("Information given for creating the pie chart wasn't correct")
             except:
                 print('Pie Chart created')
         except:
@@ -472,10 +495,10 @@ class virtualMachine:
     def CREATEGB(self, addressGraph, addressDetails):
         self.verify(addressGraph)
         try:  
-            name = memory.accessAValue(addressGraph)[0]
-            nameX = memory.accessAValue(addressGraph)[1]
-            nameY = memory.accessAValue(addressGraph)[2]
-            color = memory.accessAValue(addressGraph)[3]
+            name = self.memory.accessAValue(addressGraph)[0]
+            nameX = self.memory.accessAValue(addressGraph)[1]
+            nameY = self.memory.accessAValue(addressGraph)[2]
+            color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None':
                 plt.title(name)
             if nameX != 'None':
@@ -486,17 +509,13 @@ class virtualMachine:
                 #raise Exception("Graphs must not have a color")
                 color = 'orange'
                 
-            name1 = memory.accessAValue(addressDetails)[0][1:-1]
-            name2 = memory.accessAValue(addressDetails)[1][1:-1]
-            name3 = memory.accessAValue(addressDetails)[2][1:-1]
-            name4 = memory.accessAValue(addressDetails)[3][1:-1]
-            value1 = memory.accessAValue(addressDetails)[4]
-            value2 = memory.accessAValue(addressDetails)[5]
-            value3 = memory.accessAValue(addressDetails)[6]
-            value4 = memory.accessAValue(addressDetails)[7]
-            
-            height = [value1, value2, value3, value4]
-            bars = (str(name1), str(name2), str(name3), str(name4))
+            bars = []
+            height = []
+            array = list(self.memory.accessAValue(addressDetails))
+            numOfValues = int(len(array)/2)
+            for x in range(0, numOfValues):
+                bars.append(str(array[x][1:-1]))
+                height.append(int(array[numOfValues+x]))
             y_pos = np.arange(len(bars))
             
             # Create bars
@@ -509,8 +528,8 @@ class virtualMachine:
             plt.show()
 
             try:
-                invalidvalue = memory.accessAValue(addressDetails)[8]
-                raise Exception("Invalid number of parameters")
+                invalidvalue = array[int(len(array))]
+                raise Exception("Information given for creating the Bar Chart wasn't correct")
             except:
                 print('Bar Chart created')
         except:
@@ -520,10 +539,10 @@ class virtualMachine:
     def CREATEGBH(self, addressGraph, addressDetails):
         self.verify(addressGraph)
         try:  
-            name = memory.accessAValue(addressGraph)[0]
-            nameX = memory.accessAValue(addressGraph)[1]
-            nameY = memory.accessAValue(addressGraph)[2]
-            color = memory.accessAValue(addressGraph)[3]
+            name = self.memory.accessAValue(addressGraph)[0]
+            nameX = self.memory.accessAValue(addressGraph)[1]
+            nameY = self.memory.accessAValue(addressGraph)[2]
+            color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None':
                 plt.title(name)
             if nameX != 'None':
@@ -533,17 +552,15 @@ class virtualMachine:
             if color == 'None':
                 color = 'orange'
                 
-            name1 = memory.accessAValue(addressDetails)[0][1:-1]
-            name2 = memory.accessAValue(addressDetails)[1][1:-1]
-            name3 = memory.accessAValue(addressDetails)[2][1:-1]
-            name4 = memory.accessAValue(addressDetails)[3][1:-1]
-            value1 = memory.accessAValue(addressDetails)[4]
-            value2 = memory.accessAValue(addressDetails)[5]
-            value3 = memory.accessAValue(addressDetails)[6]
-            value4 = memory.accessAValue(addressDetails)[7]
+            bars = []
+            height = []
+            array = list(self.memory.accessAValue(addressDetails))
+            numOfValues = int(len(array)/2)
+            for x in range(0, numOfValues):
+                bars.append(str(array[x][1:-1]))
+                height.append(int(array[numOfValues+x]))
+            y_pos = np.arange(len(bars))
             
-            height = [value1,value2,value3,value4]
-            bars = (str(name1), str(name2), str(name3), str(name4))
             y_pos = np.arange(len(bars))
             
             # Create horizontal bars
@@ -556,8 +573,8 @@ class virtualMachine:
             plt.show()
 
             try:
-                invalidvalue = memory.accessAValue(addressDetails)[8]
-                raise Exception("Invalid number of parameters")
+                invalidvalue = array[int(len(array))]
+                raise Exception("Information given for creating the Bar Chart wasn't correct")
             except:
                 print('Bar Chart created')
         except:
@@ -566,37 +583,34 @@ class virtualMachine:
     def CREATED(self, addressGraph,addressDetails):
         self.verify(addressGraph)
         try:  
-            name = memory.accessAValue(addressGraph)[0]
-            nameX = memory.accessAValue(addressGraph)[1]
-            nameY = memory.accessAValue(addressGraph)[2]
-            color = memory.accessAValue(addressGraph)[3]
+            name = self.memory.accessAValue(addressGraph)[0]
+            nameX = self.memory.accessAValue(addressGraph)[1]
+            nameY = self.memory.accessAValue(addressGraph)[2]
+            color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None':
                 plt.title(name)
             if nameX != 'None' or nameY != 'None':
                 raise Exception("Donnut diagrams must not have nameX nor nameY") 
             if color == 'None':
                 color = 'orange'
-            name1 = memory.accessAValue(addressDetails)[0][1:-1]
-            name2 = memory.accessAValue(addressDetails)[1][1:-1]
-            name3 = memory.accessAValue(addressDetails)[2][1:-1]
-            name4 = memory.accessAValue(addressDetails)[3][1:-1]
-            value1 = memory.accessAValue(addressDetails)[4]
-            value2 = memory.accessAValue(addressDetails)[5]
-            value3 = memory.accessAValue(addressDetails)[6]
-            value4 = memory.accessAValue(addressDetails)[7]
-            names = str(name1), str(name2), str(name3), str(name4),
-            size=[int(value1), int(value2), int(value3), int(value4)]
-                # Create a circle for the center of the plot
+            names = []
+            size = []
+            array = list(self.memory.accessAValue(addressDetails))
+            numOfValues = int(len(array)/2)
+            for x in range(0, numOfValues):
+                names.append(str(array[x][1:-1]))
+                size.append(int(array[numOfValues+x]))
+            # Create a circle for the center of the plot
             my_circle=plt.Circle( (0,0), 0.7, color='white')
 
             # Give color names
-            plt.pie(size, labels=names,autopct='%1.1f%%',colors=[str(color),'gray',str(color),'gray'])
+            plt.pie(size, labels=names,autopct='%1.1f%%',colors=[str(color),'gray','lightgray'])
             p=plt.gcf()
             p.gca().add_artist(my_circle)
             plt.show()
             try:
-                invalidvalue = memory.accessAValue(addressDetails)[8]
-                raise Exception("Invalid number of parameters")
+                invalidvalue = array[int(len(array))]
+                raise Exception("Information given for creating the Donnut Diagram wasn't correct")
             except:
                 print('Donnut Graph created')
         except:
@@ -605,32 +619,23 @@ class virtualMachine:
     def CREATER(self, addressGraph, addressDetails):
         self.verify(addressGraph)
         try:  
-            name = memory.accessAValue(addressGraph)[0]
-            nameX = memory.accessAValue(addressGraph)[1]
-            nameY = memory.accessAValue(addressGraph)[2]
-            color = memory.accessAValue(addressGraph)[3]
+            name = self.memory.accessAValue(addressGraph)[0]
+            nameX = self.memory.accessAValue(addressGraph)[1]
+            nameY = self.memory.accessAValue(addressGraph)[2]
+            color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None':
                 plt.title(name)
             if nameX != 'None' or nameY != 'None':
                 raise Exception("Radar diagrams must not have nameX nor nameY") 
             if color == 'None':
                 color = 'orange'
-            name1 = memory.accessAValue(addressDetails)[0][1:-1]
-            name2 = memory.accessAValue(addressDetails)[1][1:-1]
-            name3 = memory.accessAValue(addressDetails)[2][1:-1]
-            name4 = memory.accessAValue(addressDetails)[3][1:-1]
-            value1 = memory.accessAValue(addressDetails)[4]
-            value2 = memory.accessAValue(addressDetails)[5]
-            value3 = memory.accessAValue(addressDetails)[6]
-            value4 = memory.accessAValue(addressDetails)[7]
+            my_dict = {'group' : ['A']}
+            array = list(self.memory.accessAValue(addressDetails))
+            numOfValues = int(len(array)/2)
+            for x in range(0, numOfValues):
+                my_dict[(str(array[x][1:-1]))] = (int(array[numOfValues+x]))
             # Set data
-            df = pd.DataFrame({
-            'group': ['A','B','C','D'],
-            name1: [int(value1), 1.5, 30, 4],
-            name2: [int(value2), 10, 9, 34],
-            name3: [int(value3), 39, 23, 24],
-            name4: [int(value4), 31, 33, 14]
-            })
+            df = pd.DataFrame(my_dict)
             # number of variable
             categories=list(df)[1:]
             N = len(categories)
@@ -664,8 +669,8 @@ class virtualMachine:
 
             plt.show()
             try:
-                invalidvalue = memory.accessAValue(addressDetails)[8]
-                raise Exception("Invalid number of parameters")
+                invalidvalue = memory.accessAValue(addressDetails)[int(len(array))]
+                raise Exception("Information given for creating the Radar Diagram wasn't correct")
             except:
                 print('Radar graph created')
         except:
@@ -674,24 +679,24 @@ class virtualMachine:
     def CREATEV(self, addressGraph, addressDetails):
         self.verify(addressGraph)
         try:  
-            name = memory.accessAValue(addressGraph)[0]
-            nameX = memory.accessAValue(addressGraph)[1]
-            nameY = memory.accessAValue(addressGraph)[2]
-            color = memory.accessAValue(addressGraph)[3]
+            name = self.memory.accessAValue(addressGraph)[0]
+            nameX = self.memory.accessAValue(addressGraph)[1]
+            nameY = self.memory.accessAValue(addressGraph)[2]
+            color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None':
                 plt.title(name)
             if nameX != 'None' or nameY != 'None' or color !='None':
                 raise Exception("Venn Diagrams must not have nameX, nameY nor color") 
-            value1 = memory.accessAValue(addressDetails)[0]
-            intersection = memory.accessAValue(addressDetails)[1]
-            value2 = memory.accessAValue(addressDetails)[2]
-            name1 = memory.accessAValue(addressDetails)[3][1:-1]
-            name2 = memory.accessAValue(addressDetails)[4][1:-1]
+            value1 = self.memory.accessAValue(addressDetails)[0]
+            intersection = self.memory.accessAValue(addressDetails)[1]
+            value2 = self.memory.accessAValue(addressDetails)[2]
+            name1 = self.memory.accessAValue(addressDetails)[3][1:-1]
+            name2 = self.memory.accessAValue(addressDetails)[4][1:-1]
             venn2(subsets = (int(value1),  int(value2), int(intersection)), set_labels = (name1, name2))
             plt.show()
             try:
-                invalidvalue = memory.accessAValue(addressDetails)[5]
-                raise Exception("Invalid number of parameters")
+                invalidvalue = self.memory.accessAValue(addressDetails)[5]
+                raise Exception("Information given for creating the Venn Diagram wasn't correct")
             except:
                 print('Venn Diagram created')
         except:
@@ -700,24 +705,21 @@ class virtualMachine:
     def CREATEN(self, addressGraph, addressDetails):
         self.verify(addressGraph)
         try:  
-            name = memory.accessAValue(addressGraph)[0]
-            nameX = memory.accessAValue(addressGraph)[1]
-            nameY = memory.accessAValue(addressGraph)[2]
-            color = memory.accessAValue(addressGraph)[3]
+            name = self.memory.accessAValue(addressGraph)[0]
+            nameX = self.memory.accessAValue(addressGraph)[1]
+            nameY = self.memory.accessAValue(addressGraph)[2]
+            color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None' or nameX != 'None' or nameY != 'None':
                 raise Exception("Network charts must not have name, nameX nor nameY") 
             if color == 'None':
                 color = 'orange'
-            valueA1 = str(memory.accessAValue(addressDetails)[0][0][1:-1])
-            valueA2 = str(memory.accessAValue(addressDetails)[0][1][1:-1])
-            valueA3 = str(memory.accessAValue(addressDetails)[0][2][1:-1])
-            valueA4 = str(memory.accessAValue(addressDetails)[0][3][1:-1])
-            valueB1 = str(memory.accessAValue(addressDetails)[1][0][1:-1])
-            valueB2 = str(memory.accessAValue(addressDetails)[1][1][1:-1])
-            valueB3 = str(memory.accessAValue(addressDetails)[1][2][1:-1])
-            valueB4 = str(memory.accessAValue(addressDetails)[1][3][1:-1])
+            array1 = list(self.memory.accessAValue(addressDetails)[0])
+            array2 = list(self.memory.accessAValue(addressDetails)[1])
+            array1 = [i.replace('"', '') for i in array1]
+            array2 = [i.replace('"', '') for i in array2]
+
             # Build a dataframe with your connections
-            df = pd.DataFrame({ 'from':[valueA1, valueA2, valueA3, valueA4], 'to':[valueB1, valueB2, valueB3,valueB4]})
+            df = pd.DataFrame({ 'from':array1, 'to':array2})
             df
             
             # Build your graph
@@ -727,7 +729,7 @@ class virtualMachine:
             nx.draw(G, with_labels=True, node_size=1500, node_color=color, node_shape="o", alpha=0.5, linewidths=4, font_size=25, font_color="black", font_weight="bold", width=2, edge_color="grey")
             plt.show()
             try:
-                invalidvalue = memory.accessAValue(addressDetails)[5]
+                invalidvalue = self.memory.accessAValue(addressDetails)[5]
                 raise Exception("Invalid parameters")
             except:
                 print('Network graph created')
@@ -735,20 +737,20 @@ class virtualMachine:
             raise Exception("Information given for creating the Network Diagram wasn't correct")
     
     def VER(self, limInf, limSup, addressToCheck):
-        limInfValue = int(memory.accessAValue(limInf))
-        limSupValue = int(memory.accessAValue(limSup))
-        value = int(memory.accessAValue(addressToCheck))
+        limInfValue = int(self.memory.accessAValue(limInf))
+        limSupValue = int(self.memory.accessAValue(limSup))
+        value = int(self.memory.accessAValue(addressToCheck))
         if value<limInfValue or value>limSupValue:
             raise Exception("Invalid value for the array")
 
     def SUMDIRECCIONES(self, dirMovement, dirBase, newAddressTemp):
-        valueMovement = int(memory.accessAValue(dirMovement))
+        valueMovement = int(self.memory.accessAValue(dirMovement))
         newAddress = int(valueMovement)+dirBase
-        memory.save(newAddress, newAddressTemp)
+        self.memory.save(newAddress, newAddressTemp)
         self.ListOfDirections.append(newAddressTemp)
 
     def RETURN(self, address, addressOfFunc):
-        value = memory.accessAValue(address)
+        value = self.memory.accessAValue(address)
         if self.directory[self.namef]['tipo'] == 'int':
             try: 
                 value = int(value)
@@ -779,20 +781,28 @@ class virtualMachine:
                 raise Exception("ERROR: Type Dismatch")
         else:
             raise Exception("Void functions must not have returns")
-        memory.save(value,addressOfFunc)
+        self.memory = self.listOfMemories.pop()
+        self.memory.save(value,addressOfFunc)
+        self.cont = int(self.pendiente.pop())
+        print(str(value) + 'obtenido de la address ' + str(address) + ' fue guardado en ' + str(addressOfFunc)+'\n')
+        #for i in range(0,self.directory[self.namef]['numparam']):
+            #array = self.parametersPendientes.pop()
+            #self.memory.save(array[1],array[0])
+           # print('Se guardo el valor' + str(array[1]) + ' en la direccion ' + str(array[0])+'\n')
+        
 
     #Esto es previo a la creacion de cada grafica. Se verifica si se tienen datos de namex, namey, name o color. Si no los tiene, los deja nulos
     def verify(self,addressOfVar):
-        if not isinstance(memory.accessAValue(addressOfVar), list):
-            memory.save(['None','None','None','None'],addressOfVar)
+        if not isinstance(self.memory.accessAValue(addressOfVar), list):
+            self.memory.save(['None','None','None','None'],addressOfVar)
     
     #Funcion para verificar que el valor al que se accede es int o float. Para las operaciones basicas com suma, multiplicacion, resta y division
     def verifyTipo(self, address):
         try:
-            if memory.returnType(address)=='int':
-                return int(memory.accessAValue(address))
-            elif memory.returnType(address)=='float':
-                return float(memory.accessAValue(address))
+            if self.memory.returnType(address)=='int':
+                return int(self.memory.accessAValue(address))
+            elif self.memory.returnType(address)=='float':
+                return float(self.memory.accessAValue(address))
             else:
                 raise Exception ('ERROR: Type Dismatch')
         except:

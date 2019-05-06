@@ -1,5 +1,5 @@
 #Archivo que contiene toda la informacion necesaria para la administracion y creacion de la memoria
-class memory:
+class mem:
     memorySizePerPrimitiveType = 2000 #Tamaño asignado para los tipos primitivos
     memorySizePerOurType = 1000 #Tamaño asignado para los tipos propios de nuestro lenguaje
 
@@ -441,6 +441,20 @@ class memory:
             return 'float'
         else: 
             return 'other type'
+    
+    def restartTemporals(self):
+        self.TInt = self.memorySizePerPrimitiveType * 4 #Temporal Integer
+        self.TFloat = self.memorySizePerPrimitiveType * 5 #Temporal Float
+        self.TBool = self.memorySizePerPrimitiveType * 6 #Temporal Boolean
+        self.TChar = self.memorySizePerPrimitiveType * 7 #Temporal Char
+        self.TGraph = self.GGraph + self.memorySizePerOurType * 8
+        self.TPieGraph = self.GGraph + self.memorySizePerOurType * 9
+        self.TBarChart = self.GGraph + self.memorySizePerOurType * 10
+        self.THorBarChart = self.GGraph + self.memorySizePerOurType * 11
+        self.TDonutGraph = self.GGraph + self.memorySizePerOurType * 12
+        self.TNetwork = self.GGraph + self.memorySizePerOurType * 13
+        self.TVenn = self.GGraph + self.memorySizePerOurType * 14
+        self.TRadarChart = self.GGraph + self.memorySizePerOurType * 15
             
 
-memory = memory()
+memory = mem()

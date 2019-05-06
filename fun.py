@@ -5,6 +5,7 @@ class fun:
         self.KNumParam = 1
         self.CallModule = ""
         self.GlobalName = ""
+        self.ReturnAct = False
 
     def return_globalName(self):
         return self.GlobalName

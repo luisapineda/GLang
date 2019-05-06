@@ -12,7 +12,7 @@ from semanticCube import typesOfVariablesTwisted
 from semanticCube import operators
 from semanticCube import codes
 from quadruples import q
-from memory import memory
+from mem import memory
 from virtualmachine import virtualMachine
 import time
 
@@ -391,9 +391,12 @@ def p_MODULO(t):
 #Regla de retorno en una funcion
 def p_RETURNOP(t):
 	'''
-	RETURNOP : RETURN EXPRESIONESVARIAS return_quad SEMICOLON
+	RETURNOP : RETURN activate EXPRESIONESVARIAS return_quad SEMICOLON
 	'''
-
+def p_activate(t):
+	'activate :'
+	f.Return_Act = True
+	
 def p_return_quad(t):
 	'return_quad :'
 	ver_type = directory.return_functype(SScope[-1])
@@ -423,6 +426,7 @@ def p_return_quad(t):
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
 	
+	f.Return_Act = False
 	
 #Para liberar la tabla de variables
 def p_release_vars(t):
@@ -457,6 +461,7 @@ def p_endproc(t):
 def p_change_scope(t):
 	'change_scope :'
 	SScope.pop()
+	memory.restartTemporals()
 
 #Se agrega el nombre de la funcion al directorio de funciones	
 def p_add_functionr(t):
@@ -475,6 +480,8 @@ def p_add_functionr(t):
 	#Borrar
 	print("Pila de contexto")
 	print(SScope)
+	print("Pila de tipos")
+	print(SType)
 	#Borrar
 	
 	#Se añade el nombre de la funcion y su tipo al directorio de funciones
@@ -582,7 +589,25 @@ def p_gosub(t):
 	ver_type = directory.return_functype(f.CallModule)
 	
 	if not (ver_type=="void" or ver_type=="PROGRAM"):
-		StackO.append(directory.return_address(SScope[-1],f.CallModule))
+		
+		#Se checa que aun haya espacio en los temporales
+		if not memory.checkAvailabilityOfAType(ver_type,1,"temporal"):
+			raise Exception("ERROR: Not enough space in memory")
+	
+		#Dentro de temp esta la direccion del temporal entero
+		temp = memory.addAVariable(ver_type,"temporal",'None', 1)
+		
+		quadrup=["=",directory.return_address(SScope[-1],f.CallModule),None,temp]
+		
+		#Se agrega el cuadruplo a la lista de cuadruplos
+		q.quadruplesGen.append(quadrup)
+	
+		#Se incrementa el numero de cuadruplos
+		q.contQuad = q.contQuad + 1
+		
+		StackO.append(temp)
+		
+		SType.append(ver_type)
 	
 	#Borrar
 	print("Pila de cuadruplos:")
@@ -666,15 +691,30 @@ def p_check_types(t):
 		q.contQuad = q.contQuad + 1
 	else:
 		print("ERROR, tipo de parametro incorrecto")
+		
+	#Borrar??
+	#if f.Return_Act:
+	#	print("Holaaaaa aqui estoy+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+	#	print(SType)
+	#	print(StackO)
+	#	SType.append(argumentType)
+	#	StackO.append(argument)
+		
+	print(" ")
+	print("Stack")
+	print(StackO)
+	print("")
+	print("SOper")
+	print(SOper)
 	
+
 	#Borrar
-		print(" ")
-		print("Pila de cuadruplos:")
-		print(q.quadruplesGen)
-		print(" ")
-		print("Contador de cuadruplos:")
-		print(q.contQuad)
-	
+	print(" ")
+	print("Pila de cuadruplos:")
+	print(q.quadruplesGen)
+	print(" ")
+	print("Contador de cuadruplos:")
+	print(q.contQuad)
 	print("##########################################################################################################################################")
 	#Borrar
 
@@ -1573,7 +1613,8 @@ def p_pop_exp(t):
 		if SOper[-1]=="+" or SOper[-1]=="-":
 			#Se saca + o - de la pila de operadores
 			operator=SOper.pop()
-			
+			print("olissssss")
+			print(operator)
 			#Borrar
 			print("checamos en plus:")
 			print(StackO)
@@ -1587,7 +1628,20 @@ def p_pop_exp(t):
 			left_operand=StackO.pop()
 			#Se saca el tipo del operando izquierdo de la pila de operandos
 			left_type=SType.pop()
-						
+		
+			print("6666666666666666666666666666666666666666666666666")
+			print("rightoperand")
+			print(right_operand)
+			print(" ")
+			print("righttype")
+			print(right_type)
+			print(" ")
+			print("leftoperand")
+			print(left_operand)
+			print(" ")
+			print("lefttype")
+			print(left_type)
+			print("6666666666666666666666666666666666666666666666666")		
 			
 			print("Pila caracteres:")
 			print(SOper)
@@ -1775,10 +1829,24 @@ def p_FACTOR_A(t):
 def p_add_parenthesis(t):
 	'add_parenthesis :'
 	SOper.append("(")
+	
+	print("  ")
+	print("SOOOOOOOOOOOOOOOOOOOOOOPEEERRRRRRRRR")
+	print(SOper)
+	print("Stacko")
+	print(StackO)
+	print("  ")
 
 def p_pop_parenthesis(t):
 	'pop_parenthesis :'
 	SOper.pop()
+	
+	print("  ")
+	print("BYEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+	print(SOper)
+	print("Stacko")
+	print(StackO)
+	print("  ")
 	
 def p_FACTOR_B(t):
 	'''
@@ -1798,7 +1866,7 @@ def p_VARS_CTE(t):
  | FALSE append_bool
  | ID append_id
  | ID append_id OPEN_SQUARE_BRACKET add_SB EXP CLOSE_SQUARE_BRACKET pop_SB ver_arr VARS_CTE_D
- | ID era OPEN_PARENTHESIS VARS_CTE_B gosub
+ | ID era OPEN_PARENTHESIS add_parenthesis VARS_CTE_B pop_parenthesis gosub
 	'''
 	#Borrar
 	print(" ")
@@ -1814,6 +1882,9 @@ def p_VARS_CTE(t):
 
 def p_append_id(t):
 	'append_id :'
+	print(" ")
+	print("SOY ID")
+	print(" ")
 	if(directory.exist_function(t[-1])):
 		type = directory.return_functype(t[-1])
 		directory.add_variable(SScope[-1],t[-1],type)
@@ -1841,6 +1912,10 @@ def p_append_id(t):
 	
 def p_append_cte_int(t):
 	'append_cte_int :'
+	print(" ")
+	print("SOY INT")
+	print(" ")
+	
 	print("SALUDOS")
 	if not memory.checkAvailabilityOfAType('int',1,'constant'):
 		raise Exception("ERROR: Not enough space in memory")
@@ -1866,7 +1941,9 @@ def p_append_cte_int(t):
 
 def p_append_cte_float(t):
 	'append_cte_float :'
-	
+	print(" ")
+	print("SOY FLOAT")
+	print(" ")
 	if not memory.checkAvailabilityOfAType('float',1,'constant'):
 		raise Exception("ERROR: Not enough space in memory")
 			
@@ -1891,6 +1968,10 @@ def p_append_cte_float(t):
 	
 def p_append_bool(t):
 	'append_bool :'
+	print(" ")
+	print("SOY BOOL")
+	print(" ")
+	
 	if not memory.checkAvailabilityOfAType('bool',1,'constant'):
 		raise Exception("ERROR: Not enough space in memory")
 			
@@ -1932,8 +2013,11 @@ def p_pop_SB(t):
 
 def p_VARS_CTE_B(t):
 	'''
- VARS_CTE_B : EXP check_types VARS_CTE_C CLOSE_PARENTHESIS
+ VARS_CTE_B : EXP check_types VARS_CTE_C CLOSE_PARENTHESIS 
 	'''
+	print(" ")
+	print("SOY FUN")
+	print(" ")
 
 def p_VARS_CTE_C(t):
 	'''
@@ -3013,35 +3097,42 @@ for line in file:
 
 try:
     parser.parse(code,debug=log)
+except:
+	raise Exception("The code wasn't able to compile. Check it out")
 finally:
-	print("Pila caracteres:")
-	print(SOper)
-	print("Pila operandos")
-	print(StackO)
-	print("Pila de saltos")
-	print(SJump)
-	print("Pila de contexto")
-	print(SScope)
-	print("Pila de cuadruplos")
-	print(q.quadruplesGen)
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	directory.print_dir()
-	print("Numero de variables:")
-	print(v.Count)
-	print("Lista de cuadruplos")
-	
-	f= open("cuadruplos.txt","w+")
+	try: 
+		print("Pila caracteres:")
+		print(SOper)
+		print("Pila operandos")
+		print(StackO)
+		print("Pila de saltos")
+		print(SJump)
+		print("Pila de tipos")
+		print(SType)
+		print("Pila de contexto")
+		print(SScope)
+		print("Pila de cuadruplos")
+		print(q.quadruplesGen)
+		print("Contador de cuadruplos:")
+		print(q.contQuad)
+		directory.print_dir()
+		print("Numero de variables:")
+		print(v.Count)
+		print("Lista de cuadruplos")
+		
+		f= open("cuadruplos.txt","w+")
 
-	for x in range(0,q.contQuad):
-		print(x,".- ",q.quadruplesGen[x])
-		f.write(str(q.quadruplesGen[x]))
-		f.write('\n')
-	print(" ")
-	print("Lista Traducida")
-	translate.trans_quad(q.quadruplesGen,q.contQuad)
-	print("Memory")
-	memory.printMemory()
-	print("Operation complete")
-	virtualMachine.begin(q.contQuad,q.quadruplesGen,startTime, directory)
-	f.close() 
+		for x in range(0,q.contQuad):
+			print(x,".- ",q.quadruplesGen[x])
+			f.write(str(q.quadruplesGen[x]))
+			f.write('\n')
+		print(" ")
+		print("Lista Traducida")
+		translate.trans_quad(q.quadruplesGen,q.contQuad)
+		print("Memory")
+		memory.printMemory()
+		print("Operation complete")
+		virtualMachine.begin(q.contQuad,q.quadruplesGen,startTime, directory)
+		f.close() 
+	except:
+		raise Exception("The code wasn't able to compile. Check it out.")

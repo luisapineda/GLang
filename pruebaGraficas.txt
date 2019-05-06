@@ -18,34 +18,35 @@ main{
     print("Asi hacemos una concatenacion con un numero " & 10 & " fin");
     iNumero = 1010;
     print(iNumero);
+
     migrafica1.name("Crecimiento economico"); 
     migrafica1.nameX("Dias"); 
     migrafica1.nameY("Dinero"); 
     migrafica1.createG(0,1,3,4);
-    
+
     migrafica2.name("Pastel");
-    migrafica2.createPC(25,25,25,25;"Chocolate", "Vainilla", "Fresa", "Durazno"); 
+    migrafica2.createPC(25,25,30;"Chocolate", "Vainilla","coco"); 
 
-    migrafica3.name("Animales"); 
-    migrafica3.nameY("Porcentaje de animales");
-    migrafica3.createGB(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+    migrafica3.name("Ganancias por mes"); 
+    migrafica3.nameY("Millones de pesos");
+    migrafica3.createGB(31,15,2;"Enero", "Febrero", "Marzo");
 
-    migrafica4.name("Animales");
-    migrafica4.nameX("Porcentaje de animales");
+    migrafica4.name("Promedio de los grados de la escuela");
+    migrafica4.nameX("Calificacion");
     migrafica4.color(red);
-    migrafica4.createGBH(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
+    migrafica4.createGBH(91,88.8,56,76,43.1,99.01;"1eroA", "2doA", "3eroA", "4toA","5toA","6toA");
 
-    migrafica5.name("Calificaciones");
-    migrafica5.createD(25,25,25,25;"DonutTest Perro", "Gatos", "Osos", "Murcielagos");
+    migrafica5.name("Animales en adopcion");
+    migrafica5.createD(10,3,22;"Perros", "Gatos", "Osos");
 
-    miradar.name("Animales de RadarChart");
+    miradar.name("Resultado de test psicologico");
     miradar.color(purple);
-    miradar.createR(10,25,13,2;"Perros RC", "Gatos RC", "Osos", "Murcielagos");
+    miradar.createR(10,8,9,6,3;"Amistades", "Riqueza", "Escuela", "Trabajo","Amor");
 
     mivenn.name("Reprobados");
     mivenn.createV( 10 , 5 , 20 ;"Matematicas","Quimica");
 
-    mired.createN(["A", "B", "C","A"];["D", "A", "E","C"]);
+   mired.createN(["A", "B", "C","A"];["D", "A", "E","C"]);
 
     print("Ingresa un numero: ");
 

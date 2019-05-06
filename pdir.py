@@ -1,5 +1,5 @@
 from fun import f
-from memory import memory
+from mem import memory
 dir_func = dict()
 
 def add_function(name,type):

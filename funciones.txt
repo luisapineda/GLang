@@ -6,15 +6,18 @@ program x{
 
     module void uno(int a, int b) {
         vars {
-            int i;
+            int i,cont;
         }
 
         {
-            i=a*b;
-            if(i<a+4) {
-                uno(a+1,b);
+            cont=0;
+            i=a*b; 
+            i=0; 
+            if(a>i) {
+                print("Valor de A (>0): " & a);
+                uno(a- 1,b);
             } else {
-                print(i);
+                print(a);
             }
         }
 
@@ -31,6 +34,7 @@ program x{
     main {
         i=2;
         j=i*2- 1;
+        i=5;
         uno(j,i);
         n = dos(5);
         print(i);
