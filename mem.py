@@ -82,7 +82,6 @@ class mem:
         return self.memory[address]
 
     def printMemory(self):
-        print("------elements in memory-----")
         f= open("memoriaParaPruebas.txt","w+")
         count = 0
         for i in self.memory:

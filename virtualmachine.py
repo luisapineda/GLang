@@ -34,9 +34,9 @@ class virtualMachine:
         plt.ylabel('some numbers')
         plt.show()
         '''
-        print('--------------------------INICIA LA MAQUINA VIRTUAL--------------------------------')
+        print('Corriendo..')
         while self.endIndicator == False:
-            print(self.quads[self.cont])
+            #print(self.quads[self.cont])
             self.f.write(str(self.quads[self.cont])+'\n')
             ############
             tempOperator = self.quads[self.cont][0]
@@ -133,7 +133,6 @@ class virtualMachine:
             self.cont = self.cont + 1
         self.memory.printMemory()
         self.f.close() 
-        print(self.directory)
         '''
         #esto era para implementarse sacandolo de un .txt
         print('.txt')
@@ -148,9 +147,6 @@ class virtualMachine:
             val2 = self.verifyTipo(rightOperandAdress)
             numTemp = val1 + val2
             self.memory.save(numTemp,resultAdress)
-            print('-------')
-            print(str(resultAdress) + ' = ' + str(numTemp))
-            print('-------')
         except:
             raise Exception("Not a valid value in the sum")
   
@@ -255,27 +251,22 @@ class virtualMachine:
     def INPUT(self, typeR, address):
         flag = False
         value = input()
-        #print(type(value))
         if value == 'true' or value == 'false':
-            #print("Boolean")
             if typeR=='bool':
                 flag = True
         else:
             try:
                 val = int(value)
-                #print("Integer")
                 if typeR=='int':
                     flag = True
             except ValueError:
                 try:
                     val = float(value)
-                    #print("Float")
                     if typeR=='float':
                         flag = True
                 except ValueError:
                     try:
                         val = str(value)
-                        #print("String")
                         if len(val) == 1 and typeR=='char':
                             flag = True
                     except ValueError:  
@@ -784,7 +775,6 @@ class virtualMachine:
         self.memory = self.listOfMemories.pop()
         self.memory.save(value,addressOfFunc)
         self.cont = int(self.pendiente.pop())
-        print(str(value) + 'obtenido de la address ' + str(address) + ' fue guardado en ' + str(addressOfFunc)+'\n')
         #for i in range(0,self.directory[self.namef]['numparam']):
             #array = self.parametersPendientes.pop()
             #self.memory.save(array[1],array[0])

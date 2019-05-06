@@ -232,15 +232,6 @@ def p_addfunction(t):
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
 	
-	#BORRAR
-	#esto lo utilizo para hacer pruebas
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#BORRAR
 
 #Para rellenar el primer cuadruplo GOTO cuando se ha llegado al main 	
 def p_quad_main(t):
@@ -249,15 +240,7 @@ def p_quad_main(t):
 	#Vamos a modificiar el primer cuadruplo en su cuarta posicion y se va a reemplazar "saltopendiente" por el numero actual de cuadruplos
 	#Este numero es donde comienza el main del programa
 	q.quadruplesGen[0][3] = q.contQuad
-	
-	#BORRAR
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#BORRAR
+
 	
 #El programa puede tener funciones o no
 def p_PROGRAMA_A(t):
@@ -447,15 +430,7 @@ def p_endproc(t):
 	
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
-	
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
+
 
 #Cuando acaba una funcion se saca de la pila de contextos
 def p_change_scope(t):
@@ -477,13 +452,7 @@ def p_add_functionr(t):
 	#Se agrega el nombre de la funcion a la pila de contextos
 	SScope.append(v.Id)
 	
-	#Borrar
-	print("Pila de contexto")
-	print(SScope)
-	print("Pila de tipos")
-	print(SType)
-	#Borrar
-	
+
 	#Se añade el nombre de la funcion y su tipo al directorio de funciones
 	directory.add_function(v.Id,f.Type)
 	
@@ -544,26 +513,15 @@ def p_add_start(t):
 #Se agrega la tabla de tipos de la firma de la funcion y el numero de parametros
 def p_param_table(t):
 	'param_table :'
-	
-	print("Current scopeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-	print(SScope[-1])
-	
+
 	#Se agrega la tabla de tipos de los parametros, se envia la funcion actual y una copia de la tabla
 	directory.add_parameters(SScope[-1],SParam.copy())
 	#Se agrega el numero de parametros, se envia la funcion actual y cuantos elementos tiene la tabla
 	directory.add_numparam(SScope[-1],len(SParam))
 	
-	print("Pila de tipos de parametros******************************************")
-	print(SParam)
-	directory.print_dir()
-	print("pruebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-	directory.print_dir()
-	print("pruebaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa22222")
 
 	#Se eliminan los elementos de al tabla para poder usarla para otras funciones
 	SParam.clear()
-	
-	directory.print_dir()
 
 #La llamada de la funcion
 def p_LLAMADAMODULO(t):
@@ -609,13 +567,6 @@ def p_gosub(t):
 		
 		SType.append(ver_type)
 	
-	#Borrar
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 
 #Generacion del cuadruplo era
 def p_era(t):
@@ -635,6 +586,7 @@ def p_era(t):
 		q.contQuad = q.contQuad + 1
 	else:
 		print("ERROR, funcion no existe")
+		raise Exception("Error, funcion no existe")
 	
 	#KNumParam,de la clase fun, se inicializa en uno para contar el numero de parametros que se encuentran en la llamada de la funcion
 	f.KNumParam = 1
@@ -642,16 +594,7 @@ def p_era(t):
 	#Se guarda el nombre de la funcion que va a ser llamada
 	f.CallModule = t[-1]
 	
-	#Borrar
-	print("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-	print(f.CallModule)
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
+
 
 #Para agregar mas variables en la llamada de la funcion	
 def p_LLAMADAMODULO_A(t):
@@ -691,32 +634,8 @@ def p_check_types(t):
 		q.contQuad = q.contQuad + 1
 	else:
 		print("ERROR, tipo de parametro incorrecto")
+		raise Exception("ERROR, tipo de parametro incorrecto")
 		
-	#Borrar??
-	#if f.Return_Act:
-	#	print("Holaaaaa aqui estoy+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-	#	print(SType)
-	#	print(StackO)
-	#	SType.append(argumentType)
-	#	StackO.append(argument)
-		
-	print(" ")
-	print("Stack")
-	print(StackO)
-	print("")
-	print("SOper")
-	print(SOper)
-	
-
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	print("##########################################################################################################################################")
-	#Borrar
 
 #Cierre de la llamada de la funcion
 def p_LLAMADAMODULO_D(t):
@@ -796,14 +715,6 @@ def p_quad(t):
 		q.contQuad = q.contQuad + 1
 		
 		
-		#Borrar
-		print(" ")
-		print("Pila de cuadruplos:")
-		print(q.quadruplesGen)
-		print(" ")
-		print("Contador de cuadruplos:")
-		print(q.contQuad)
-		#Borrar
 
 #Se agrega el ID a la pila de operandos	
 def p_addStackO(t):
@@ -817,14 +728,7 @@ def p_addStackO(t):
 	#Se envia el contexto actual y el nombre del ID, se busca la funcion en el directorio de funciones y en sus variables se agarra el tipo
 	SType.append(directory.return_type(SScope[-1],t[-1]))
 	
-	#Borrar
-	print(" ")
-	print("Pila de operandos:")
-	print(StackO)
-	print(" ")
-	print("Pila de tipos:")
-	print(SType)
-	#Borrar
+
 
 #Si se va a hacer una asignacion a un arreglo	
 def p_ASIGNACION_A(t):
@@ -884,7 +788,6 @@ def p_ver_arr(t):
 	#Se suma el temporal a la direccion base
 	quadrup=["SUMDIRECCIONES",temp,DirBase,DirDesp]
 	
-	print("JUJUJUJUJUJUJUJUJUJUJUJUJ")
 	#Se agrega el cuadruplo a la lista de cuadruplos
 	q.quadruplesGen.append(quadrup)
 		
@@ -897,14 +800,6 @@ def p_ver_arr(t):
 	#Se agrega el tipo 
 	SType.append("int")
 	
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 
 #Si se va a hacer una asignacion a una matriz
 def p_ASIGNACION_B(t):
@@ -989,14 +884,7 @@ def p_ver_mat(t):
 	#Se agrega el tipo 
 	SType.append("int")
 	
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
+
 	
 
 #La parte del igual donde se le asigna algo
@@ -1011,11 +899,6 @@ def p_add_equal(t):
 	'add_equal :'
 	SOper.append("=")
 	
-	#Borrar
-	print(" ")
-	print("Pila de caracteres")
-	print(SOper)
-	#Borrar
 
 #Regla del if
 def p_CONDICION(t):
@@ -1046,16 +929,7 @@ def p_if_gotof(t):
 	#Se sape el salto correspondiente del GOTOF
 	SJump.append(q.contQuad-1)
 		
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	print("Pila de Saltos:")
-	print(SJump)
-	#Borrar
+
 
 def p_fill_end(t):
 	'fill_end :'
@@ -1079,13 +953,8 @@ def p_check_bool(t):
 		#No hay necesidad de poner el operando derecho porque al ser not solo esta la posibilidad de usar el operador izquierdo
 		
 
-		#print(right_type + str(typesOfVariables[right_type]))
 		#result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 		if (typesOfVariables[left_type]!=typesOfVariables['bool']):
-			print('                           #######################################################')
-			print(left_operand)
-			print(left_type)
-			print(typesOfVariables[left_type])
 			raise Exception("ERROR: TYPE DISMATCH")
 
 		if not memory.checkAvailabilityOfAType(left_type,1,"temporal"):
@@ -1124,55 +993,22 @@ def p_check_bool(t):
 		#Se sape el salto correspondiente del GOTOF
 		SJump.append(q.contQuad-1)
 		
-		#Borrar
-		print(" ")
-		print("Pila de cuadruplos:")
-		print(q.quadruplesGen)
-		print(" ")
-		print("Contador de cuadruplos:")
-		print(q.contQuad)
-		print("Pila de Saltos:")
-		print(SJump)
-		#Borrar
+
 	
 	#Pero si el operador es
 	elif operator=='>' or operator=='<' or operator=='>=' or operator=='<=' or operator=='and' or operator=='or' or operator=='==':
-		
-		print('OLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-		print(operator + str(operators[operator]))
-		print("Pila tipos")
-		print(SType)
-		print('operando')
-		
 		#Se saca el operando derecho de la pila de operadores y se mete en right_operand
 		
 		right_operand=StackO.pop()
-		print(right_operand)
 		#Se saca el tipo del operando derecho de la pila de tipos y se mete en right_type
-		print('tipo del operando')
-		
 		right_type=SType.pop()
-		print("RIIIGHT!!!")
-		print(right_type)
-		print(right_type  + str(typesOfVariables[right_type]))
 		#Se saca el operando izquierdo de la pila de operadores y se mete en left_operand
-
 		left_operand=StackO.pop()
-		print('operando')
-		print(left_operand)
 		#Se saca el tipo del operando izquierdo de la pila de tipos y se mete en left_type
 		left_type=SType.pop()
-		print('tipo del operando')
-		print(left_type  + str(typesOfVariables[left_type]))
-		
-	
-		
-		#FALTA HACER LA COMPROBACION DE LOS TIPOS, TAL VEZ SE DEBA DE CAMBIAR AND Y OR*******************************************************************************************
 
 		result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 		if (result_type == -1):
-			print(left_type)
-			print(right_type)
 			raise Exception("ERROR: TYPE DISMATCH")
 
 		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
@@ -1209,16 +1045,6 @@ def p_check_bool(t):
 		#Se sape el salto correspondiente del GOTOF
 		SJump.append(q.contQuad-1)
 		
-		#Borrar
-		print(" ")
-		print("Pila de cuadruplos:")
-		print(q.quadruplesGen)
-		print(" ")
-		print("Contador de cuadruplos:")
-		print(q.contQuad)
-		print("Pila de Saltos:")
-		print(SJump)
-		#Borrar
 
 #Si el if tiene un else
 def p_CONDICION_A(t):
@@ -1250,16 +1076,6 @@ def p_gotoElse(t):
 	#Para que sepa que si la expresion es falsa se tiene que brincar al else
 	q.quadruplesGen[false_if][3] = q.contQuad
 	
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	print("Pila de Saltos:")
-	print(SJump)
-	#Borrar
 
 #Regla para el for
 def p_FOR(t):
@@ -1302,16 +1118,7 @@ def p_for_gotof(t):
 	#Se agrega a la pila de salto el numero del cuadruplo del GOTOF
 	SJump.append(q.contQuad-1)
 		
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	print("Pila de Saltos:")
-	print(SJump)
-	#Borrar
+
 	
 #GOTO para repetir el for
 def p_repeat_for(t):
@@ -1353,16 +1160,6 @@ def p_repeat_for(t):
 	#Este cuadruplo se utiliza para repertir el for
 	q.quadruplesGen[bool_for][3] = back_for
 	
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	print("Pila de Saltos:")
-	print(SJump)
-	#Borrar
 
 #Expresion booleana del for
 def p_bool_for(t):
@@ -1376,13 +1173,6 @@ def p_bool_for(t):
 	
 	#Si es un operador relacional
 	if operator=='>' or operator=='<' or operator=='<=' or operator=='>=':
-		#FALTA HACER LA COMPROBACION DE QUE LA EXPRESION ES BOOLEANA********************************************************************************************************
-		
-		#Borrar
-		print("checamos ahora:")
-		print(StackO)
-		#Borrar
-		
 		#Se saca el operador derecho y se mete en right_operand
 		right_operand=StackO.pop()
 		
@@ -1432,17 +1222,6 @@ def p_bool_for(t):
 		
 		#Se agrega a la pila de salto el numero del cuadruplo del GOTOF
 		SJump.append(q.contQuad-1)
-		
-		#Borrar
-		print(" ")
-		print("Pila de cuadruplos:")
-		print(q.quadruplesGen)
-		print(" ")
-		print("Contador de cuadruplos:")
-		print(q.contQuad)
-		print("Pila de Saltos:")
-		print(SJump)
-		#Borrar
 
 #Regla del while
 def p_WHILE(t):
@@ -1470,16 +1249,6 @@ def p_while_gotof(t):
 	#Se agrega a la pila de salto el numero del cuadruplo del GOTOF
 	SJump.append(q.contQuad-1)
 		
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	print("Pila de Saltos:")
-	print(SJump)
-	#Borrar
 	
 def p_while_jump(t):
 	'while_jump :'
@@ -1508,17 +1277,7 @@ def p_goto_while(t):
 	#Se modifica el GOTOF del while y en su cuarta posicion se pone el numero del cuadruplo actual
 	#Que es donde termina el while
 	q.quadruplesGen[end][3] = q.contQuad
-	
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	print("Pila de Saltos:")
-	print(SJump)
-	#Borrar
+
 
 #Generacion del cuadruplo de la expresion booleana del while
 def p_bool_while(t):
@@ -1532,13 +1291,6 @@ def p_bool_while(t):
 	
 	#Si operator es uno de los siguientes
 	if operator=='>' or operator=='<' or operator=='and' or operator=='or' or operator=='<=' or operator=='>=' or operator=='==':
-		#FALTA HACER LA COMPROBACION DE QUE LA EXPRESION ES BOOLEANA********************************************************************************************************
-		
-		#Borrar
-		print("checamos ahora:")
-		print(StackO)
-		#Borrar
-		
 		#Se saca el operador derecho y se mete en right_operand
 		right_operand=StackO.pop()
 		
@@ -1586,17 +1338,7 @@ def p_bool_while(t):
 		
 		#Se agrega a la pila de salto el numero del cuadruplo del GOTOF
 		SJump.append(q.contQuad-1)
-		
-		#Borrar
-		print(" ")
-		print("Pila de cuadruplos:")
-		print(q.quadruplesGen)
-		print(" ")
-		print("Contador de cuadruplos:")
-		print(q.contQuad)
-		print("Pila de Saltos:")
-		print(SJump)
-		#Borrar
+
 
 def p_EXP(t):
 	'''
@@ -1613,12 +1355,6 @@ def p_pop_exp(t):
 		if SOper[-1]=="+" or SOper[-1]=="-":
 			#Se saca + o - de la pila de operadores
 			operator=SOper.pop()
-			print("olissssss")
-			print(operator)
-			#Borrar
-			print("checamos en plus:")
-			print(StackO)
-			#Borrar
 			
 			#Se saca el operando derecho de la pila de operandos
 			right_operand=StackO.pop()
@@ -1628,31 +1364,7 @@ def p_pop_exp(t):
 			left_operand=StackO.pop()
 			#Se saca el tipo del operando izquierdo de la pila de operandos
 			left_type=SType.pop()
-		
-			print("6666666666666666666666666666666666666666666666666")
-			print("rightoperand")
-			print(right_operand)
-			print(" ")
-			print("righttype")
-			print(right_type)
-			print(" ")
-			print("leftoperand")
-			print(left_operand)
-			print(" ")
-			print("lefttype")
-			print(left_type)
-			print("6666666666666666666666666666666666666666666666666")		
-			
-			print("Pila caracteres:")
-			print(SOper)
-			print("Pila operandos")
-			print(StackO)
-			print('😋😋😋😋😋😋😋😋')
-			print(operator + str(operators[operator]))
-			print(left_operand)
-			print(left_type  + str(typesOfVariables[left_type]))
-			print(right_operand)
-			print(right_type + str(typesOfVariables[right_type]))
+
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
 				raise Exception("ERROR: TYPE DISMATCH")
@@ -1664,7 +1376,6 @@ def p_pop_exp(t):
 				
 				#Se genera el cuadruplo de la operacion + o -
 				quadrup=[codes[operator],left_operand,right_operand,result]
-				print(quadrup)
 			
 				#Se agrega el resultado a la pila de operandos 
 				StackO.append(result)
@@ -1694,10 +1405,6 @@ def p_append_operator(t):
 	if t[-1]=="+" or t[-1]=="-":
 		SOper.append(t[-1])
 		
-		#Borrar
-		print("pila de caracters")
-		print(SOper)
-		#Borrar
 
 def p_TERMINO(t):
 	'''
@@ -1713,12 +1420,6 @@ def p_pop_term(t):
 		if SOper[-1]=="*" or SOper[-1]=="/":
 			#Se saca el operador de la pila de operadores y se mete en operator
 			operator=SOper.pop()
-			#################ESTE HAY QUE MODIFICARLO EN LA MULTIPLICACION#####################
-			#Borrar
-			print("checamos en por:")
-			print(StackO)
-			#Borrar
-			
 			#Se saca el operador derecho y se mete en right_operand
 			right_operand=StackO.pop()
 			
@@ -1765,21 +1466,12 @@ def p_add_operator(t):
 	'add_operator :'
 	if t[-1]=="*" or t[-1]=="/":
 		SOper.append(t[-1])
-		
-		#Borrar
-		print("pila de caracters")
-		print(SOper)
-		#Borrar
 
 #Regla de los colores de la informacion de las graficas
 def p_COLOR(t):
 	'''
  COLOR : ID POINT COLOR_KEYWORD OPEN_PARENTHESIS COLOR_A CLOSE_PARENTHESIS SEMICOLON 
 	'''
-	#Borrar
-	print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-	print(t[1])
-	#Borrar
 	
 	#Generacion del cuadruplo del color de la informacion de la grafica
 	#t[1] es el nombre de la grafica a la que se le va a aplicar este color
@@ -1830,23 +1522,10 @@ def p_add_parenthesis(t):
 	'add_parenthesis :'
 	SOper.append("(")
 	
-	print("  ")
-	print("SOOOOOOOOOOOOOOOOOOOOOOPEEERRRRRRRRR")
-	print(SOper)
-	print("Stacko")
-	print(StackO)
-	print("  ")
-
 def p_pop_parenthesis(t):
 	'pop_parenthesis :'
 	SOper.pop()
 	
-	print("  ")
-	print("BYEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-	print(SOper)
-	print("Stacko")
-	print(StackO)
-	print("  ")
 	
 def p_FACTOR_B(t):
 	'''
@@ -1868,23 +1547,11 @@ def p_VARS_CTE(t):
  | ID append_id OPEN_SQUARE_BRACKET add_SB EXP CLOSE_SQUARE_BRACKET pop_SB ver_arr VARS_CTE_D
  | ID era OPEN_PARENTHESIS add_parenthesis VARS_CTE_B pop_parenthesis gosub
 	'''
-	#Borrar
-	print(" ")
-	print(" ")
-	print("Adentro:") 
-	print(t[1])
-	print("Pasado:")
-	print(t[-2])
-	#Borrar
 	
-#cEHCAR S SE PUEDE PONER LLAMADAMODULO	
-			
+
 
 def p_append_id(t):
 	'append_id :'
-	print(" ")
-	print("SOY ID")
-	print(" ")
 	if(directory.exist_function(t[-1])):
 		type = directory.return_functype(t[-1])
 		directory.add_variable(SScope[-1],t[-1],type)
@@ -1897,26 +1564,9 @@ def p_append_id(t):
 		
 	#Se mete el tipo en la pila de tipos
 	SType.append(idtype)
-		
-	#Borrar
-	print(" ")
-	print("33333333333333333333333333333333333333333333333")
-	print(t[-1])
-	print("Pila de operandos")
-	print(StackO)
-	print("Pila de caracteres")
-	print(SOper)
-	print("Pila de TIPOS")
-	print(SType)
-	#Borrar
 	
 def p_append_cte_int(t):
 	'append_cte_int :'
-	print(" ")
-	print("SOY INT")
-	print(" ")
-	
-	print("SALUDOS")
 	if not memory.checkAvailabilityOfAType('int',1,'constant'):
 		raise Exception("ERROR: Not enough space in memory")
 			
@@ -1928,22 +1578,8 @@ def p_append_cte_int(t):
 	#Se mete su tipo a la pila de tipos
 	SType.append("int")
 
-	#Borrar
-	print(" ")
-	print("Pila de operandos")
-	print(StackO)
-	print(" ")
-	print("Pila de tipos")
-	print(SType)
-	print("Pila de caracteres")
-	print(SOper)
-	#Borrar
-
 def p_append_cte_float(t):
 	'append_cte_float :'
-	print(" ")
-	print("SOY FLOAT")
-	print(" ")
 	if not memory.checkAvailabilityOfAType('float',1,'constant'):
 		raise Exception("ERROR: Not enough space in memory")
 			
@@ -1955,23 +1591,9 @@ def p_append_cte_float(t):
 	#Se mete su tipo a la pila de tipos
 	SType.append("float")
 		
-	#Borrar
-	print(" ")
-	print("Pila de operandos")
-	print(StackO)
-	print(" ")
-	print("Pila de tipos")
-	print(SType)
-	print("Pila de caracteres")
-	print(SOper)
-	#Borrar
-	
 def p_append_bool(t):
 	'append_bool :'
-	print(" ")
-	print("SOY BOOL")
-	print(" ")
-	
+
 	if not memory.checkAvailabilityOfAType('bool',1,'constant'):
 		raise Exception("ERROR: Not enough space in memory")
 			
@@ -1983,16 +1605,6 @@ def p_append_bool(t):
 	#Se mete su tipo a la pila de tipos
 	SType.append("bool")
 
-	#Borrar
-	print(" ")
-	print("Pila de operandos")
-	print(StackO)
-	print(" ")
-	print("Pila de tipos")
-	print(SType)
-	print("Pila de caracteres")
-	print(SOper)
-	#Borrar
 	
 #Para arreglos y matrices
 def p_VARS_CTE_A(t):
@@ -2015,9 +1627,6 @@ def p_VARS_CTE_B(t):
 	'''
  VARS_CTE_B : EXP check_types VARS_CTE_C CLOSE_PARENTHESIS 
 	'''
-	print(" ")
-	print("SOY FUN")
-	print(" ")
 
 def p_VARS_CTE_C(t):
 	'''
@@ -2042,22 +1651,12 @@ def p_add_inputid(t):
 	'add_inputid :'
 	StackO.append(directory.return_address(SScope[-1],t[-1]))
 	
-	#Borrar
-	print(" ")
-	print("Pila de operandos")
-	print(StackO)
-	#Borrar
-	
 #Generacion del cuadruplo del input
 def p_quad_input(t):
 	'quad_input :'
 	
 	#Se saca el operando que va a recibir lo tecleado por el usuario de la pila de operandos
 	result=StackO.pop()
-	print('❣️❣️❣️❣️❣️❣️')
-	print(str(SScope[-1]))
-	print(str(result))
-	print(str(memory.accessAValue(result)))
 	result_type = directory.return_type(SScope[-1],memory.accessAValue(result))
 	
 	#Cuadruplo del input
@@ -2072,15 +1671,7 @@ def p_quad_input(t):
 	
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
-	
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
+
 
 #Input para arreglos
 def p_INPUT_A(t):
@@ -2138,14 +1729,6 @@ def p_PGraph(t):
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
 
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 
 #Grafica tipo Pie
 def p_PPie(t):
@@ -2177,14 +1760,6 @@ def p_PPie(t):
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
 
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 
 #Grafica del tipo de grafica de barrar
 def p_PGBarras(t):
@@ -2216,15 +1791,6 @@ def p_PGBarras(t):
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
 
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
-
 #Grafica de barras horizontales
 def p_PGBarrasHor(t):
 	'''
@@ -2254,14 +1820,6 @@ def p_PGBarrasHor(t):
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
 
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 
 #Grafica tipo dona
 def p_PDona(t):
@@ -2290,15 +1848,6 @@ def p_PDona(t):
 	
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
-
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 	
 #Grafica de tipo red
 def p_PRed(t):
@@ -2327,15 +1876,6 @@ def p_PRed(t):
 	
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
-
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 
 #Grafica de Venn
 def p_PVenn(t):
@@ -2369,15 +1909,6 @@ def p_PVenn(t):
 	
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
-
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 
 #Grafica tipo Network
 def p_PLOT_B(t):
@@ -2416,15 +1947,6 @@ def p_PLOT_B(t):
 	
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
-
-	#Borrar
-	print(" ")
-	print("Pila de cuadruplos:")
-	print(q.quadruplesGen)
-	print(" ")
-	print("Contador de cuadruplos:")
-	print(q.contQuad)
-	#Borrar
 	
 
 def p_PLOT_C(t):
@@ -2439,11 +1961,6 @@ def p_PLOT_I(t):
 	'''
 	#Se mete un integer o float a SResult
 	SResult.append(t[1])
-	
-	#Borrar
-	print("***************************************************************************************************")
-	print(SResult)
-	#Borrar
 	
 def p_PLOT_D(t):
 	'''
@@ -2463,11 +1980,6 @@ def p_PLOT_F(t):
 	'''
 	#Se mete un integer o float a SResult
 	SResult.append(t[1])
-	
-	#Borrar
-	print("***************************************************************************************************")
-	print(SResult)
-	#Borrar
 
 def p_PLOT_J(t):
 	'''
@@ -2486,11 +1998,6 @@ def p_PLOT_K(t):
 	'''
 	#Se mete el string a SResult
 	SResult.append(t[1])
-	
-	#Borrar
-	print("***************************************************************************************************")
-	print(SResult)
-	#Borrar
 	
 def p_PLOT_H(t):
 	'''
@@ -2596,10 +2103,6 @@ def p_add_temp(t):
 def p_add_string(t):
 	'add_string :'
 	StackO.append(t[-1])
-	
-	print("NUEVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-	print(StackO)
-	
 	SType.append("CString")
 	
 	if SOper:
@@ -2608,24 +2111,15 @@ def p_add_string(t):
 			
 			#Se saca el operador derecho y se mete en right_operand
 			right_operand=StackO.pop()
-			print('right operand:')
-			print(right_operand)
 			#Se saca el tipo del operador derecho y se mete en right_type
 			right_type=SType.pop()
-			print('right type:')
-			print(right_type)
 			#Se saca el operador izquierdo y se mete en left_operand
 			left_operand=StackO.pop()
-			print('leftoperand:')
-			print(left_operand)
 			#Se saca el tipo del operador izquierdo y se mete en left_type
-			print('left type:')
 			try: 
 				left_type=SType.pop()
 			except:
 				left_type="CString"
-
-			print(left_type)
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
 				raise Exception("ERROR: TYPE DISMATCH")
@@ -2636,8 +2130,6 @@ def p_add_string(t):
 			result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
 			
 			quadrup=[operator,left_operand,right_operand,result]
-			
-	
 			#Se agrega el resultado a la pila de operandos
 			StackO.append(result)
 
@@ -2684,12 +2176,6 @@ def p_print_string(t):
 
 def p_print_id(t):
 	'print_id :'
-	print("***************************************************YO****************")
-	print("Pila caracteres:")
-	print(SOper)
-	print("Pila operandos")
-	print(StackO)
-
 	if SOper: 
 
 	#Si operator es uno de los siguientes
@@ -2697,23 +2183,16 @@ def p_print_id(t):
 			#FALTA HACER LA COMPROBACION DE QUE LA EXPRESION ES BOOLEANA********************************************************************************************************
 
 			operator=SOper.pop()
-			#Borrar
-			print("checamos ahora:")
-			print(StackO)
-			#Borrar
-			print('                  ················································')
 			#Se saca el operador derecho y se mete en right_operand
 			right_operand=StackO.pop()
 
 			#Se saca el tipo del operador derecho y se mete en right_type
 			right_type=SType.pop()
-			print(right_type)
 			#Se saca el operador izquierdo y se mete en left_operand
 			left_operand=StackO.pop()
 			
 			#Se saca el tipo del operador izquierdo y se mete en left_type
 			left_type=SType.pop()
-			print(left_type)
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
 				raise Exception("ERROR: TYPE DISMATCH")
@@ -2762,9 +2241,6 @@ def p_add_exp(t):
 	'add_exp :'
 	StackO.append(t[-1])
 	
-	print("NUEVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-	print(StackO)
-	
 	SType.append("CString")
 	
 	#Se saca el operador derecho y se mete en right_operand
@@ -2787,7 +2263,6 @@ def p_add_exp(t):
 		raise Exception("ERROR: Not enough space in memory")
 			
 	result = memory.addAVariable(typesOfVariablesTwisted[result_type],"temporal",'None', 1)
-
 	quadrup=["&",left_operand,right_operand,result]
 	
 	#Se agrega el resultado a la pila de operandos
@@ -2858,18 +2333,9 @@ def p_EXPRESIONESVARIAS(t):
 	#Si t[1] es not se mete a la pila de operadores
 	if t[1]=='not':
 		SOper.append("not")
-		
-		#Borrar
-		print(" ")
-		print("Pila de caracteres")
-		print(SOper)
-		#Borra
 
 def p_quad_not(t):
 	'quad_not :'
-	print("HEEEEEEEEEEEEEEEEEEEEEEEEEEYYY!!")
-	print("En busqueda de not")
-	print(SOper)
 	#Si la pila de operadores no esta vacia 
 	if SOper: 
 		#Si el elemento en el tope de la pila de operadores es not
@@ -2887,10 +2353,6 @@ def p_quad_not(t):
 			#print(right_type + str(typesOfVariables[right_type]))
 			#result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (typesOfVariables[left_type]!=typesOfVariables['bool']):
-				print('                           #######################################################')
-				print(left_operand)
-				print(left_type)
-				print(typesOfVariables[left_type])
 				raise Exception("ERROR: TYPE DISMATCH")
 
 			if not memory.checkAvailabilityOfAType(left_type,1,"temporal"):
@@ -2928,11 +2390,6 @@ def p_quad_andor(t):
 			#Se saca el operador de la pila de operadores y se mete en operator
 			operator=SOper.pop()
 			#################ESTE HAY QUE MODIFICARLO EN LA MULTIPLICACION#####################
-			#Borrar
-			print("checamos en por:")
-			print(StackO)
-			#Borrar
-			
 			#Se saca el operador derecho y se mete en right_operand
 			right_operand=StackO.pop()
 			
@@ -2980,12 +2437,6 @@ def p_add_ev(t):
 	'add_ev :'
 	SOper.append(t[-1])
 	
-	#Borrar
-	print(" ")
-	print("Pila de caracteres")
-	print(SOper)
-	#Borrar
-	
 def p_EXP_RELOP(t):
 	'''
 	EXP_RELOP : EXP EXP_RELOP_A
@@ -3007,40 +2458,20 @@ def p_quad_relop(t):
 		
 			#Se saca el operador de la pila de operadores y se mete en operator
 			operator=SOper.pop()
-	
-			print('OLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-			print(operator + str(operators[operator]))
-			print("Pila tipos")
-			print(SType)
-			print('operando')
-		
 			#Se saca el operando derecho de la pila de operadores y se mete en right_operand
 			
 			right_operand=StackO.pop()
-			print(right_operand)
 			#Se saca el tipo del operando derecho de la pila de tipos y se mete en right_type
-			print('tipo del operando')
 			
 			right_type=SType.pop()
-			print("RIIIGHT!!!")
-			print(right_type)
-			print(right_type  + str(typesOfVariables[right_type]))
 			#Se saca el operando izquierdo de la pila de operadores y se mete en left_operand
 
 			left_operand=StackO.pop()
-			print('operando')
-			print(left_operand)
 			#Se saca el tipo del operando izquierdo de la pila de tipos y se mete en left_type
 			left_type=SType.pop()
-			print('tipo del operando')
-			print(left_type  + str(typesOfVariables[left_type]))
 			
-			#FALTA HACER LA COMPROBACION DE LOS TIPOS, TAL VEZ SE DEBA DE CAMBIAR AND Y OR*******************************************************************************************
-
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
-				print(left_type)
-				print(right_type)
 				raise Exception("ERROR: TYPE DISMATCH")
 
 			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
@@ -3066,12 +2497,7 @@ def p_quad_relop(t):
 #Se agrega el relop a la pila de operadores
 def p_add_relop(t):
 	'add_relop :'
-	print("relop: ")
-	print(t[-1])
 	SOper.append(t[-1])
-	print(" ")
-	print("Pila de caracteres")
-	print(SOper)
 
 #Regla para vacio	
 def p_EMPTY(t):
@@ -3101,38 +2527,7 @@ except:
 	raise Exception("The code wasn't able to compile. Check it out")
 finally:
 	try: 
-		print("Pila caracteres:")
-		print(SOper)
-		print("Pila operandos")
-		print(StackO)
-		print("Pila de saltos")
-		print(SJump)
-		print("Pila de tipos")
-		print(SType)
-		print("Pila de contexto")
-		print(SScope)
-		print("Pila de cuadruplos")
-		print(q.quadruplesGen)
-		print("Contador de cuadruplos:")
-		print(q.contQuad)
-		directory.print_dir()
-		print("Numero de variables:")
-		print(v.Count)
-		print("Lista de cuadruplos")
-		
-		f= open("cuadruplos.txt","w+")
-
-		for x in range(0,q.contQuad):
-			print(x,".- ",q.quadruplesGen[x])
-			f.write(str(q.quadruplesGen[x]))
-			f.write('\n')
-		print(" ")
-		print("Lista Traducida")
 		translate.trans_quad(q.quadruplesGen,q.contQuad)
-		print("Memory")
-		memory.printMemory()
-		print("Operation complete")
 		virtualMachine.begin(q.contQuad,q.quadruplesGen,startTime, directory)
-		f.close() 
 	except:
 		raise Exception("The code wasn't able to compile. Check it out.")

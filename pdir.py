@@ -6,7 +6,6 @@ def add_function(name,type):
 	dir_func[name]=dict()
 	dir_func[name]["tipo"]= type
 	dir_func[name]["vars"]= dict()
-	print(dir_func)
 
 def exist_function(name):
 	if name in dir_func:
@@ -32,8 +31,7 @@ def add_variable(namef,namev,type):
 	
 	dir_func[namef]["vars"][namev]["dim1"] = 1
 	dir_func[namef]["vars"][namev]["dim2"] = 1
-	
-	print(dir_func)
+
 
 def add_dim1(namef,namev,dim):
 	dir_func[namef]["vars"][namev]["dim1"] = dim 
@@ -131,10 +129,6 @@ def get_param_table(namef):
 
 def verify_type(namef,k,argumentType):
 	list = dir_func[namef]["parameters"]
-	print("list:")
-	print(list)
-	print("list[k-1]:")
-	print(list[k-1])
 	if list[k-1] == argumentType:
 		return True
 	else:

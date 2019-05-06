@@ -7,10 +7,8 @@ program factorialprograma {
     module int factorial(int x) {
             {
                 if(x==0) {
-                    print("LLEGO A TOPE "&x);
                     return 1;
                 } else {
-                    print("Le falta "&x);
                     return x * factorial(x - 1);
                 }
             }
@@ -23,7 +21,7 @@ program factorialprograma {
         print("Teclea un numero positivo:");
         input>>n;
         result = factorial(n);
-        print(result);
+        print("El resultado es "&result);
 
     }
 
