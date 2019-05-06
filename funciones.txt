@@ -1,7 +1,7 @@
 program x{
 
     vars {
-        int i,j;
+        int i,j,n;
     }
 
     module void uno(int a, int b) {
@@ -23,6 +23,7 @@ program x{
     module int dos(int b) {
         {
             b=b*i+j;
+            print("B es "&b);
             return b*2;
         }
     }
@@ -31,9 +32,10 @@ program x{
         i=2;
         j=i*2- 1;
         uno(j,i);
-        dos(5);
+        n = dos(5);
         print(i);
         print(j);
+        print(n);
     }
 
 }

@@ -7,6 +7,12 @@ def add_function(name,type):
 	dir_func[name]["tipo"]= type
 	dir_func[name]["vars"]= dict()
 	print(dir_func)
+
+def exist_function(name):
+	if name in dir_func:
+		return True
+	else:
+		return False
 	
 def add_variable(namef,namev,type):
 	dir_func[namef]["vars"][namev] = dict()

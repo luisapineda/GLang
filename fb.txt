@@ -1,0 +1,28 @@
+program fibonacci {
+
+    vars{
+        int n, result;
+    }
+
+    module int fibo(int x) {
+            {
+                if(x == 1 or x==0) {
+                    return x;
+                } else {
+                    return fibo(x - 1) + fibo(x - 2);
+                }
+            }
+        }
+
+
+    main{
+        print("Fibonnaci Solucion Iterativa");
+        print("Teclea un numero positivo:");
+        input>>n;
+        result = fibo(n);
+        print(result);
+
+    }
+
+
+}

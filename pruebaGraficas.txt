@@ -33,7 +33,7 @@ main{
     migrafica4.name("Animales");
     migrafica4.nameX("Porcentaje de animales");
     migrafica4.color(red);
-    migrafica4.createGBH(25,25,25,25;"Perros");
+    migrafica4.createGBH(25,25,25,25;"Perros", "Gatos", "Osos", "Murcielagos");
 
     migrafica5.name("Calificaciones");
     migrafica5.createD(25,25,25,25;"DonutTest Perro", "Gatos", "Osos", "Murcielagos");

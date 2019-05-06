@@ -408,9 +408,11 @@ def p_return_quad(t):
 	result_type = SType.pop()
 		
 	#FALTA CHECAR LA COMPROBACION DEL TIPO CON EL CUBO SEMANTICO********************************************************************************************************************
-		
+	
+	returnvar = directory.return_address(f.GlobalName,SScope[-1])
+	
 	#Se hace el cuadruplo de asignacion =, no se utiliza el operando derecho ya que solo se va a asociar el operando izquierdo con el resultado
-	quadrup=["return",None,None,result]
+	quadrup=["return",result,None,returnvar]
 		
 	#Se mete el resultado a la pila de operandos
 	StackO.append(result)
@@ -459,6 +461,14 @@ def p_change_scope(t):
 #Se agrega el nombre de la funcion al directorio de funciones	
 def p_add_functionr(t):
 	'add_functionr :'
+	if "void" not in f.Type and "PROGRAM" not in f.Type:
+		#add_variable recibe la funcion actual, el nombre de la variable y el tipo de la variable
+		#En la tabla de variables se guarda diccionario[nombrefuncion]["vars"][nombrevariable]["tipo"] = tipovariable
+		directory.add_variable(SScope[-1],v.Id,f.Type)
+	
+		#Se incrementa en uno el contador de variables
+		v.Count = v.Count + 1
+			
 	#Se agrega el nombre de la funcion a la pila de contextos
 	SScope.append(v.Id)
 	
@@ -467,8 +477,10 @@ def p_add_functionr(t):
 	print(SScope)
 	#Borrar
 	
-	#Se aΓ±ade el nombre de la funcion y su tipo al directorio de funciones
+	#Se añade el nombre de la funcion y su tipo al directorio de funciones
 	directory.add_function(v.Id,f.Type)
+	
+	
 
 #El modulo puede ser de tipo void o de tipo primitivo
 def p_MODULO_A(t):
@@ -566,6 +578,11 @@ def p_gosub(t):
 	
 	#Se incrementa el numero de cuadruplos
 	q.contQuad = q.contQuad + 1
+	
+	ver_type = directory.return_functype(f.CallModule)
+	
+	if not (ver_type=="void" or ver_type=="PROGRAM"):
+		StackO.append(directory.return_address(SScope[-1],f.CallModule))
 	
 	#Borrar
 	print("Pila de cuadruplos:")
@@ -1576,8 +1593,11 @@ def p_pop_exp(t):
 			print(SOper)
 			print("Pila operandos")
 			print(StackO)
+			print('😋😋😋😋😋😋😋😋')
 			print(operator + str(operators[operator]))
+			print(left_operand)
 			print(left_type  + str(typesOfVariables[left_type]))
+			print(right_operand)
 			print(right_type + str(typesOfVariables[right_type]))
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
@@ -1778,7 +1798,7 @@ def p_VARS_CTE(t):
  | FALSE append_bool
  | ID append_id
  | ID append_id OPEN_SQUARE_BRACKET add_SB EXP CLOSE_SQUARE_BRACKET pop_SB ver_arr VARS_CTE_D
- | ID append_id OPEN_PARENTHESIS VARS_CTE_B
+ | ID era OPEN_PARENTHESIS VARS_CTE_B gosub
 	'''
 	#Borrar
 	print(" ")
@@ -1788,12 +1808,17 @@ def p_VARS_CTE(t):
 	print("Pasado:")
 	print(t[-2])
 	#Borrar
-			
+	
+#cEHCAR S SE PUEDE PONER LLAMADAMODULO	
 			
 
 def p_append_id(t):
 	'append_id :'
-	#Se mete la direccion de memoria de t[1] a la pila de operandos
+	if(directory.exist_function(t[-1])):
+		type = directory.return_functype(t[-1])
+		directory.add_variable(SScope[-1],t[-1],type)
+	
+	#Se mete la direccion de memoria de t[-1] a la pila de operandos
 	StackO.append(directory.return_address(SScope[-1],t[-1]))
 		
 	#Se checa el tipo del id con la funcion return_type de pdir, se envia el contexto acutal y el nombre del id para buscarlo en su tabla de variables
@@ -1907,12 +1932,12 @@ def p_pop_SB(t):
 
 def p_VARS_CTE_B(t):
 	'''
- VARS_CTE_B : EXP VARS_CTE_C CLOSE_PARENTHESIS
+ VARS_CTE_B : EXP check_types VARS_CTE_C CLOSE_PARENTHESIS
 	'''
 
 def p_VARS_CTE_C(t):
 	'''
- VARS_CTE_C : COMMA VARS_CTE_B
+ VARS_CTE_C : COMMA incK VARS_CTE_B
   | EMPTY
 	'''
 
@@ -3018,6 +3043,5 @@ finally:
 	print("Memory")
 	memory.printMemory()
 	print("Operation complete")
-	
 	virtualMachine.begin(q.contQuad,q.quadruplesGen,startTime, directory)
 	f.close() 

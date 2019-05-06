@@ -20,7 +20,7 @@ class virtualMachine:
         self.quads=quads
         self.endIndicator = False
         self.ListOfDirections = []
-        self.ListOfReturns = []
+        #self.ListOfReturns = []
         self.contParameters = 0
         self.directory = directory.return_dict()
         '''
@@ -114,7 +114,7 @@ class virtualMachine:
             elif (tempOperator == 'PARAMETER'):
                 self.PARAMETER(tempLeftOperand)
             elif (tempOperator == 'GOSUB'):
-                self.GOSUB(tempLeftOperand)
+                self.GOSUB()
             elif (tempOperator == 'ERA'):
                 self.ERA(tempLeftOperand)
             elif (tempOperator == 'VER'):
@@ -122,7 +122,7 @@ class virtualMachine:
             elif (tempOperator == 'SUMDIRECCIONES'):
                 self.SUMDIRECCIONES(tempLeftOperand, tempRightOperand, tempResult)
             elif (tempOperator == 'return'):
-                self.RETURN(tempResult)
+                self.RETURN(tempLeftOperand,tempResult)
             
             self.cont = self.cont + 1
         memory.printMemory()
@@ -378,12 +378,12 @@ class virtualMachine:
         self.contParameters = self.contParameters + 1
         
     
-    def GOSUB(self,addressToStore):
+    def GOSUB(self):
         if ((self.contParameters) != self.directory[self.namef]['numparam']):
             raise Exception('Function missing parameters')
         self.pendiente.append(self.cont)
         self.cont = self.directory[self.namef]['start'] -1
-        self.ListOfReturns.append(addressToStore)
+        #self.ListOfReturns.append(addressToStore)
 
     def ERA(self,namef):
         self.namef=namef
@@ -747,7 +747,7 @@ class virtualMachine:
         memory.save(newAddress, newAddressTemp)
         self.ListOfDirections.append(newAddressTemp)
 
-    def RETURN(self, address):
+    def RETURN(self, address, addressOfFunc):
         value = memory.accessAValue(address)
         if self.directory[self.namef]['tipo'] == 'int':
             try: 
@@ -779,7 +779,7 @@ class virtualMachine:
                 raise Exception("ERROR: Type Dismatch")
         else:
             raise Exception("Void functions must not have returns")
-        self.EQUALS(str(value),str(self.ListOfReturns.pop))
+        memory.save(value,addressOfFunc)
 
     #Esto es previo a la creacion de cada grafica. Se verifica si se tienen datos de namex, namey, name o color. Si no los tiene, los deja nulos
     def verify(self,addressOfVar):
