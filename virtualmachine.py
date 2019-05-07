@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn2
 import networkx as nx
-import seaborn as sns
 import time
 import pandas as pd
 from math import pi
@@ -34,11 +33,10 @@ class virtualMachine:
         plt.ylabel('some numbers')
         plt.show()
         '''
-        print('Corriendo..')
+        print('Running..')
         while self.endIndicator == False:
             #print(self.quads[self.cont])
             self.f.write(str(self.quads[self.cont])+'\n')
-            ############
             tempOperator = self.quads[self.cont][0]
             tempLeftOperand = self.quads[self.cont][1]
             tempRightOperand = self.quads[self.cont][2]
@@ -133,14 +131,7 @@ class virtualMachine:
             self.cont = self.cont + 1
         self.memory.printMemory()
         self.f.close() 
-        '''
-        #esto era para implementarse sacandolo de un .txt
-        print('.txt')
-        f=open("cuadruplos.txt", "r")
-        if f.mode == 'r':
-            contents =f.read()
-            print(contents)
-        '''
+
     def PLUS(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
             val1 = self.verifyTipo(leftOperandAdress)
@@ -148,7 +139,7 @@ class virtualMachine:
             numTemp = val1 + val2
             self.memory.save(numTemp,resultAdress)
         except:
-            raise Exception("Not a valid value in the sum")
+            raise Exception("ERROR: Unable to complete operation")
   
     def DIVISION(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
@@ -157,7 +148,7 @@ class virtualMachine:
             numTemp = val1 / val2
             self.memory.save(numTemp,resultAdress)
         except:
-            raise Exception("Not a valid value in the division")
+            raise Exception("ERROR: Unable to complete operation")
 
     def MINS(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
@@ -166,7 +157,7 @@ class virtualMachine:
             numTemp = val1 - val2
             self.memory.save(numTemp,resultAdress)
         except:
-            raise Exception("Not a valid value in the subtraction")
+            raise Exception("ERROR: Unable to complete operation")
 
     def TIMES(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
@@ -175,7 +166,7 @@ class virtualMachine:
             numTemp = val1 * val2
             self.memory.save(numTemp,resultAdress)
         except: 
-            raise Exception("Not a valid value in the multiplication")
+            raise Exception("ERROR: Unable to complete operation")
 
     def BIGGERTHAN(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
@@ -184,7 +175,7 @@ class virtualMachine:
             numTemp = val1 > val2
             self.memory.save(numTemp,resultAdress)
         except:
-            raise Exception("Not a valid value in the bigger than comparison")
+            raise Exception("ERROR: Unable to complete operation")
     
     def LESSTHAN(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
@@ -193,33 +184,33 @@ class virtualMachine:
             numTemp = val1 < val2
             self.memory.save(numTemp,resultAdress)
         except: 
-            raise Exception("Not a valid value in the less than comparison")
+            raise Exception("ERROR: Unable to complete operation")
 
     def EQUALS(self, value, address):
         try:
             self.memory.save(self.memory.accessAValue(value), address)
         except: 
-            raise Exception("Not a valid value in the assignment")
+            raise Exception("ERROR: Unable to complete operation")
     
     def NOT(self, value, address):
         try: 
             self.memory.save(not self.memory.accessAValue(value), address) #este statement en automatico verifica que el tipo es bool
         except: 
-            raise Exception("Not a valid value in the not operation")
+            raise Exception("ERROR: Unable to complete operation")
     
     def AND(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
             boolTemp = bool(self.memory.accessAValue(leftOperandAdress)) and bool(self.memory.accessAValue(rightOperandAdress))
             self.memory.save(boolTemp,resultAdress)
         except: 
-            raise Exception("Not a valid value in the and operation")
+            raise Exception("ERROR: Unable to complete operation")
 
     def OR(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
             boolTemp = bool(self.memory.accessAValue(leftOperandAdress)) or bool(self.memory.accessAValue(rightOperandAdress))
             self.memory.save(boolTemp,resultAdress)
         except: 
-            raise Exception("Not a valid value in the or operation")
+            raise Exception("ERROR: Unable to complete operation")
 
     def COMPARISON(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
@@ -228,7 +219,7 @@ class virtualMachine:
             boolTemp = str(value1) == str(value2)
             self.memory.save(boolTemp,resultAdress)
         except: 
-            raise Exception("Not a valid value in the comparison")
+            raise Exception("ERROR: Unable to complete operation")
 
     def BIGGEROREQUAL(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try: 
@@ -237,7 +228,7 @@ class virtualMachine:
             numTemp = val1 >= val2
             self.memory.save(numTemp,resultAdress)
         except: 
-            raise Exception("Not a valid value in the bigger or equal comparison")
+            raise Exception("ERROR: Unable to complete operation")
 
     def LESSOREQUAL(self,leftOperandAdress, rightOperandAdress, resultAdress):
         try:
@@ -246,7 +237,7 @@ class virtualMachine:
             numTemp = val1 <= val2
             self.memory.save(numTemp,resultAdress)
         except: 
-            raise Exception("Not a valid value in the less or equal comparison")
+            raise Exception("ERROR: Unable to complete operation")
     
     def INPUT(self, typeR, address):
         flag = False
@@ -270,7 +261,7 @@ class virtualMachine:
                         if len(val) == 1 and typeR=='char':
                             flag = True
                     except ValueError:  
-                        raise Exception("ERROR: TYPE DOESN'T MATCH")
+                        raise Exception("ERROR: TYPE MISMATCH")
         
         if flag:
             self.memory.save(value, address)
@@ -288,13 +279,13 @@ class virtualMachine:
         try: 
             print(self.memory.accessAValue(adress))
         except: 
-            raise Exception("Problems with the print")
+            raise Exception("ERROR: Unable to complete operation")
     
     def CONCATENATE(self, left, right, address):
         try: 
             self.memory.save(str(self.memory.accessAValue(left)) + str(self.memory.accessAValue(right)),address)
         except: 
-            raise Exception("Not a valid value in the concatenation operation")
+            raise Exception("ERROR: Unable to complete operation")
 
     def ENDPROC(self):
         self.cont = int(self.pendiente.pop())
@@ -348,7 +339,7 @@ class virtualMachine:
 
     def PARAMETER(self,value):
         if ((self.contParameters + 1 ) > self.directory[self.namef]['numparam']):
-            return Exception('More parameters given in the function than declared')
+            return Exception('ERROR: The number of parameters given doesnt match the arguments ')
         typeOfParameter = self.directory[self.namef]['vars'][self.variablesOfFunction[self.contParameters]]['tipo']
         directionOfParameter = self.directory[self.namef]['vars'][self.variablesOfFunction[self.contParameters]]['dir']
         #self.parametersPendientes.append([directionOfParameter,self.memory.accessAValue(directionOfParameter)])
@@ -357,33 +348,33 @@ class virtualMachine:
             try:
                 self.memory.save(int(v), directionOfParameter)
             except:
-                return Exception('ERROR: Type Dismatch')
+                return Exception('ERROR: Type mismatch')
         elif typeOfParameter == 'bool':
             try:
                 self.memory.save(bool(v), directionOfParameter)
             except:
-                return Exception('ERROR: Type Dismatch')
+                return Exception('ERROR: Type mismatch')
         elif typeOfParameter == 'float':
             try:
                 self.memory.save(float(v), directionOfParameter)
             except:
-                return Exception('ERROR: Type Dismatch')
+                return Exception('ERROR: Type mismatch')
         else:
             try:
                 string = len(str(v))
                 if (string == 1):
                     self.memory.save(str(self.memory.accessAValue(value)), directionOfParameter)
                 else: 
-                    return Exception('ERROR: Type Dismatch')
+                    return Exception('ERROR: Type mismatch')
             except:
-                return Exception('ERROR: Type Dismatch')
+                return Exception('ERROR: Type mismatch')
 
         self.contParameters = self.contParameters + 1
         
     
     def GOSUB(self):
         if ((self.contParameters) != self.directory[self.namef]['numparam']):
-            raise Exception('Function missing parameters')
+            raise Exception('ERROR: The number of parameters given doesnt match the arguments ')
         self.pendiente.append(self.cont)
         self.cont = self.directory[self.namef]['start'] -1
         #self.ListOfReturns.append(addressToStore)
@@ -394,23 +385,14 @@ class virtualMachine:
         self.contParameters = 0
         self.variablesOfFunction = list(self.directory[self.namef]['vars'])
         newMemory = mem.mem()
-####aqui hacemos el copy de newmemory
         count = 0
         for i in self.memory.memory:
             if i is not None:
-                #print(str(count) + " : " + str(i))
                 newMemory.save(i,count) 
             count = count + 1
-##########
         self.listOfMemories.append(self.memory)
         self.memory=newMemory
         
-        
-        #self.ListOfReturns.append(self.directory[f.GlobalName]['vars'][namef])
-        #numparams = self.directory[self.namef]['numparam']
-        #print(numparams)
-        #if self.contParameters > numparams:
-        #    raise Exception('More parameters given to the function')
         
 
     def CREATEG(self, addressGraph, addressDetails):
@@ -447,11 +429,11 @@ class virtualMachine:
             plt.show()
             try:
                 invalidvalue = self.memory.accessAValue(addressDetails)[4]
-                raise Exception("Invalid number of parameters")
+                raise Exception("ERROR: The number of parameters given doesnt match the arguments")
             except:
-                print('Graphic created')
+                print('Graph Created')
         except:
-            raise Exception("Information given for creating the Graphic wasn't correct")
+            raise Exception("ERROR: Information given for creating a graphic was not correct")
             
     
     def CREATEPC(self, addressGraph, addressDetails):
@@ -464,7 +446,7 @@ class virtualMachine:
             if name != 'None':
                 plt.title(name)
             if nameX != 'None' or nameY != 'None' or color != 'None':
-                raise Exception("Pie Charts must not have nameX, nameY nor color") 
+                raise Exception("ERROR: Information given for creating a graphic was not correct") 
             labels = []
             sizes = []
             array = list(self.memory.accessAValue(addressDetails))
@@ -477,11 +459,11 @@ class virtualMachine:
             plt.show()
             try:
                 invalidvalue = array[int(len(array))]
-                raise Exception("Information given for creating the pie chart wasn't correct")
+                raise Exception("ERROR: The number of parameters given doesnt match the arguments")
             except:
-                print('Pie Chart created')
+                print('PieChart Created')
         except:
-            raise Exception("Information given for creating the pie chart wasn't correct")
+            raise Exception("ERROR: Information given for creating a graphic was not correct")
 
     def CREATEGB(self, addressGraph, addressDetails):
         self.verify(addressGraph)
@@ -520,11 +502,11 @@ class virtualMachine:
 
             try:
                 invalidvalue = array[int(len(array))]
-                raise Exception("Information given for creating the Bar Chart wasn't correct")
+                raise Exception("ERROR: The number of parameters given doesnt match the arguments")
             except:
-                print('Bar Chart created')
+                print('BarChart Created')
         except:
-            raise Exception("Information given for creating the Bar Chart wasn't correct")
+            raise Exception("ERROR: Information given for creating a graphic was not correct")
 
 
     def CREATEGBH(self, addressGraph, addressDetails):
@@ -565,11 +547,11 @@ class virtualMachine:
 
             try:
                 invalidvalue = array[int(len(array))]
-                raise Exception("Information given for creating the Bar Chart wasn't correct")
+                raise Exception("ERROR: The number of parameters given doesnt match the arguments")
             except:
-                print('Bar Chart created')
+                print('HorBarChart Created')
         except:
-            raise Exception("Information given for creating the Bar Chart wasn't correct")
+            raise Exception("ERROR: Information given for creating a graphic was not correct")
     
     def CREATED(self, addressGraph,addressDetails):
         self.verify(addressGraph)
@@ -581,7 +563,7 @@ class virtualMachine:
             if name != 'None':
                 plt.title(name)
             if nameX != 'None' or nameY != 'None':
-                raise Exception("Donnut diagrams must not have nameX nor nameY") 
+                raise Exception("ERROR: Information given for creating a graphic was not correct") 
             if color == 'None':
                 color = 'orange'
             names = []
@@ -601,11 +583,11 @@ class virtualMachine:
             plt.show()
             try:
                 invalidvalue = array[int(len(array))]
-                raise Exception("Information given for creating the Donnut Diagram wasn't correct")
+                raise Exception("ERROR: The number of parameters given doesnt match the arguments")
             except:
-                print('Donnut Graph created')
+                print('DonutGraph Created')
         except:
-            raise Exception("Information given for creating the Donnut Diagram wasn't correct")
+            raise Exception("ERROR: Information given for creating a graphic was not correct")
 
     def CREATER(self, addressGraph, addressDetails):
         self.verify(addressGraph)
@@ -617,7 +599,7 @@ class virtualMachine:
             if name != 'None':
                 plt.title(name)
             if nameX != 'None' or nameY != 'None':
-                raise Exception("Radar diagrams must not have nameX nor nameY") 
+                raise Exception("ERROR: Information given for creating a graphic was not correct") 
             if color == 'None':
                 color = 'orange'
             my_dict = {'group' : ['A']}
@@ -661,11 +643,11 @@ class virtualMachine:
             plt.show()
             try:
                 invalidvalue = memory.accessAValue(addressDetails)[int(len(array))]
-                raise Exception("Information given for creating the Radar Diagram wasn't correct")
+                raise Exception("ERROR: The number of parameters given doesnt match the arguments")
             except:
-                print('Radar graph created')
+                print('RadarChart created')
         except:
-            raise Exception("Information given for creating the Radar Diagram wasn't correct")
+            raise Exception("ERROR: Information given for creating a graphic was not correct")
 
     def CREATEV(self, addressGraph, addressDetails):
         self.verify(addressGraph)
@@ -677,7 +659,7 @@ class virtualMachine:
             if name != 'None':
                 plt.title(name)
             if nameX != 'None' or nameY != 'None' or color !='None':
-                raise Exception("Venn Diagrams must not have nameX, nameY nor color") 
+                raise Exception("ERROR: Information given for creating a graphic was not correct") 
             value1 = self.memory.accessAValue(addressDetails)[0]
             intersection = self.memory.accessAValue(addressDetails)[1]
             value2 = self.memory.accessAValue(addressDetails)[2]
@@ -687,11 +669,11 @@ class virtualMachine:
             plt.show()
             try:
                 invalidvalue = self.memory.accessAValue(addressDetails)[5]
-                raise Exception("Information given for creating the Venn Diagram wasn't correct")
+                raise Exception("ERROR: The number of parameters given doesnt match the arguments")
             except:
-                print('Venn Diagram created')
+                print('Venn created')
         except:
-            raise Exception("Information given for creating the Venn Diagram wasn't correct")
+            raise Exception("ERROR: Information given for creating a graphic was not correct")
     
     def CREATEN(self, addressGraph, addressDetails):
         self.verify(addressGraph)
@@ -701,7 +683,7 @@ class virtualMachine:
             nameY = self.memory.accessAValue(addressGraph)[2]
             color = self.memory.accessAValue(addressGraph)[3]
             if name != 'None' or nameX != 'None' or nameY != 'None':
-                raise Exception("Network charts must not have name, nameX nor nameY") 
+                raise Exception("ERROR: Information given for creating a graphic was not correct") 
             if color == 'None':
                 color = 'orange'
             array1 = list(self.memory.accessAValue(addressDetails)[0])
@@ -721,18 +703,18 @@ class virtualMachine:
             plt.show()
             try:
                 invalidvalue = self.memory.accessAValue(addressDetails)[5]
-                raise Exception("Invalid parameters")
+                raise Exception("ERROR: The number of parameters given doesnt match the arguments")
             except:
-                print('Network graph created')
+                print('Network created')
         except:
-            raise Exception("Information given for creating the Network Diagram wasn't correct")
+            raise Exception("ERROR: Information given for creating a graphic was not correct")
     
     def VER(self, limInf, limSup, addressToCheck):
         limInfValue = int(self.memory.accessAValue(limInf))
         limSupValue = int(self.memory.accessAValue(limSup))
         value = int(self.memory.accessAValue(addressToCheck))
         if value<limInfValue or value>limSupValue:
-            raise Exception("Invalid value for the array")
+            raise Exception("ERROR: VALUE OF ARRAY OUT OF INDEX")
 
     def SUMDIRECCIONES(self, dirMovement, dirBase, newAddressTemp):
         valueMovement = int(self.memory.accessAValue(dirMovement))
@@ -746,12 +728,12 @@ class virtualMachine:
             try: 
                 value = int(value)
             except: 
-                raise Exception("ERROR: Type Dismatch")
+                raise Exception("ERROR: Type mismatch")
         elif self.directory[self.namef]['tipo'] == 'float':
             try: 
                 value = float(value)
             except: 
-                raise Exception("ERROR: Type Dismatch")
+                raise Exception("ERROR: Type mismatch")
         elif self.directory[self.namef]['tipo'] == 'bool':
             try: 
                 if value == 'true':
@@ -761,25 +743,19 @@ class virtualMachine:
                 else:
                     value = bool(value)
             except: 
-                raise Exception("ERROR: Type Dismatch")
+                raise Exception("ERROR: Type mismatch")
         elif self.directory[self.namef]['tipo'] == 'char':
             try:
                 value = str(value)
-                #print("String")
                 if len(value) != 1:
                     raise Exception("ERROR: Type Dismatch")
             except:
-                raise Exception("ERROR: Type Dismatch")
+                raise Exception("ERROR: Type mismatch")
         else:
-            raise Exception("Void functions must not have returns")
+            raise Exception("ERROR: Void functions must not have return statements")
         self.memory = self.listOfMemories.pop()
         self.memory.save(value,addressOfFunc)
         self.cont = int(self.pendiente.pop())
-        #for i in range(0,self.directory[self.namef]['numparam']):
-            #array = self.parametersPendientes.pop()
-            #self.memory.save(array[1],array[0])
-           # print('Se guardo el valor' + str(array[1]) + ' en la direccion ' + str(array[0])+'\n')
-        
 
     #Esto es previo a la creacion de cada grafica. Se verifica si se tienen datos de namex, namey, name o color. Si no los tiene, los deja nulos
     def verify(self,addressOfVar):
@@ -794,8 +770,8 @@ class virtualMachine:
             elif self.memory.returnType(address)=='float':
                 return float(self.memory.accessAValue(address))
             else:
-                raise Exception ('ERROR: Type Dismatch')
+                raise Exception ('ERROR: Type mismatch')
         except:
-            raise Exception ('Problem with the assignment of types')
+            raise Exception ('ERROR: Unable to complete operation')
     
 virtualMachine = virtualMachine()

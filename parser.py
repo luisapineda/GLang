@@ -585,8 +585,7 @@ def p_era(t):
 		#Se incrementa el numero de cuadruplos
 		q.contQuad = q.contQuad + 1
 	else:
-		print("ERROR, funcion no existe")
-		raise Exception("Error, funcion no existe")
+		raise Exception("ERROR: MODULE DOES NOT EXIST")
 	
 	#KNumParam,de la clase fun, se inicializa en uno para contar el numero de parametros que se encuentran en la llamada de la funcion
 	f.KNumParam = 1
@@ -633,8 +632,7 @@ def p_check_types(t):
 		#Se incrementa el contador de cuadruplos
 		q.contQuad = q.contQuad + 1
 	else:
-		print("ERROR, tipo de parametro incorrecto")
-		raise Exception("ERROR, tipo de parametro incorrecto")
+		raise Exception("ERROR: WRONG TYPE OF PARAMETER")
 		
 
 #Cierre de la llamada de la funcion
@@ -955,7 +953,7 @@ def p_check_bool(t):
 
 		#result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 		if (typesOfVariables[left_type]!=typesOfVariables['bool']):
-			raise Exception("ERROR: TYPE DISMATCH")
+			raise Exception("ERROR: TYPE MISMATCH")
 
 		if not memory.checkAvailabilityOfAType(left_type,1,"temporal"):
 			raise Exception("ERROR: Not enough space in memory")
@@ -1009,7 +1007,7 @@ def p_check_bool(t):
 
 		result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 		if (result_type == -1):
-			raise Exception("ERROR: TYPE DISMATCH")
+			raise Exception("ERROR: TYPE MISMATCH")
 
 		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 			raise Exception("ERROR: Not enough space in memory")
@@ -1187,7 +1185,7 @@ def p_bool_for(t):
 		
 		result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 		if (result_type == -1):
-			raise Exception("ERROR: TYPE DISMATCH")
+			raise Exception("ERROR: TYPE MISMATCH")
 
 		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 			raise Exception("ERROR: Not enough space in memory")
@@ -1305,7 +1303,7 @@ def p_bool_while(t):
 		
 		result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 		if (result_type == -1):
-			raise Exception("ERROR: TYPE DISMATCH")
+			raise Exception("ERROR: TYPE MISMATCH")
 
 		if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 			raise Exception("ERROR: Not enough space in memory")
@@ -1367,7 +1365,7 @@ def p_pop_exp(t):
 
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
-				raise Exception("ERROR: TYPE DISMATCH")
+				raise Exception("ERROR: TYPE MISMATCH")
 
 			else :
 				if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
@@ -1434,7 +1432,7 @@ def p_pop_term(t):
 			
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
-				raise Exception("ERROR: TYPE DISMATCH")
+				raise Exception("ERROR: TYPE MISMATCH")
 
 			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 					raise Exception("ERROR: Not enough space in memory")
@@ -2078,7 +2076,7 @@ def p_add_temp(t):
 	
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
-				raise Exception("ERROR: TYPE DISMATCH")
+				raise Exception("ERROR: TYPE MISMATCH")
 
 			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 				raise Exception("ERROR: Not enough space in memory")
@@ -2122,7 +2120,7 @@ def p_add_string(t):
 				left_type="CString"
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
-				raise Exception("ERROR: TYPE DISMATCH")
+				raise Exception("ERROR: TYPE MISMATCH")
 
 			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 				raise Exception("ERROR: Not enough space in memory")
@@ -2195,7 +2193,7 @@ def p_print_id(t):
 			left_type=SType.pop()
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
-				raise Exception("ERROR: TYPE DISMATCH")
+				raise Exception("ERROR: TYPE MISMATCH")
 
 			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 				raise Exception("ERROR: Not enough space in memory")
@@ -2257,7 +2255,7 @@ def p_add_exp(t):
 	#############################################################################
 	result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 	if (result_type == -1):
-		raise Exception("ERROR: TYPE DISMATCH")
+		raise Exception("ERROR: TYPE MISMATCH")
 
 	if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 		raise Exception("ERROR: Not enough space in memory")
@@ -2294,7 +2292,7 @@ def p_add_con(t):
 	
 	result_type = semanticCube[operators["&"]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 	if (result_type == -1):
-		raise Exception("ERROR: TYPE DISMATCH")
+		raise Exception("ERROR: TYPE MISMATCH")
 
 	if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 		raise Exception("ERROR: Not enough space in memory")
@@ -2353,7 +2351,7 @@ def p_quad_not(t):
 			#print(right_type + str(typesOfVariables[right_type]))
 			#result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (typesOfVariables[left_type]!=typesOfVariables['bool']):
-				raise Exception("ERROR: TYPE DISMATCH")
+				raise Exception("ERROR: TYPE MISMATCH")
 
 			if not memory.checkAvailabilityOfAType(left_type,1,"temporal"):
 				raise Exception("ERROR: Not enough space in memory")
@@ -2404,7 +2402,7 @@ def p_quad_andor(t):
 			
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
-				raise Exception("ERROR: TYPE DISMATCH")
+				raise Exception("ERROR: TYPE MISMATCH")
 
 			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 					raise Exception("ERROR: Not enough space in memory")
@@ -2472,7 +2470,7 @@ def p_quad_relop(t):
 			
 			result_type = semanticCube[operators[operator]][typesOfVariables[left_type]][typesOfVariables[right_type]]
 			if (result_type == -1):
-				raise Exception("ERROR: TYPE DISMATCH")
+				raise Exception("ERROR: TYPE MISMATCH")
 
 			if not memory.checkAvailabilityOfAType(typesOfVariablesTwisted[result_type],1,"temporal"):
 				raise Exception("ERROR: Not enough space in memory")
