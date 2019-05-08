@@ -5,8 +5,6 @@ Unused terminals:
     BOOLEAN
     CREATE
     CTE_CHAR
-    E
-    PI
     QUOTE
 
 Grammar
@@ -283,7 +281,6 @@ CTE_FLOAT            : 143 187 192
 CTE_INTEGER          : 13 16 142 183 183 183 186 191
 CTE_STRING           : 79 93 183 183 196 200 203 208 216
 DIVIDE               : 122
-E                    : 
 ELSE                 : 99
 EQUAL                : 92 93
 FALSE                : 145
@@ -305,7 +302,6 @@ OPEN_BRACKET         : 1 8 23 63
 OPEN_PARENTHESIS     : 49 69 79 95 102 108 125 133 148 153 177 178 179 180 181 182 183 184 206
 OPEN_SQUARE_BRACKET  : 13 16 86 89 147 154 161 166 168 184 199
 OR                   : 229
-PI                   : 
 PLUS                 : 115 134
 POINT                : 79 125 177 178 179 180 181 182 183 184
 PRINT_KEYWORD        : 206

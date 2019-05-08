@@ -1,13 +1,18 @@
 program miPrimeraCorrida{
     vars {
         int i;
+        float a;
+        int A[2][2];
     }
     main {
         print("Hello World!");
         i = 1;
         while(i<=10){
             print("El valor de i es " & i);
+            print("El valor de i es " & pi);
             i = i + 1;
         }
+        a = e - 1;
+        print("Valor de a " & a + 1);
     }
 }

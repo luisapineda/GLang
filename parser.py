@@ -46,8 +46,6 @@ reserved = {
     'print' : 'PRINT_KEYWORD',
     'vars' : 'VARS_KEYWORD',
     'create' : 'CREATE',
-    'pi' : 'PI',
-    'e' : 'E',
     'for' : 'FOR_KEYWORD',
     'main' : 'MAIN',
     'and' : 'AND',
@@ -231,6 +229,13 @@ def p_addfunction(t):
 	
 	#Se incrementa el contador de cuadruplos
 	q.contQuad = q.contQuad + 1
+
+	directory.add_variable(f.GlobalName,"pi","float")
+	directory.add_variable(f.GlobalName,"e","float")
+	address = directory.return_address(f.GlobalName,"pi")
+	memory.save(3.1416,address)
+	address = directory.return_address(f.GlobalName,"e")
+	memory.save(2.7182,address)
 	
 
 #Para rellenar el primer cuadruplo GOTO cuando se ha llegado al main 	
