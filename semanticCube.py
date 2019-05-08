@@ -1,10 +1,10 @@
 #Archivo que contiene la informacion del cubo semantico
 import numpy as numpy
 
-#el valor -1 representa un error en el match de los tipos de datos
+#el valor -1 representa un ERROR en el match de los tipos de datos otorgados
 semanticCube = numpy.array(
     [
-        #matriz correspondiente a la operacion suma +
+        #Matriz correspondiente a la operacion suma +
         [
             [0,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -20,7 +20,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #matriz correspondiente a la operacion resta -
+        #Matriz correspondiente a la operacion resta -
         [
             [0,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -36,7 +36,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #matriz correspondiente a la operacion multiplicacion *
+        #Matriz correspondiente a la operacion multiplicacion *
         [
             [0,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -52,7 +52,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #matriz correspondiente a la operacion division /
+        #Matriz correspondiente a la operacion division /
         [
             [0,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -68,7 +68,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #matriz correspondiente a la operacion comparacion mayor que >
+        #Matriz correspondiente a la operacion comparacion mayor que >
         [
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -85,7 +85,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 
         ],
-         #matriz correspondiente a la operacion comparacion menor que <
+         #Matriz correspondiente a la operacion comparacion menor que <
         [
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -101,7 +101,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #matriz correspondiente a la operacion comparacion mayor igual =
+        #Matriz correspondiente a la operacion comparacion mayor igual =
         [
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -117,23 +117,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #matriz correspondiente a la negacion not 
-        [
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-        ],
-        #matriz correspondiente al and
+        #Matriz correspondiente a la negacion not 
         [
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -149,7 +133,23 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #matriz correspondiente al or
+        #Matriz correspondiente al and
+        [
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+        ],
+        #Matriz correspondiente al or
         [
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -164,7 +164,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #equal comparison ==
+        #Equal comparison ==
         [
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -180,7 +180,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #not equal comparison ==
+        #Not equal comparison ==
         [
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -196,7 +196,7 @@ semanticCube = numpy.array(
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
         ],
-        #&&&&&
+        #Matriz para la concatenacion en el print &&&&&
         [
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,12],
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,12],
@@ -214,7 +214,7 @@ semanticCube = numpy.array(
         ]
     ]
 )
-#La siguiente es la estructura de nuestro cubo semántico 
+#La siguiente es la estructura de las matrices de nuestro cubo semántico 
 #      int float bool char graph piegraph barchart horbarchart donutgraph network venn radarchart string
 #int
 #float
@@ -230,7 +230,7 @@ semanticCube = numpy.array(
 #radarchart
 #string
 
-#tipos de variables usados en nuestro lenguaje
+#Diccionario de tipos de variables usados en nuestro lenguaje
 typesOfVariables = {
     "int" : 0,
     "float" : 1,
@@ -247,7 +247,7 @@ typesOfVariables = {
     "CString" : 12
 }
 
-#tipos de variables usados en nuestro lenguaje con la llave volteada
+#Diccionario de tipos de variables usados en nuestro lenguaje con la llave volteada
 typesOfVariablesTwisted = {
     0 : "int",
     1 : "float",
@@ -263,7 +263,7 @@ typesOfVariablesTwisted = {
     11 : "RadarChart",
     12 : "CString"
 }
-#operadores usados en nuestro lenguaje
+#Diccionario de operadores usados en nuestro lenguaje
 operators = {
     "+" : 0,
     "-" : 1,
@@ -282,7 +282,7 @@ operators = {
     "&" : 12
 }
 
-######
+##Diccionario de codigos (es lo equivalente a operators pero en este se incluyen todos los posibles valores del primer valor de un cuadruplo)
 codes = {
     "+" : 0,
     "-" : 1,
@@ -323,6 +323,7 @@ codes = {
     "&" : 36
 }
 
+#Códigos volteados (previamente descrito)
 codesTwisted = {
     0 : "+",
     1 : "-",

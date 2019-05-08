@@ -1,0 +1,13 @@
+program miPrimeraCorrida{
+    vars {
+        int i;
+    }
+    main {
+        print("Hello World!");
+        i = 1;
+        while(i<=10){
+            print("El valor de i es " & i);
+            i = i + 1;
+        }
+    }
+}

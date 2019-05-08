@@ -154,7 +154,7 @@ def t_CTE_INTEGER(t):
     t.value = int(t.value)
     return t
 
-def t_ID(t): #PROXIMAMENTE AGREGAR INFO PARA TABLAS DE VARIABLE
+def t_ID(t): 
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     if t.value in reserved:
         t.type = reserved[ t.value ]
@@ -265,7 +265,7 @@ def p_VARS_B(t):
     '''VARS_B : ID add_variable VARS_E VARS_C
     '''
 
-#Para agregar las variables
+#Para agregar las variables a la tabla de funciones
 def p_add_variable(t):
 	'add_variable :'
 	#add_variable recibe la funcion actual, el nombre de la variable y el tipo de la variable
@@ -275,12 +275,12 @@ def p_add_variable(t):
 	#Se incrementa en uno el contador de variables
 	v.Count = v.Count + 1
 
-#Arreglo
+#Definicion de arreglos
 def p_VARS_E(t):
     '''VARS_E : OPEN_SQUARE_BRACKET CTE_INTEGER add_s1 CLOSE_SQUARE_BRACKET VARS_F
               | EMPTY
     '''
-
+#Agregarle dimension 1 al vector o matriz
 def p_add_s1(t):
 	'add_s1 :'
 	directory.add_dim1(SScope[-1],v.Id,t[-1])
@@ -290,7 +290,7 @@ def p_VARS_F(t):
     '''VARS_F : OPEN_SQUARE_BRACKET CTE_INTEGER add_s2 CLOSE_SQUARE_BRACKET 
                  | EMPTY
     '''
-
+#Agregar dimension 2 a la matriz
 def p_add_s2(t):
 	'add_s2 :'
 	directory.add_dim2(SScope[-1],v.Id,t[-1])
@@ -349,7 +349,7 @@ def p_TIPO_P(t):
 	#t[1] significa que agarramos lo que se esta procesando actualmente del codigo, t[1] nos dara int,float,bool o char
     f.Type = t[1]
     return t[1]
-	
+#Tipos de nuestras graficas
 def p_TIPO_S(t):
     '''
     TIPO_S : TYPE_GRAPH
@@ -376,10 +376,11 @@ def p_RETURNOP(t):
 	'''
 	RETURNOP : RETURN activate EXPRESIONESVARIAS return_quad SEMICOLON
 	'''
+#Verifica si se requiere o no return
 def p_activate(t):
 	'activate :'
 	f.Return_Act = True
-	
+#Generacion del cuadruplo de return
 def p_return_quad(t):
 	'return_quad :'
 	ver_type = directory.return_functype(SScope[-1])
@@ -392,9 +393,7 @@ def p_return_quad(t):
 		
 	#Se saca el tipo del resultado de la pila de tipos
 	result_type = SType.pop()
-		
-	#FALTA CHECAR LA COMPROBACION DEL TIPO CON EL CUBO SEMANTICO********************************************************************************************************************
-	
+			
 	returnvar = directory.return_address(f.GlobalName,SScope[-1])
 	
 	#Se hace el cuadruplo de asignacion =, no se utiliza el operando derecho ya que solo se va a asociar el operando izquierdo con el resultado
@@ -416,7 +415,6 @@ def p_release_vars(t):
 	'release_vars :'
 	#Esto deberia elimiinar la tabla de variables de la funcion que acaba de terminar
 	#directory.del_vars(SScope)
-	#Tambien se tiene que hacer lo de ENDPROC?????
 
 #Generacion de cuadruplo del fin de la funcion
 def p_endproc(t):
@@ -498,7 +496,7 @@ def p_MODULO_D(t):
 	MODULO_D : CLOSE_PARENTHESIS param_table OPEN_BRACKET OPVARS add_count add_start BLOQUE CLOSE_BRACKET
 	| EMPTY
 	'''
-
+#Declarar vars es opcional en las funciones
 def p_OPVARS(t):
 	'''
 	OPVARS : VARS
@@ -593,7 +591,6 @@ def p_era(t):
 	#Se guarda el nombre de la funcion que va a ser llamada
 	f.CallModule = t[-1]
 	
-
 
 #Para agregar mas variables en la llamada de la funcion	
 def p_LLAMADAMODULO_A(t):
@@ -746,7 +743,6 @@ def p_ver_arr(t):
 	
 	right = directory.return_dim1(SScope[-1],memory.accessAValue(SVDim[-1]))
 	
-	#NOTA:podria fallar cuando no se repitan los cosntantes
 	right_operand = memory.addAVariable("int","constant",right,1)
 	
 	quadrup=["VER",VarUno,right_operand,result]
@@ -805,7 +801,7 @@ def p_ASIGNACION_B(t):
    ASIGNACION_B : OPEN_SQUARE_BRACKET EXP CLOSE_SQUARE_BRACKET ver_mat
    | EMPTY
 	'''
-
+#Verificar para matrices
 def p_ver_mat(t):
 	'ver_mat :'
 	#Formula para matriz 
@@ -814,7 +810,6 @@ def p_ver_mat(t):
 	
 	right = directory.return_dim2(SScope[-1],memory.accessAValue(SVDim[-1]))
 	
-	#NOTA:podria fallar cuando no se repitan los cosntantes
 	right_operand = memory.addAVariable("int","constant",right,1)
 	
 	quadrup=["VER",VarUno,right_operand,result]
@@ -882,9 +877,6 @@ def p_ver_mat(t):
 	#Se agrega el tipo 
 	SType.append("int")
 	
-
-	
-
 #La parte del igual donde se le asigna algo
 def p_ASIGNACION_C(t):
 	'''
@@ -904,8 +896,6 @@ def p_CONDICION(t):
 CONDICION : IF OPEN_PARENTHESIS EXPRESIONESVARIAS quad_not CLOSE_PARENTHESIS if_gotof BLOQUE CONDICION_A fill_end
 	'''
 
-#PENDIENTE
-#check bool se quita por el momento
 #CONDICION : IF OPEN_PARENTHESIS EXPRESIONESVARIAS CLOSE_PARENTHESIS check_bool BLOQUE CONDICION_A fill_end
 
 def p_if_gotof(t):
@@ -927,7 +917,6 @@ def p_if_gotof(t):
 	#Se sape el salto correspondiente del GOTOF
 	SJump.append(q.contQuad-1)
 		
-
 
 def p_fill_end(t):
 	'fill_end :'
@@ -991,8 +980,6 @@ def p_check_bool(t):
 		#Se sape el salto correspondiente del GOTOF
 		SJump.append(q.contQuad-1)
 		
-
-	
 	#Pero si el operador es
 	elif operator=='>' or operator=='<' or operator=='>=' or operator=='<=' or operator=='and' or operator=='or' or operator=='==':
 		#Se saca el operando derecho de la pila de operadores y se mete en right_operand
@@ -1081,8 +1068,6 @@ def p_FOR(t):
 FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION for_jump EXPRESIONESVARIAS for_gotof SEMICOLON ASIGNACION get_increment CLOSE_PARENTHESIS BLOQUE repeat_for
 	'''
 	
-#PENDIENTE
-#Se quita el bool_for por mientras
 #FOR : FOR_KEYWORD OPEN_PARENTHESIS ASIGNACION jump EXPRESIONESVARIAS bool_for SEMICOLON ASIGNACION CLOSE_PARENTHESIS BLOQUE repeat_for
 
 def p_get_increment(t):
@@ -1116,7 +1101,6 @@ def p_for_gotof(t):
 	#Se agrega a la pila de salto el numero del cuadruplo del GOTOF
 	SJump.append(q.contQuad-1)
 		
-
 	
 #GOTO para repetir el for
 def p_repeat_for(t):

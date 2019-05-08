@@ -3,6 +3,7 @@ class mem:
     memorySizePerPrimitiveType = 2000 #Tamaño asignado para los tipos primitivos
     memorySizePerOurType = 1000 #Tamaño asignado para los tipos propios de nuestro lenguaje
 
+    #Constructor de la clase
     def __init__(self):
         size = self.memorySizePerPrimitiveType * 16 + self.memorySizePerOurType * 36
         self.memory = [None] * size
@@ -26,6 +27,7 @@ class mem:
         self.CFloat = self.memorySizePerPrimitiveType * 13 #Constant Float
         self.CBool = self.memorySizePerPrimitiveType * 14 #Constant Boolean
         self.CChar = self.memorySizePerPrimitiveType * 15 #Constant Char
+
         #Globales de nuestros tipos
         self.GGraph = self.memorySizePerPrimitiveType * 16
         self.GPieGraph = self.GGraph + self.memorySizePerOurType
@@ -66,31 +68,31 @@ class mem:
         self.CVenn = self.GGraph + self.memorySizePerOurType * 30
         self.CRadarChart = self.GGraph + self.memorySizePerOurType * 31
 
-        self.ourTypeDescriptions = self.GGraph + self.memorySizePerOurType * 32 #type of variable = "Description"
-        self.CString = self.GGraph + self.memorySizePerOurType * 33 #Esto es exclusivo para los strings a imprimir
+        self.ourTypeDescriptions = self.GGraph + self.memorySizePerOurType * 32 #Tipo de variable que guarda la descripcion de los parametros de nuestras funciones especiales
+        self.CString = self.GGraph + self.memorySizePerOurType * 33 #Esto es exclusivo para los strings a concatenar con el operando &
     
+    #Funcion para acceder a un valor dada una direccion de memoria
     def accessAValue(self, address):
-        if(isinstance(address, str)):
-            return address[1:-1]
+        if(isinstance(address, str)): 
+            return address[1:-1] #Si la direccion del cuadruplo es una string, regresar la cadena sin comillas
         if self.memory[address]=='true':
-            return True
+            return True #Si la direccion contiene la cadena 'true', regresa un valor Bool True
         elif self.memory[address]=='false':
-            return False
-        #elif not isinstance(self.memory[address], int) and not isinstance(self.memory[address], float):
-            #print(str(address) + ' con el valor ' + str(self.memory[address]) + ' no es valido. se remplazo por 1')
-            #return 1
+            return False #Si la direccion contiene la cadena 'false', regresa un valor Bool False
         return self.memory[address]
 
+    #Funcion para guardar en un file la memoria
     def printMemory(self):
         f= open("memoriaParaPruebas.txt","w+")
         count = 0
         for i in self.memory:
             if i is not None:
-                #print(str(count) + " : " + str(i))
                 f.write(str(count) + " : " + str(i) + '\n')
             count = count + 1
         f.close()
     
+    #Funcion para reservar un espacio en memoria dado su tipo, scope, value y size
+    #Regresa la direccion de memoria otorgada
     def addAVariable(self, typeOfVariable, scope, value, size):
         if typeOfVariable == "int" :
             if scope == "global" :
@@ -306,6 +308,7 @@ class mem:
             return self.CString - size
         return -999999999999
 
+    #Funcion que verifica si dado un tipo, tamaño y scope, se encuentra o no disponible en memoria una direccion
     def checkAvailabilityOfAType(self,typeOfVariable, size, scope):
         startOfOurType = self.memorySizePerPrimitiveType * 16
         if typeOfVariable == "int" :
@@ -422,16 +425,12 @@ class mem:
             return ((size + self.ourTypeDescriptions) < (startOfOurType + self.memorySizePerOurType * 34))
         return -999999999999
     
+    #Funcion que salva un valor dado una direccion en memoria
     def save(self, value, address):
         self.memory[address] = value
     
-    def checkForAnAddress(self, value):
-        for i in self.memory:
-            if i is not None:
-                if self.memory[i] == value:
-                    return self.memory[i]
-        return -1
-        #Esto esta hecho solo para regresar el tipo int o float
+    #Funcion que regresa el tipo dada una direccion. Verifica que se encuentra en el rango y regresa un string con el tipo
+    # Esto esta hecho solo para regresar el tipo int o float. De lo contrario, regresa "other type"
     def returnType(self, address):
         m = self.memorySizePerPrimitiveType
         if ( 0 <= address < m*1  or   m*4 <= address < m*5  or  m*8 <= address < m*9  or  m*12 <= address < m*13):
@@ -441,11 +440,13 @@ class mem:
         else: 
             return 'other type'
     
+    #Funcion que resetea a su primera direccion los temporales. 
+    #Es llamada cada que se cambia de contexto
     def restartTemporals(self):
-        self.TInt = self.memorySizePerPrimitiveType * 4 #Temporal Integer
-        self.TFloat = self.memorySizePerPrimitiveType * 5 #Temporal Float
-        self.TBool = self.memorySizePerPrimitiveType * 6 #Temporal Boolean
-        self.TChar = self.memorySizePerPrimitiveType * 7 #Temporal Char
+        self.TInt = self.memorySizePerPrimitiveType * 4 
+        self.TFloat = self.memorySizePerPrimitiveType * 5 
+        self.TBool = self.memorySizePerPrimitiveType * 6 
+        self.TChar = self.memorySizePerPrimitiveType * 7 
         self.TGraph = self.GGraph + self.memorySizePerOurType * 8
         self.TPieGraph = self.GGraph + self.memorySizePerOurType * 9
         self.TBarChart = self.GGraph + self.memorySizePerOurType * 10

@@ -15,7 +15,7 @@ t1 = 0;
 t2 = 1;
 actual = 0;
 next = 0;
-
+print("Inicia impresion de la serie de fibonacci hasta la posicion " & n);
 while(next<=n)
 {
     if (next == 1 or next == 0){

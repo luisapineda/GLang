@@ -1,7 +1,7 @@
 program matsum{
 
 vars{
-	int i[2][2],b[2][2],c[2][2];
+	int i[2][2],b[2][2],c[2][2],cont,p;
 }
 
 main{
@@ -23,7 +23,12 @@ main{
 			c[b][i] = i[b][i] + b[b][i];
 		}
 	}
-	
+	for (cont=1; cont<=2; cont=cont+1;){
+		for(p=1; p<=2 ; p=p+1;)
+			{
+				print(c[cont][p]);
+			}
+	}
 }
 
 

@@ -1,0 +1,25 @@
+program miPrograma{
+    vars {
+        int i;
+        Graph migrafica1;
+        PieChart migrafica2;
+    }
+
+    main {
+        print("Hello World!");
+        i = 0;
+        if(i<3){
+            print("El valor " & i & " es menor que 3");
+        } else {
+            print("El valor " & i & " es igual o mayor a 3"); 
+        }
+
+        migrafica1.name("Crecimiento economico");
+        migrafica1.nameX("Dias");
+        migrafica1.nameY("Dinero");
+        migrafica1.createG(0,1,2,4);
+
+        migrafica2.name("Sabores vendidos");
+        migrafica2.createPC(25,30,4;"Chocolate","Fresa","Vainilla");
+    }
+}

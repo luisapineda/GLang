@@ -17,11 +17,11 @@ program fibonacci {
 
 
     main{
-        print("Fibonnaci Solucion Iterativa");
+        print("Fibonnaci Solucion Recursivo");
         print("Teclea un numero positivo:");
         input>>n;
         result = fibo(n);
-        print(result);
+        print("f(" & n & ") = " & result);
 
     }
 
