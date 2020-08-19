@@ -2,6 +2,7 @@
 ### Compilador para la clase de Enero-Mayo 2019 "Diseño de Compiladores"
 *Un lenguaje de programación y graficador al mismo tiempo*
 
+hola, esta es una prueba que prometo borrar
 Con GLang puedes crear las siguientes gráficas:
 - (Graph) gráficas de funciones constantes, lineales, cuadráticas y cúbicas.
 - (PieChart) gráficas de pastel.
